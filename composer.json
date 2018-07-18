@@ -1,0 +1,26 @@
+{
+  "name": "mageplaza/module-recaptcha",
+  "description": "Magento 2 Recaptcha Extension",
+  "require": {
+    "mageplaza/module-core": "^1.3.13"
+  },
+  "type": "magento2-module",
+  "version": "1.0.0",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Mageplaza",
+      "email": "support@mageplaza.com",
+      "homepage": "https://www.mageplaza.com",
+      "role": "Technical Support"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Mageplaza\\Recaptcha\\": ""
+    }
+  }
+}
