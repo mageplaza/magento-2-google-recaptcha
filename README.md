@@ -1,1 +1,1 @@
-- User guide: https://docs.mageplaza.com/recaptcha/index.html
+- User guide: https://docs.mageplaza.com/google-recaptcha/index.html

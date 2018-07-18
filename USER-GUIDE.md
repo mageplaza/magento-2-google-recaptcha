@@ -1,11 +1,11 @@
 ## Documentation
 
 - Installation guide: https://www.mageplaza.com/install-magento-2-extension/#solution-1-ready-to-paste
-- User Guide: https://docs.mageplaza.com/recaptcha-m2/
-- Product page: https://www.mageplaza.com/magento-2-recaptcha-extension/
+- User Guide: https://docs.mageplaza.com/google-recaptcha-m2/
+- Product page: https://www.mageplaza.com/magento-2-google-recaptcha-extension/
 - FAQs: https://www.mageplaza.com/faqs/
 - Get Support: https://mageplaza.freshdesk.com/ or support@mageplaza.com
-- Changelog: https://www.mageplaza.com/changelog/m2-recaptcha.txt
+- Changelog: https://www.mageplaza.com/changelog/m2-google-recaptcha.txt
 - License agreement: https://www.mageplaza.com/LICENSE.txt
 
 ## How to install
@@ -15,7 +15,7 @@
 Run the following command in Magento 2 root folder
 
 ```
-composer require mageplaza/module-recaptcha
+composer require mageplaza/module-google-recaptcha
 php bin/magento setup:upgrade
 php bin/magento setup:static-content:deploy
 ```
@@ -30,10 +30,10 @@ php bin/magento setup:static-content:deploy
 
 Backup your Magento code, database before upgrading.
 
-2. Remove Recaptcha folder 
+2. Remove GoogleRecaptcha folder 
 
 In case of customization, you should backup the customized files and modify in newer version. 
-Now you remove `app/code/Mageplaza/Recaptcha` folder. In this step, you can copy override Recaptcha folder but this may cause of compilation issue. That why you should remove it.
+Now you remove `app/code/Mageplaza/GoogleRecaptcha` folder. In this step, you can copy override GoogleRecaptcha folder but this may cause of compilation issue. That why you should remove it.
 
 3. Upload new version
 Upload this package to Magento root directory

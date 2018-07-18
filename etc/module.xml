@@ -15,13 +15,13 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Recaptcha
+ * @package     Mageplaza_GoogleRecaptcha
  * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Mageplaza_Recaptcha" setup_version="1.0.0">
+    <module name="Mageplaza_GoogleRecaptcha" setup_version="1.0.0">
         <sequence>
             <module name="Mageplaza_Core"/>
         </sequence>

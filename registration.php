@@ -14,13 +14,13 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Recaptcha
+ * @package     Mageplaza_GoogleRecaptcha
  * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,
-    'Mageplaza_Recaptcha',
+    'Mageplaza_GoogleRecaptcha',
     __DIR__
 );
