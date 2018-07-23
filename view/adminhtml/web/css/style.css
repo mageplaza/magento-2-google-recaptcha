@@ -1,4 +1,3 @@
-<?php
 /**
  * Mageplaza
  *
@@ -18,14 +17,15 @@
  * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
-?>
-
-<div class="admin__field field-recaptcha">
-   <div class="admin__field-control">
-       <div class="g-recaptcha"
-            data-sitekey="6LfQdEMUAAAAAClB3i9TanF3iU78MsZb1ovbszDw"
-            data-size="normal"
-            data-theme="light">
-       </div>
-   </div>
-</div>
+.g-recaptcha {
+    -webkit-transform: scale(0.95);
+    -moz-transform: scale(0.95);
+    -ms-transform: scale(0.95);
+    -o-transform: scale(0.95);
+    transform: scale(0.95);
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    transform-origin: 0 0;
+}

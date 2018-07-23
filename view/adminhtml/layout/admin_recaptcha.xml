@@ -1,4 +1,5 @@
-<?php
+<?xml version="1.0"?>
+<!--
 /**
  * Mageplaza
  *
@@ -18,14 +19,11 @@
  * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
-?>
+ -->
 
-<div class="admin__field field-recaptcha">
-   <div class="admin__field-control">
-       <div class="g-recaptcha"
-            data-sitekey="6LfQdEMUAAAAAClB3i9TanF3iU78MsZb1ovbszDw"
-            data-size="normal"
-            data-theme="light">
-       </div>
-   </div>
-</div>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="https://www.google.com/recaptcha/api.js" src_type="url" />
+        <css src="Mageplaza_GoogleRecaptcha::css/style.css"/>
+    </head>
+</page>
