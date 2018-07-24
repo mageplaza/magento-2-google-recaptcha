@@ -19,13 +19,14 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 ?>
-
-<div class="admin__field field-recaptcha">
-   <div class="admin__field-control">
-       <div class="g-recaptcha"
-            data-sitekey="6LfQdEMUAAAAAClB3i9TanF3iU78MsZb1ovbszDw"
-            data-size="normal"
-            data-theme="light">
+<?php if($block->isCaptchaBackend() && $block->showInForm()){?>
+    <div class="admin__field field-recaptcha">
+       <div class="admin__field-control">
+           <div class="g-recaptcha"
+                data-sitekey="<?=$block->getVisibleKey()?>"
+                data-size="<?=$block->getSize()?>"
+                data-theme="<?=$block->getTheme()?>">
+           </div>
        </div>
-   </div>
-</div>
+    </div>
+<?php }?>

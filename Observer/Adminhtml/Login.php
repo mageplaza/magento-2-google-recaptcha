@@ -64,14 +64,15 @@ class Login implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if($this->_helperData->isEnabled()){
-            if(in_array('backend_login', $this->_helperData->getFormsBackend())){
-                $response = $this->_helperData->verifyResponse();
-                if (isset($response['success']) && !$response['success']) {
-                    throw new PluginAuthenticationException(
-                        new Phrase($response['message'])
-                    );
-                }
+        if($this->_helperData->isEnabled()
+            && $this->_helperData->isCaptchaBackend()
+            && in_array('backend_login', $this->_helperData->getFormsBackend())
+        ){
+            $response = $this->_helperData->verifyResponse();
+            if (isset($response['success']) && !$response['success']) {
+                throw new PluginAuthenticationException(
+                    new Phrase($response['message'])
+                );
             }
         }
     }
