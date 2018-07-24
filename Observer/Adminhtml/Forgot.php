@@ -24,9 +24,12 @@ namespace Mageplaza\GoogleRecaptcha\Observer\Adminhtml;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
-use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\Exception\Plugin\AuthenticationException as PluginAuthenticationException;
-use Magento\Framework\Phrase;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\App\ActionFlag;
+use Magento\Framework\UrlInterface;
 
 /**
  * Class Login
@@ -35,45 +38,89 @@ use Magento\Framework\Phrase;
 class Forgot implements ObserverInterface
 {
     /**
-     * @type \Magento\Framework\Controller\Result\JsonFactory
-     */
-    protected $_resultJsonFactory;
-
-    /**
      * @var \Mageplaza\GoogleRecaptcha\Helper\Data
      */
     protected $_helperData;
 
     /**
-     * Login constructor.
+     * Request object
+     *
+     * @var \Magento\Framework\App\RequestInterface
+     */
+    protected $_request;
+
+    /**
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    protected $_messageManager;
+
+    /**
+     * @var \Magento\Framework\App\ResponseInterface
+     */
+    protected $_responseInterface;
+
+    /**
+     * @var ActionFlag
+     */
+    private $_actionFlag;
+
+    /**
+     * @var \Magento\Framework\UrlInterface
+     */
+    protected $_urlInterface;
+
+    /**
+     * Forgot constructor.
      * @param \Mageplaza\GoogleRecaptcha\Helper\Data $helperData
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\App\RequestInterface $httpRequest
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param \Magento\Framework\App\ResponseInterface $responseInterface
+     * @param \Magento\Framework\App\ActionFlag $actionFlag
+     * @param \Magento\Framework\UrlInterface $urlInterface
      */
     public function __construct(
         HelperData $helperData,
-        JsonFactory $resultJsonFactory
+        RequestInterface $httpRequest,
+        ManagerInterface $messageManager,
+        ResponseInterface $responseInterface,
+        ActionFlag $actionFlag,
+        UrlInterface $urlInterface
     )
     {
         $this->_helperData = $helperData;
-        $this->_resultJsonFactory = $resultJsonFactory;
+        $this->_request = $httpRequest;
+        $this->_messageManager = $messageManager;
+        $this->_responseInterface = $responseInterface;
+        $this->_actionFlag = $actionFlag;
+        $this->_urlInterface = $urlInterface;
     }
 
     /**
      * @param \Magento\Framework\Event\Observer $observer
-     * @throws \Magento\Framework\Exception\Plugin\AuthenticationException
+     * @return \Magento\Framework\Controller\Result\Redirect
      */
     public function execute(Observer $observer)
     {
         if($this->_helperData->isEnabled()){
-           // \Zend_Debug::dump($this->_helperData->getFormsBackend());die;
             if(in_array('backend_forgotpassword', $this->_helperData->getFormsBackend())){
-                $response = $this->_helperData->verifyResponse();
-                if (isset($response['success']) && !$response['success']) {
-                    throw new PluginAuthenticationException(
-                        new Phrase($response['message'])
-                    );
+                if($this->_request->getParam('g-recaptcha-response')!== null)
+                {
+                    $controller = $this->_urlInterface->getCurrentUrl();
+                    try {
+                        $response = $this->_helperData->verifyResponse();
+                        if (isset($response['success']) && !$response['success']) {
+                            $this->redirectError($controller, $response['message']);
+                        }
+                    } catch (\Exception $e) {
+                        $this->redirectError($controller, $e->getMessage());
+                    }
                 }
             }
         }
+    }
+    public function redirectError($url, $message){
+        $this->_messageManager->addErrorMessage($message);
+        $this->_actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
+        $this->_responseInterface->setRedirect($url);
     }
 }
