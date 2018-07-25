@@ -28,12 +28,12 @@ use Magento\Framework\Option\ArrayInterface;
  */
 class Forms implements ArrayInterface
 {
-    const TYPE_LOGIN = 'user_login';
-    const TYPE_CREATE    = 'user_create';
-    const TYPE_FORGOT = 'user_forgotpassword';
-    const TYPE_CONTACT = 'contact_us';
-    const TYPE_CHANGEPASSWORD = 'change_password';
-    const TYPE_PRODUCTREVIEW = 'product_review';
+    const TYPE_LOGIN = '#login-form.form.form-login';
+    const TYPE_CREATE    = '#form-validate.form-create-account';
+    const TYPE_FORGOT = '#form-validate.form.password.forget';
+    const TYPE_CONTACT = '#contact-form';
+    const TYPE_CHANGEPASSWORD = '#form-validate.form.form-edit-account';
+    const TYPE_PRODUCTREVIEW = '#review-form';
 
     /**
      * @return array

@@ -34,7 +34,7 @@ class Data extends CoreHelper
 {
     const CONFIG_MODULE_PATH = 'googlerecaptcha';
     const BACKEND_CONFIGURATION = '/backend';
-    const FRONTEND_CONFIGURATION = '/spending';
+    const FRONTEND_CONFIGURATION = '/frontend';
 
     /**
      * @var CurlFactory
@@ -53,6 +53,10 @@ class Data extends CoreHelper
     }
 
     /**
+     * Backend
+     */
+
+    /**
      * @param null $storeId
      * @return mixed
      */
@@ -68,15 +72,6 @@ class Data extends CoreHelper
     public function getVisibleSecretKey($storeId = null)
     {
         return $this->getConfigGeneral('visible/api_secret', $storeId);
-    }
-
-    /**
-     * @param null $storeId
-     * @return mixed
-     */
-    public function getLanguageCode($storeId = null)
-    {
-        return $this->getConfigGeneral('language', $storeId);
     }
 
     /**
@@ -125,6 +120,81 @@ class Data extends CoreHelper
     {
         $code = ($code !== '') ? '/' . $code : '';
         return $this->getConfigValue(static::CONFIG_MODULE_PATH . static::BACKEND_CONFIGURATION . $code, $storeId);
+    }
+
+    /**
+     * Frontend
+     */
+
+    /**
+     * @param string $code
+     * @param null $storeId
+     * @return array|mixed
+     */
+    public function getConfigFrontend($code = '', $storeId = null)
+    {
+        $code = ($code !== '') ? '/' . $code : '';
+        return $this->getConfigValue(static::CONFIG_MODULE_PATH . static::FRONTEND_CONFIGURATION . $code, $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     * @return array|mixed
+     */
+    public function isCaptchaFrontend($storeId = null)
+    {
+        return $this->getConfigFrontend('enabled', $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     * @return array|mixed
+     */
+    public function getPositionFrontend($storeId = null)
+    {
+        return $this->getConfigFrontend('position', $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     * @return array
+     */
+    public function getFormsFrontend($storeId = null)
+    {
+        $data = $this->getConfigFrontend('forms', $storeId);
+        return explode(',', $data);
+    }
+
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getInvisibleKey($storeId = null)
+    {
+        return $this->getConfigGeneral('invisible/api_key', $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getInvisibleSecretKey($storeId = null)
+    {
+        return $this->getConfigGeneral('invisible/api_secret', $storeId);
+    }
+
+
+    /**
+     * General
+     */
+
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getLanguageCode($storeId = null)
+    {
+        return $this->getConfigGeneral('language', $storeId);
     }
 
     /**
