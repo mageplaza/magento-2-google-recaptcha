@@ -25,6 +25,7 @@ use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Mageplaza\Core\Helper\AbstractData as CoreHelper;
 use Magento\Framework\HTTP\Adapter\CurlFactory;
+use Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms;
 /**
  * Class Data
  *
@@ -80,6 +81,9 @@ class Data extends CoreHelper
      */
     public function isCaptchaBackend($storeId = null)
     {
+		if(!$this->isEnabled()){
+			return false;
+		}
         return $this->getConfigBackend('enabled', $storeId);
     }
 
@@ -143,6 +147,9 @@ class Data extends CoreHelper
      */
     public function isCaptchaFrontend($storeId = null)
     {
+    	if(!$this->isEnabled()){
+    		return false;
+		}
         return $this->getConfigFrontend('enabled', $storeId);
     }
 
@@ -195,10 +202,32 @@ class Data extends CoreHelper
      * @param null $storeId
      * @return array|mixed
      */
-    public function getFormPostPaths($storeId = null){
-        $data = $this->getConfigFrontend('custom/paths', $storeId);
-        return explode(',', $data);
+    public function getFormPostPaths($storeId = null)
+	{
+        $data = [];
+        foreach ($this->defaultForms() as $key => $value){
+			if(in_array($key, $this->getFormsFrontend())){
+				$data[]= $value;
+			}
+		}
+		$custom = explode(',', $this->getConfigFrontend('custom/paths', $storeId));
+		if($custom){
+			return $data;
+		}
+        return array_merge($data, $custom);
     }
+
+	public function defaultForms()
+	{
+		return [
+			Forms::TYPE_LOGIN          => "customer/account/loginPost/",
+			Forms::TYPE_CREATE         => "customer/account/createpost/",
+			Forms::TYPE_FORGOT         => "customer/account/forgotpasswordpost/",
+			Forms::TYPE_CONTACT        => "contact/index/post/",
+			Forms::TYPE_CHANGEPASSWORD => "customer/account/editPost/",
+			Forms::TYPE_PRODUCTREVIEW  => "review/product/post/"
+		];
+	}
 
     /**
      * @param null $storeId
@@ -228,7 +257,7 @@ class Data extends CoreHelper
      * @param null $recaptcha
      * @return array
      */
-    public function verifyResponse($recaptcha = null)
+    public function verifyResponse($end = null, $recaptcha = null)
     {
         $result = ['success' => false];
 
@@ -242,7 +271,7 @@ class Data extends CoreHelper
         /** @var \Magento\Framework\HTTP\Adapter\Curl $curl */
         $curl = $this->_curlFactory->create();
         $curl->write(\Zend_Http_Client::POST, $this->getVerifyUrl(), '1.1', [], http_build_query([
-            'secret' => $this->getVisibleSecretKey(),
+            'secret' => $end?$this->getVisibleSecretKey():$this->getInvisibleSecretKey(),
             'remoteip' => $this->_request->getClientIp(),
             'response' => $recaptcha
         ]));
