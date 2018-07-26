@@ -52,7 +52,8 @@ class Captcha extends \Magento\Framework\View\Element\Template
      * @return array
      */
     public function getForms(){
-        return json_encode($this->_helperData->getFormsFrontend());
+        $data = array_merge($this->_helperData->getCssSelectors(), $this->_helperData->getFormsFrontend());
+        return json_encode($data);
     }
 
     /**
@@ -81,5 +82,12 @@ class Captcha extends \Magento\Framework\View\Element\Template
      */
     public function getLanguageCode(){
         return $this->_helperData->getLanguageCode();
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getThemeFrontend(){
+        return $this->_helperData->getThemeFrontend();
     }
 }

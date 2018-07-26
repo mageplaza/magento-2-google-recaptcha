@@ -28,78 +28,113 @@ define([
             invisibleKey: "",
             language: "en",
             position: "inline",
+            theme: "light",
             forms: []
         },
-
+        captchaForm: [],
         /**
          * This method constructs a new widget.
          * @private
          */
         _create: function () {
             var self = this;
-
-            $(function(){
+            var stop = 0;
+            $(function () {
                 var ID = setInterval(function () {
-                    if (self.isLoadForm()) {
+                    if (self.isLoadForm() && stop == 0) {
+                        stop++;
                         self.createCaptcha();
                     }
                     clearInterval(ID);
-                }, 1500);
-            });
-        },
-        load: function (url) {
-            $.ajax({
-                url: url,
-                dataType: 'script',
-                async: true,
-                defer: true
+                }, 1300);
             });
         },
         createCaptcha: function () {
+            var self = this,
+                number = 0,
+                widgetIDCaptcha,
+                checkSubmitType = 0,
+                resetForm = 0;
+            window.recaptchaOnload = function () {
+                var forms = self.options.forms;
+                forms.forEach(function (value) {
+                    var element = $(value);
 
+                    /**
+                     * Create Widget
+                     */
+                    if (element.length > 0 && element.prop("tagName").toLowerCase() == 'form') {
+                        //Multi ID
+                        if (element.length > 1) {
+                            element = element.first();
+                        }
+                        var divCaptcha = $('<div class="g-recaptcha"></div>');
+                        divCaptcha.attr('id', element.attr('id') + '_recaptcha_' + number);
+                        element.append(divCaptcha);
 
+                        var target = element.attr('id') + '_recaptcha_' + number,
+                            parameters = {
+                                'sitekey': self.options.invisibleKey,
+                                'size': 'invisible',
+                                'callback': function (token) {
+                                    if (element.valid() && token) {
+                                        checkSubmitType = 1;
+                                        element.submit();
+                                    } else {
+                                        grecaptcha.reset(resetForm);
+                                        resetForm = 0;
+                                    }
+                                },
+                                'theme': self.options.theme,
+                                'badge': self.options.position
+                            };
+                        widgetIDCaptcha = grecaptcha.render(target, parameters);
+                        self.captchaForm[widgetIDCaptcha] = target;
+                        number++;
 
-                    window.recaptchaOnload = function () {
-                        var self = this;
-                        var forms = this.options.forms;
-                        forms.forEach(function (element) {
-                            if($(element).length > 0) {
-                                var divCaptcha = $('<div class="mageplaza_captcha"></div>');
-                                $(element).append(divCaptcha);
-                                var target = $(element).find(".mageplaza_captcha"),
-                                    parameters = {
-                                        'sitekey': this.options.invisibleKey,
-                                        'size': 'invisible',
-                                        'theme': 'dark',
-                                        'badge': this.options.position,
-                                        'callback': this.onSubmit.bind(this)
-                                    };
-                                grecaptcha.render(target, parameters);
+                        /**
+                         * Check form submit
+                         */
+                        element.on('submit', function (event) {
+                            var result = false;
+                            if (checkSubmitType == 1) {
+                                checkSubmitType = 0;
+                                result = true;
+                            } else {
+                                $.each(self.captchaForm, function (form, value) {
+                                    if (element.find('#' + value).length > 0) {
+                                        grecaptcha.reset(form);
+                                        grecaptcha.execute(form);
+                                        resetForm = form;
+                                        return false;
+                                    }
+                                });
                             }
-                        })
-                    };
-            self.load('https://www.google.com/recaptcha/api.js?hl=' + self.options.language+'&onload=recaptchaOnload&render=explicit');
-        },
-        onSubmit: function (token) {
-            console.log(token);
+
+                            return result;
+                        });
+                    }
+                })
+            };
+            require(['https://www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit&hl' + self.options.language]);
         },
 
         /**
-         * Nếu tìm thấy một from thì load library
+         * Is Load Library
          * @returns {boolean}
          */
         isLoadForm: function () {
             var forms = this.options.forms;
-            var flag = false;
-            if(forms && forms.length > 0){
+            var result = false;
+            if (forms && forms.length > 0) {
                 forms.forEach(function (element) {
-                    if($(element).length > 0 && $(element).prop("tagName").toLowerCase() == 'form'){
-                            flag = true;
-                            return false;
+                    if ($(element).length > 0 && $(element).prop("tagName").toLowerCase() == 'form') {
+                        result = true;
+                        return false;
                     }
                 });
             }
-            return flag;
+            return result;
         }
     });
 

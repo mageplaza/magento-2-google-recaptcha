@@ -157,6 +157,14 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     * @return array|mixed
+     */
+    public function getThemeFrontend($storeId = null){
+        return $this->getConfigFrontend('theme', $storeId);
+    }
+
+    /**
+     * @param null $storeId
      * @return array
      */
     public function getFormsFrontend($storeId = null)
@@ -183,6 +191,23 @@ class Data extends CoreHelper
         return $this->getConfigGeneral('invisible/api_secret', $storeId);
     }
 
+    /**
+     * @param null $storeId
+     * @return array|mixed
+     */
+    public function getFormPostPaths($storeId = null){
+        $data = $this->getConfigFrontend('custom/paths', $storeId);
+        return explode(',', $data);
+    }
+
+    /**
+     * @param null $storeId
+     * @return array|mixed
+     */
+    public function getCssSelectors($storeId = null){
+        $data = $this->getConfigFrontend('custom/css', $storeId);
+        return explode(',', $data);
+    }
 
     /**
      * General

@@ -19,7 +19,9 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 ?>
-
+<style type="text/css">
+    .g-recaptcha{margin-top: 15px; margin-bottom: 15px;}
+</style>
 <script type="text/x-magento-init">
     {
         "*": {
@@ -27,6 +29,7 @@
                 "invisibleKey": "<?= /* @escapeNotVerified */ $block->getInvisibleKey() ?>",
                 "language": "<?= /* @escapeNotVerified */ $block->getLanguageCode() ?>",
                 "position": "<?= /* @escapeNotVerified */ $block->getPositionFrontend() ?>",
+                "theme": "<?= /* @escapeNotVerified */ $block->getThemeFrontend() ?>",
                 "forms": <?= $block->getForms() ?>
             }
         }

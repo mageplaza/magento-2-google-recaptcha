@@ -101,6 +101,14 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="theme" translate="label comment" sortOrder="5" type="select"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Theme</label>
+                    <source_model>Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Theme</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
                 <field id="forms" translate="label comment" type="multiselect" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Forms</label>
                     <source_model>Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms</source_model>
@@ -108,7 +116,7 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <group id="custom" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="custom" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Custom Form Position</label>
                     <field id="paths" translate="label comment" type="textarea" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Form Post Paths</label>
