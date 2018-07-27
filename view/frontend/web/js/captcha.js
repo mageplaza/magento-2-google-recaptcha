@@ -72,6 +72,7 @@ define([
                         if (element.length > 1) {
                             element = element.first();
                         }
+                        var buttonElement = element.find('button[type=submit]')?element.find('button[type=submit]'):element.find('input[type=submit]');
                         var divCaptcha = $('<div class="g-recaptcha"></div>');
                         divCaptcha.attr('id', element.attr('id') + '_recaptcha_' + number);
                         element.append(divCaptcha);
@@ -84,7 +85,7 @@ define([
                                     if (token) {
                                         checkSubmitType = 1;
                                         //element.submit();
-                                        element.find('button[type=submit]').click();
+                                        buttonElement.click();
                                     } else {
                                         grecaptcha.reset(resetForm);
                                         resetForm = 0;
@@ -101,7 +102,8 @@ define([
                         /**
                          * Check form submit
                          */
-                        element.find('button[type=submit]').click(function (event) {
+
+                        buttonElement.click(function (event) {
                             var result = false;
                             if (checkSubmitType == 1) {
                                 checkSubmitType = 0;
