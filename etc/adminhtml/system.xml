@@ -37,7 +37,6 @@
                     <label>Invisible</label>
                     <field id="api_key" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Google API Key</label>
-                        <comment><![CDATA[Create <a href="https://www.google.com/recaptcha/admin" target="_bank">here</a>]]></comment>
                     </field>
                     <field id="api_secret" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Google API Secret Key</label>
@@ -47,7 +46,6 @@
                     <label>Visible</label>
                     <field id="api_key" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Google API Key</label>
-                        <comment><![CDATA[Create <a href="https://www.google.com/recaptcha/admin" target="_bank">here</a>]]></comment>
                     </field>
                     <field id="api_secret" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Google API Secret Key</label>
