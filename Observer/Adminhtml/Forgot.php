@@ -105,11 +105,18 @@ class Forgot implements ObserverInterface
             && $this->_helperData->isCaptchaBackend()
             && in_array('backend_forgotpassword', $this->_helperData->getFormsBackend())
         ){
-            $controller = $this->_urlInterface->getCurrentUrl();
-            $response = $this->_helperData->verifyResponse('backend');
-            if (isset($response['success']) && !$response['success']) {
-                $this->redirectError($controller, $response['message']);
-            }
+                if($this->_request->getParam('g-recaptcha-response')!== null)
+                {
+                    $controller = $this->_urlInterface->getCurrentUrl();
+                    try {
+                        $response = $this->_helperData->verifyResponse('backend');
+                        if (isset($response['success']) && !$response['success']) {
+                            $this->redirectError($controller, $response['message']);
+                        }
+                    } catch (\Exception $e) {
+                        $this->redirectError($controller, $e->getMessage());
+                    }
+                }
         }
     }
     public function redirectError($url, $message){
