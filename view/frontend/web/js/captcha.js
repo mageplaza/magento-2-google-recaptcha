@@ -81,9 +81,10 @@ define([
                                 'sitekey': self.options.invisibleKey,
                                 'size': 'invisible',
                                 'callback': function (token) {
-                                    if (element.valid() && token) {
+                                    if (token) {
                                         checkSubmitType = 1;
-                                        element.submit();
+                                        //element.submit();
+                                        element.find('button[type=submit]').click();
                                     } else {
                                         grecaptcha.reset(resetForm);
                                         resetForm = 0;
@@ -100,12 +101,13 @@ define([
                         /**
                          * Check form submit
                          */
-                        element.on('submit', function (event) {
+                        element.find('button[type=submit]').click(function (event) {
                             var result = false;
                             if (checkSubmitType == 1) {
                                 checkSubmitType = 0;
                                 result = true;
                             } else {
+                                event.preventDefault();
                                 $.each(self.captchaForm, function (form, value) {
                                     if (element.find('#' + value).length > 0) {
                                         grecaptcha.reset(form);
@@ -118,6 +120,25 @@ define([
 
                             return result;
                         });
+                        // element.on('submit', function (event) {
+                        //     event.preventDefault();
+                        //     var result = false;
+                        //     if (checkSubmitType == 1) {
+                        //         checkSubmitType = 0;
+                        //         result = true;
+                        //     } else {
+                        //         $.each(self.captchaForm, function (form, value) {
+                        //             if (element.find('#' + value).length > 0) {
+                        //                 grecaptcha.reset(form);
+                        //                 grecaptcha.execute(form);
+                        //                 resetForm = form;
+                        //                 return false;
+                        //             }
+                        //         });
+                        //     }
+                        //
+                        //     return result;
+                        // });
                     }
                 })
             };
