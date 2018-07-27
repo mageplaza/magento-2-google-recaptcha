@@ -97,4 +97,11 @@ class Captcha extends \Magento\Framework\View\Element\Template
         }
         return false;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLanguageCode(){
+        return $this->_helperData->getLanguageCode();
+    }
 }
