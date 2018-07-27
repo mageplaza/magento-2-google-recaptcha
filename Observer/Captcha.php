@@ -68,16 +68,12 @@ class Captcha implements ObserverInterface
 
 					if($this->_request->getParam('g-recaptcha-response')!== null)
 					{
-						try {
-							$response = $this->_helperData->verifyResponse();
-							if (isset($response['success']) && !$response['success']) {
-								$this->redirectUrlError($response['message']);
-							}
-						} catch (\Exception $e) {
-							$this->redirectUrlError($e->getMessage());
-						}
+                        $response = $this->_helperData->verifyResponse();
+                        if (isset($response['success']) && !$response['success']) {
+                            $this->redirectUrlError($response['message']);
+                        }
 					}else{
-						$this->redirectUrlError(__('Something is wrong'));
+						$this->redirectUrlError(__('Missing required parameters recaptcha!'));
 					}
 
 				}
