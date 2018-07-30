@@ -20,11 +20,12 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <event name="controller_action_predispatch_adminhtml_auth_forgotpassword">
         <observer name="msp_recaptcha" instance="Mageplaza\GoogleRecaptcha\Observer\Adminhtml\Forgot"/>
     </event>
     <event name="admin_user_authenticate_before">
-        <observer name="mageplaza_recaptcha" instance="Mageplaza\GoogleRecaptcha\Observer\Adminhtml\Login" />
+        <observer name="mageplaza_recaptcha" instance="Mageplaza\GoogleRecaptcha\Observer\Adminhtml\Login"/>
     </event>
 </config>

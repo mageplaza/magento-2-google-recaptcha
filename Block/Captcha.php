@@ -51,43 +51,50 @@ class Captcha extends \Magento\Framework\View\Element\Template
     /**
      * @return array
      */
-    public function getForms(){
+    public function getForms()
+    {
         $data = array_merge($this->_helperData->getCssSelectors(), $this->_helperData->getFormsFrontend());
+
         return json_encode($data);
     }
 
     /**
      * @return mixed
      */
-    public function getInvisibleKey(){
+    public function getInvisibleKey()
+    {
         return $this->_helperData->getInvisibleKey();
     }
 
     /**
      * @return array|mixed
      */
-    public function getPositionFrontend(){
+    public function getPositionFrontend()
+    {
         return $this->_helperData->getPositionFrontend();
     }
 
     /**
      * @return array|mixed
      */
-    public function isCaptchaFrontend(){
+    public function isCaptchaFrontend()
+    {
         return $this->_helperData->isCaptchaFrontend();
     }
 
     /**
      * @return mixed
      */
-    public function getLanguageCode(){
+    public function getLanguageCode()
+    {
         return $this->_helperData->getLanguageCode();
     }
 
     /**
      * @return array|mixed
      */
-    public function getThemeFrontend(){
+    public function getThemeFrontend()
+    {
         return $this->_helperData->getThemeFrontend();
     }
 }

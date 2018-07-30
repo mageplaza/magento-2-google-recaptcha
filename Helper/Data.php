@@ -25,7 +25,8 @@ use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Mageplaza\Core\Helper\AbstractData as CoreHelper;
 use Magento\Framework\HTTP\Adapter\CurlFactory;
-use Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms;
+use Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms as DefaultFormsPaths;
+
 /**
  * Class Data
  *
@@ -42,15 +43,22 @@ class Data extends CoreHelper
      */
     protected $_curlFactory;
 
+    /**
+     * @var \Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms
+     */
+    protected $_formPaths;
+
     public function __construct(
         Context $context,
         ObjectManagerInterface $objectManager,
         StoreManagerInterface $storeManager,
-        CurlFactory $curlFactory
+        CurlFactory $curlFactory,
+        DefaultFormsPaths $formPaths
     )
     {
         parent::__construct($context, $objectManager, $storeManager);
         $this->_curlFactory = $curlFactory;
+        $this->_formPaths   = $formPaths;
     }
 
     /**
@@ -81,9 +89,10 @@ class Data extends CoreHelper
      */
     public function isCaptchaBackend($storeId = null)
     {
-		if(!$this->isEnabled()){
-			return false;
-		}
+        if (!$this->isEnabled()) {
+            return false;
+        }
+
         return $this->getConfigBackend('enabled', $storeId);
     }
 
@@ -94,6 +103,7 @@ class Data extends CoreHelper
     public function getFormsBackend($storeId = null)
     {
         $data = $this->getConfigBackend('forms', $storeId);
+
         return explode(',', $data);
     }
 
@@ -123,6 +133,7 @@ class Data extends CoreHelper
     public function getConfigBackend($code = '', $storeId = null)
     {
         $code = ($code !== '') ? '/' . $code : '';
+
         return $this->getConfigValue(static::CONFIG_MODULE_PATH . static::BACKEND_CONFIGURATION . $code, $storeId);
     }
 
@@ -138,6 +149,7 @@ class Data extends CoreHelper
     public function getConfigFrontend($code = '', $storeId = null)
     {
         $code = ($code !== '') ? '/' . $code : '';
+
         return $this->getConfigValue(static::CONFIG_MODULE_PATH . static::FRONTEND_CONFIGURATION . $code, $storeId);
     }
 
@@ -147,9 +159,10 @@ class Data extends CoreHelper
      */
     public function isCaptchaFrontend($storeId = null)
     {
-    	if(!$this->isEnabled()){
-    		return false;
-		}
+        if (!$this->isEnabled()) {
+            return false;
+        }
+
         return $this->getConfigFrontend('enabled', $storeId);
     }
 
@@ -166,7 +179,8 @@ class Data extends CoreHelper
      * @param null $storeId
      * @return array|mixed
      */
-    public function getThemeFrontend($storeId = null){
+    public function getThemeFrontend($storeId = null)
+    {
         return $this->getConfigFrontend('theme', $storeId);
     }
 
@@ -177,6 +191,7 @@ class Data extends CoreHelper
     public function getFormsFrontend($storeId = null)
     {
         $data = $this->getConfigFrontend('forms', $storeId);
+
         return explode(',', $data);
     }
 
@@ -203,38 +218,29 @@ class Data extends CoreHelper
      * @return array|mixed
      */
     public function getFormPostPaths($storeId = null)
-	{
+    {
         $data = [];
-        foreach ($this->defaultForms() as $key => $value){
-			if(in_array($key, $this->getFormsFrontend())){
-				$data[]= $value;
-			}
-		}
-		$custom = explode(',', $this->getConfigFrontend('custom/paths', $storeId));
-		if($custom){
-			return $data;
-		}
+        foreach ($this->_formPaths->defaultForms() as $key => $value) {
+            if (in_array($key, $this->getFormsFrontend())) {
+                $data[] = $value;
+            }
+        }
+        $custom = explode(',', $this->getConfigFrontend('custom/paths', $storeId));
+        if ($custom) {
+            return $data;
+        }
+
         return array_merge($data, $custom);
     }
-
-	public function defaultForms()
-	{
-		return [
-			Forms::TYPE_LOGIN          => "customer/account/loginPost/",
-			Forms::TYPE_CREATE         => "customer/account/createpost/",
-			Forms::TYPE_FORGOT         => "customer/account/forgotpasswordpost/",
-			Forms::TYPE_CONTACT        => "contact/index/post/",
-			Forms::TYPE_CHANGEPASSWORD => "customer/account/editPost/",
-			Forms::TYPE_PRODUCTREVIEW  => "review/product/post/"
-		];
-	}
 
     /**
      * @param null $storeId
      * @return array|mixed
      */
-    public function getCssSelectors($storeId = null){
+    public function getCssSelectors($storeId = null)
+    {
         $data = $this->getConfigFrontend('custom/css', $storeId);
+
         return explode(',', $data);
     }
 
@@ -267,23 +273,13 @@ class Data extends CoreHelper
 
             return $result;
         }
-
-        /** @var \Magento\Framework\HTTP\Adapter\Curl $curl */
-        $curl = $this->_curlFactory->create();
-        $curl->write(\Zend_Http_Client::POST, $this->getVerifyUrl(), '1.1', [], http_build_query([
-            'secret' => $end?$this->getVisibleSecretKey():$this->getInvisibleSecretKey(),
-            'remoteip' => $this->_request->getClientIp(),
-            'response' => $recaptcha
-        ]));
-
         try {
-            $resultCurl = $curl->read();
-            if (!empty($resultCurl)) {
-                $responseBody = \Zend_Http_Response::extractBody($resultCurl);
-                $responses = Data::jsonDecode($responseBody);
-
-                if (isset($responses['success']) && $responses['success'] == true) {
+            $recaptchaClass = new \ReCaptcha\ReCaptcha($end ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
+            $resp           = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
+            if ($resp) {
+                if ($resp->isSuccess()) {
                     $result['success'] = true;
+
                 } else {
                     $result['message'] = __('The request is invalid or malformed.');
                 }
@@ -293,8 +289,6 @@ class Data extends CoreHelper
         } catch (\Exception $e) {
             $result['message'] = $e->getMessage();
         }
-
-        $curl->close();
 
         return $result;
     }

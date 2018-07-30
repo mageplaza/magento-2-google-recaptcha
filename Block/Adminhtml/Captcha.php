@@ -54,54 +54,61 @@ class Captcha extends \Magento\Framework\View\Element\Template
     /**
      * @return mixed
      */
-    public function getVisibleKey(){
+    public function getVisibleKey()
+    {
         return $this->_helperData->getVisibleKey();
     }
 
     /**
      * @return mixed
      */
-    public function getSize(){
+    public function getSize()
+    {
         return $this->_helperData->getSizeBackend();
     }
 
     /**
      * @return mixed
      */
-    public function getTheme(){
+    public function getTheme()
+    {
         return $this->_helperData->getThemeBackend();
     }
 
     /**
      * @return mixed
      */
-    public function isCaptchaBackend(){
+    public function isCaptchaBackend()
+    {
         return $this->_helperData->isCaptchaBackend();
     }
 
     /**
      * @return bool
      */
-    public function showInForm(){
+    public function showInForm()
+    {
         $form = $this->_helperData->getFormsBackend();
-        if(!empty($form)) {
-            if($this->_request->getFullActionName() == 'adminhtml_auth_login'){
-                if(in_array(FormsAdmin::TYPE_LOGIN, $form)){
+        if (!empty($form)) {
+            if ($this->_request->getFullActionName() == 'adminhtml_auth_login') {
+                if (in_array(FormsAdmin::TYPE_LOGIN, $form)) {
                     return true;
                 }
-            }elseif ($this->_request->getFullActionName() == 'adminhtml_auth_forgotpassword'){
-                if(in_array(FormsAdmin::TYPE_FORGOT, $form)){
+            } elseif ($this->_request->getFullActionName() == 'adminhtml_auth_forgotpassword') {
+                if (in_array(FormsAdmin::TYPE_FORGOT, $form)) {
                     return true;
                 }
             }
         }
+
         return false;
     }
 
     /**
      * @return mixed
      */
-    public function getLanguageCode(){
+    public function getLanguageCode()
+    {
         return $this->_helperData->getLanguageCode();
     }
 }

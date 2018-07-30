@@ -1,5 +1,3 @@
-<?xml version="1.0"?>
-<!--
 /**
  * Mageplaza
  *
@@ -16,14 +14,12 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_GoogleRecaptcha
- * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
--->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
-    <router id="standard">
-        <route id="googlerecaptcha" frontName="googlerecaptcha">
-            <module name="Mageplaza_GoogleRecaptcha"/>
-        </route>
-    </router>
-</config>
+
+var config = {
+    paths: {
+        'mpReCaptcha': '//www.google.com/recaptcha/api.js?'
+    }
+};

@@ -18,22 +18,25 @@
  * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
-if($block->isCaptchaFrontend()){
-?>
-<style type="text/css">
-    .g-recaptcha{margin-top: 15px; margin-bottom: 15px;}
-</style>
-<script type="text/x-magento-init">
-    {
-        "*": {
-            "Mageplaza_GoogleRecaptcha/js/captcha": {
-                "invisibleKey": "<?= /* @escapeNotVerified */ $block->getInvisibleKey() ?>",
-                "language": "<?= /* @escapeNotVerified */ $block->getLanguageCode() ?>",
-                "position": "<?= /* @escapeNotVerified */ $block->getPositionFrontend() ?>",
-                "theme": "<?= /* @escapeNotVerified */ $block->getThemeFrontend() ?>",
-                "forms": <?= $block->getForms() ?>
+if ($block->isCaptchaFrontend()) {
+    ?>
+    <style type="text/css">
+    .g-recaptcha {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    </style>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Mageplaza_GoogleRecaptcha/js/captcha": {
+                    "invisibleKey": "<?= /* @escapeNotVerified */ $block->getInvisibleKey() ?>",
+                    "language": "<?= /* @escapeNotVerified */ $block->getLanguageCode() ?>",
+                    "position": "<?= /* @escapeNotVerified */ $block->getPositionFrontend() ?>",
+                    "theme": "<?= /* @escapeNotVerified */ $block->getThemeFrontend() ?>",
+                    "forms": <?= $block->getForms() ?>
+                }
             }
         }
-    }
-</script>
+    </script>
 <?php } ?>

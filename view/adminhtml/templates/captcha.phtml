@@ -19,17 +19,17 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 ?>
-<?php if($block->isCaptchaBackend() && $block->showInForm()){?>
+<?php if ($block->isCaptchaBackend() && $block->showInForm()) { ?>
     <script type="text/javascript">
-        require(['https://www.google.com/recaptcha/api.js?hl='+'<?=$block->getLanguageCode()?>']);
+        require(['https://www.google.com/recaptcha/api.js?hl=' + '<?=$block->getLanguageCode()?>']);
     </script>
     <div class="admin__field field-recaptcha">
        <div class="admin__field-control">
            <div class="g-recaptcha"
-                data-sitekey="<?=$block->getVisibleKey()?>"
-                data-size="<?=$block->getSize()?>"
-                data-theme="<?=$block->getTheme()?>">
+                data-sitekey="<?= $block->getVisibleKey() ?>"
+                data-size="<?= $block->getSize() ?>"
+                data-theme="<?= $block->getTheme() ?>">
            </div>
        </div>
     </div>
-<?php }?>
+<?php } ?>

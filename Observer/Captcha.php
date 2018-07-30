@@ -24,64 +24,83 @@ namespace Mageplaza\GoogleRecaptcha\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
-
+use Magento\Framework\App\Request\Http;
+use Magento\Backend\Model\View\Result\RedirectFactory;
+use Magento\Framework\Message\ManagerInterface;
 /**
  * Class Login
  * @package Mageplaza\GoogleRecaptcha\Observer\Adminhtml
  */
 class Captcha implements ObserverInterface
 {
-	/**
-	 * @var \Mageplaza\GoogleRecaptcha\Helper\Data
-	 */
-	protected $_helperData;
+    /**
+     * @var \Mageplaza\GoogleRecaptcha\Helper\Data
+     */
+    protected $_helperData;
 
-	/**
-	 * @var \Magento\Framework\App\Request\Http
-	 */
-	protected $_request;
-	protected $resultRedirectFactory;
-	protected $messageManager;
+    /**
+     * @var \Magento\Framework\App\Request\Http
+     */
+    protected $_request;
 
-	public function __construct(
-		HelperData $helperData,
-		\Magento\Framework\App\Request\Http $request,
-		\Magento\Backend\Model\View\Result\RedirectFactory $resultRedirectFactory,
-		\Magento\Framework\Message\ManagerInterface $messageManager
-	)
-	{
-		$this->_helperData = $helperData;
-		$this->_request = $request;
-		$this->resultRedirectFactory = $resultRedirectFactory;
-		$this->messageManager = $messageManager;
-	}
+    /**
+     * @var \Magento\Backend\Model\View\Result\RedirectFactory
+     */
+    protected $resultRedirectFactory;
 
-	/**
-	 * @param \Magento\Framework\Event\Observer $observer
-	 * @return \Magento\Framework\Controller\Result\Redirect
-	 */
-	public function execute(Observer $observer)
-	{
-		if($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()){
-			foreach($this->_helperData->getFormPostPaths() as $item){
-				if(strpos($this->_request->getRequestUri(), $item) !== false){
+    /**
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    protected $messageManager;
 
-					if($this->_request->getParam('g-recaptcha-response')!== null)
-					{
+    /**
+     * Captcha constructor.
+     * @param \Mageplaza\GoogleRecaptcha\Helper\Data $helperData
+     * @param \Magento\Framework\App\Request\Http $request
+     * @param \Magento\Backend\Model\View\Result\RedirectFactory $resultRedirectFactory
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     */
+    public function __construct(
+        HelperData $helperData,
+        Http $request,
+        RedirectFactory $resultRedirectFactory,
+        ManagerInterface $messageManager
+    )
+    {
+        $this->_helperData           = $helperData;
+        $this->_request              = $request;
+        $this->resultRedirectFactory = $resultRedirectFactory;
+        $this->messageManager        = $messageManager;
+    }
+
+    /**
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return \Magento\Framework\Controller\Result\Redirect
+     */
+    public function execute(Observer $observer)
+    {
+        if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
+            foreach ($this->_helperData->getFormPostPaths() as $item) {
+                if (strpos($this->_request->getRequestUri(), $item) !== false) {
+
+                    if ($this->_request->getParam('g-recaptcha-response') !== null) {
                         $response = $this->_helperData->verifyResponse();
                         if (isset($response['success']) && !$response['success']) {
                             $this->redirectUrlError($response['message']);
                         }
-					}else{
-						$this->redirectUrlError(__('Missing required parameters recaptcha!'));
-					}
+                    } else {
+                        $this->redirectUrlError(__('Missing required parameters recaptcha!'));
+                    }
 
-				}
-			}
-		}
-	}
-	public function redirectUrlError($message){
-		$this->messageManager->addErrorMessage($message);
-		return $this->resultRedirectFactory->create()->setRefererUrl();
-	}
+                }
+            }
+        }
+    }
+
+    public function redirectUrlError($message)
+    {
+        $this->messageManager->addErrorMessage($message);
+
+        return $this->resultRedirectFactory->create()->setRefererUrl();
+    }
 }

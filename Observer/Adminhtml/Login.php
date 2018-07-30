@@ -54,7 +54,7 @@ class Login implements ObserverInterface
         JsonFactory $resultJsonFactory
     )
     {
-        $this->_helperData = $helperData;
+        $this->_helperData        = $helperData;
         $this->_resultJsonFactory = $resultJsonFactory;
     }
 
@@ -64,10 +64,10 @@ class Login implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if($this->_helperData->isEnabled()
+        if ($this->_helperData->isEnabled()
             && $this->_helperData->isCaptchaBackend()
             && in_array('backend_login', $this->_helperData->getFormsBackend())
-        ){
+        ) {
             $response = $this->_helperData->verifyResponse('backend');
             if (isset($response['success']) && !$response['success']) {
                 throw new PluginAuthenticationException(

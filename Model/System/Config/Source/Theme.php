@@ -21,11 +21,12 @@
 
 namespace Mageplaza\GoogleRecaptcha\Model\System\Config\Source;
 
+use Magento\Framework\Option\ArrayInterface;
 /**
  * Class Forms
  * @package Mageplaza\GoogleRecaptcha\Model\Config\Source
  */
-class Theme
+class Theme implements ArrayInterface
 {
     /**
      * @return array

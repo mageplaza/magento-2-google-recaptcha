@@ -22,6 +22,7 @@
 namespace Mageplaza\GoogleRecaptcha\Model\System\Config\Source;
 
 use Magento\Framework\Option\ArrayInterface;
+
 /**
  * Class Forms
  * @package Mageplaza\GoogleRecaptcha\Model\Config\Source
@@ -53,7 +54,7 @@ class Forms implements ArrayInterface
     public function getOptionHash()
     {
         return [
-            self::TYPE_LOGIN => __('Admin Login'),
+            self::TYPE_LOGIN  => __('Admin Login'),
             self::TYPE_FORGOT => __('Admin Forgot Password')
         ];
     }

@@ -72,7 +72,7 @@ define([
                         if (element.length > 1) {
                             element = element.first();
                         }
-                        var buttonElement = element.find('button[type=submit]')?element.find('button[type=submit]'):element.find('input[type=submit]');
+                        var buttonElement = element.find('button[type=submit]') ? element.find('button[type=submit]') : element.find('input[type=submit]');
                         var divCaptcha = $('<div class="g-recaptcha"></div>');
                         divCaptcha.attr('id', element.attr('id') + '_recaptcha_' + number);
                         element.append(divCaptcha);
@@ -93,7 +93,7 @@ define([
                                 },
                                 'theme': self.options.theme,
                                 'badge': self.options.position,
-                                'hl' : self.options.language
+                                'hl': self.options.language
                             };
                         widgetIDCaptcha = grecaptcha.render(target, parameters);
                         self.captchaForm[widgetIDCaptcha] = target;

@@ -87,12 +87,12 @@ class Forgot implements ObserverInterface
         UrlInterface $urlInterface
     )
     {
-        $this->_helperData = $helperData;
-        $this->_request = $httpRequest;
-        $this->_messageManager = $messageManager;
+        $this->_helperData        = $helperData;
+        $this->_request           = $httpRequest;
+        $this->_messageManager    = $messageManager;
         $this->_responseInterface = $responseInterface;
-        $this->_actionFlag = $actionFlag;
-        $this->_urlInterface = $urlInterface;
+        $this->_actionFlag        = $actionFlag;
+        $this->_urlInterface      = $urlInterface;
     }
 
     /**
@@ -101,25 +101,26 @@ class Forgot implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if($this->_helperData->isEnabled()
+        if ($this->_helperData->isEnabled()
             && $this->_helperData->isCaptchaBackend()
             && in_array('backend_forgotpassword', $this->_helperData->getFormsBackend())
-        ){
-                if($this->_request->getParam('g-recaptcha-response')!== null)
-                {
-                    $controller = $this->_urlInterface->getCurrentUrl();
-                    try {
-                        $response = $this->_helperData->verifyResponse('backend');
-                        if (isset($response['success']) && !$response['success']) {
-                            $this->redirectError($controller, $response['message']);
-                        }
-                    } catch (\Exception $e) {
-                        $this->redirectError($controller, $e->getMessage());
+        ) {
+            if ($this->_request->getParam('g-recaptcha-response') !== null) {
+                $controller = $this->_urlInterface->getCurrentUrl();
+                try {
+                    $response = $this->_helperData->verifyResponse('backend');
+                    if (isset($response['success']) && !$response['success']) {
+                        $this->redirectError($controller, $response['message']);
                     }
+                } catch (\Exception $e) {
+                    $this->redirectError($controller, $e->getMessage());
                 }
+            }
         }
     }
-    public function redirectError($url, $message){
+
+    public function redirectError($url, $message)
+    {
         $this->_messageManager->addErrorMessage($message);
         $this->_actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
         $this->_responseInterface->setRedirect($url);

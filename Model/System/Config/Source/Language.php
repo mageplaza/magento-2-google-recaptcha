@@ -21,11 +21,13 @@
 
 namespace Mageplaza\GoogleRecaptcha\Model\System\Config\Source;
 
+use Magento\Framework\Option\ArrayInterface;
+
 /**
  * Class Methods
  * @package Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Language
  */
-class Language
+class Language implements ArrayInterface
 {
     /**
      * @return array
