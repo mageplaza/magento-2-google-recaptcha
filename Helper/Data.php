@@ -225,7 +225,8 @@ class Data extends CoreHelper
                 $data[] = $value;
             }
         }
-        $custom = explode(',', $this->getConfigFrontend('custom/paths', $storeId));
+        $custom = explode("\n", str_replace("\r", "", $this->getConfigFrontend('custom/paths', $storeId)));
+
         if ($custom) {
             return $data;
         }
@@ -241,7 +242,7 @@ class Data extends CoreHelper
     {
         $data = $this->getConfigFrontend('custom/css', $storeId);
 
-        return explode(',', $data);
+        return explode("\n", str_replace("\r", "", $data));
     }
 
     /**
@@ -291,13 +292,5 @@ class Data extends CoreHelper
         }
 
         return $result;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getVerifyUrl()
-    {
-        return 'https://www.google.com/recaptcha/api/siteverify';
     }
 }
