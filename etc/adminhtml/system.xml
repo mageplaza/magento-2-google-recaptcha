@@ -140,12 +140,12 @@
                     <field id="paths" translate="label comment" type="textarea" sortOrder="3" showInDefault="1"
                            showInWebsite="1" showInStore="1">
                         <label>Form Post Paths</label>
-                        <comment><![CDATA[ For Example: newsletter/subscriber/new/, checkout/cart/add/  <br> Each Url Post must be separated by a comma]]></comment>
+                        <comment><![CDATA[ For Example: newsletter/subscriber/new/, checkout/cart/add/  <br> Each Url Post must be separated by new line]]></comment>
                     </field>
                     <field id="css" translate="label comment" type="textarea" sortOrder="4" showInDefault="1"
                            showInWebsite="1" showInStore="1">
                         <label>CSS Selectors</label>
-                        <comment><![CDATA[ For Example: #newsletter-validate-detail, #product_addtocart_form  <br> Each CSS Selectors must be separated by a comma]]></comment>
+                        <comment><![CDATA[ For Example: #newsletter-validate-detail, #product_addtocart_form  <br> Each CSS Selectors must be separated by new line]]></comment>
                     </field>
                     <depends>
                         <field id="enabled">1</field>
