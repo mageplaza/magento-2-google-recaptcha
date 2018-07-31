@@ -144,7 +144,7 @@ define([
                     }
                 })
             };
-            require(['https://www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit']);
+            require(['mpGoogleReCaptcha']);
         },
 
         /**

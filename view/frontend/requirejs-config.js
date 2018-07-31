@@ -20,6 +20,6 @@
 
 var config = {
     paths: {
-        'mpReCaptcha': '//www.google.com/recaptcha/api.js?'
+        'mpGoogleReCaptcha': '//www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit'
     }
 };
