@@ -114,7 +114,7 @@ class Captcha implements ObserverInterface
                 }
             }
             if ($checkResponse && $this->_request->getParam('g-recaptcha-response') !== null) {
-                $this->redirectUrlError(__('Missing "Form Post Paths" configuration field!'));
+                $this->redirectUrlError(__('Missing Url in "Form Post Paths" configuration field!'));
             }
         }
     }
