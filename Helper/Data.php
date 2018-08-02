@@ -226,11 +226,9 @@ class Data extends CoreHelper
             }
         }
         $custom = explode("\n", str_replace("\r", "", $this->getConfigFrontend('custom/paths', $storeId)));
-
-        if ($custom) {
+        if (!$custom) {
             return $data;
         }
-
         return array_merge($data, $custom);
     }
 

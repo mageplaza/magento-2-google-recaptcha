@@ -101,7 +101,7 @@ class Captcha implements ObserverInterface
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
             $checkResponse = true;
             foreach ($this->_helperData->getFormPostPaths() as $item) {
-                if (strpos($this->_request->getRequestUri(), $item) !== false) {
+                if ($item != "" && strpos($this->_request->getRequestUri(), $item) !== false) {
                     $checkResponse = false;
                     if ($this->_request->getParam('g-recaptcha-response') !== null) {
                         $response = $this->_helperData->verifyResponse();
