@@ -27,12 +27,19 @@ use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 use Magento\Framework\App\Request\Http;
 use Magento\Backend\Model\View\Result\RedirectFactory;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\ActionFlag;
+use Magento\Framework\App\ResponseInterface;
 /**
  * Class Login
  * @package Mageplaza\GoogleRecaptcha\Observer\Adminhtml
  */
 class Captcha implements ObserverInterface
 {
+    /**
+     * @var \Magento\Framework\App\ResponseInterface
+     */
+    protected $_responseInterface;
     /**
      * @var \Mageplaza\GoogleRecaptcha\Helper\Data
      */
@@ -44,6 +51,11 @@ class Captcha implements ObserverInterface
     protected $_request;
 
     /**
+     * @var ActionFlag
+     */
+    private $_actionFlag;
+
+    /**
      * @var \Magento\Backend\Model\View\Result\RedirectFactory
      */
     protected $resultRedirectFactory;
@@ -52,7 +64,7 @@ class Captcha implements ObserverInterface
      * @var \Magento\Framework\Message\ManagerInterface
      */
     protected $messageManager;
-
+    protected $redirect;
     /**
      * Captcha constructor.
      * @param \Mageplaza\GoogleRecaptcha\Helper\Data $helperData
@@ -64,13 +76,19 @@ class Captcha implements ObserverInterface
         HelperData $helperData,
         Http $request,
         RedirectFactory $resultRedirectFactory,
-        ManagerInterface $messageManager
+        ManagerInterface $messageManager,
+        ActionFlag $actionFlag,
+        ResponseInterface $responseInterface,
+        \Magento\Framework\App\Response\RedirectInterface $redirect
     )
     {
         $this->_helperData           = $helperData;
         $this->_request              = $request;
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->messageManager        = $messageManager;
+        $this->_actionFlag        = $actionFlag;
+        $this->_responseInterface = $responseInterface;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -80,9 +98,10 @@ class Captcha implements ObserverInterface
     public function execute(Observer $observer)
     {
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
+            $checkResponse = true;
             foreach ($this->_helperData->getFormPostPaths() as $item) {
                 if (strpos($this->_request->getRequestUri(), $item) !== false) {
-
+                    $checkResponse = false;
                     if ($this->_request->getParam('g-recaptcha-response') !== null) {
                         $response = $this->_helperData->verifyResponse();
                         if (isset($response['success']) && !$response['success']) {
@@ -91,8 +110,10 @@ class Captcha implements ObserverInterface
                     } else {
                         $this->redirectUrlError(__('Missing required parameters recaptcha!'));
                     }
-
                 }
+            }
+            if($checkResponse && $this->_request->getParam('g-recaptcha-response') !== null){
+                $this->redirectUrlError(__('Missing "Form Post Paths" configuration field!'));
             }
         }
     }
@@ -100,7 +121,7 @@ class Captcha implements ObserverInterface
     public function redirectUrlError($message)
     {
         $this->messageManager->addErrorMessage($message);
-
-        return $this->resultRedirectFactory->create()->setRefererUrl();
+        $this->_actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
+        $this->_responseInterface->setRedirect($this->redirect->getRefererUrl());
     }
 }
