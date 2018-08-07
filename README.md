@@ -1,6 +1,6 @@
 # Magento 2 Google reCAPTCHA Free Extension
 
-**Google reCAPTCHA extension** for Magento keeps abusive activities away. By creating a human-friendly shield, bots will be not allowed to access your admin panel and your store, while humans can pass through with ease.
+**Google reCAPTCHA extension** for Magento 2 keeps abusive activities away. By creating a human-friendly shield, bots will be not allowed to access your admin panel and your store, while humans can pass through with ease.
 
 * Add invisible CAPTCHA to all forms on the frontend
 * Add reCAPTCHA to the backend
