@@ -15,39 +15,42 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_GoogleRecaptcha
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
+
 namespace Mageplaza\GoogleRecaptcha\Helper;
 
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\HTTP\Adapter\CurlFactory;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Mageplaza\Core\Helper\AbstractData as CoreHelper;
-use Magento\Framework\HTTP\Adapter\CurlFactory;
+use Mageplaza\Core\Helper\AbstractData;
 use Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms as DefaultFormsPaths;
 
 /**
  * Class Data
- *
  * @package Mageplaza\GoogleRecaptcha\Helper
  */
-class Data extends CoreHelper
+class Data extends AbstractData
 {
-    const CONFIG_MODULE_PATH = 'googlerecaptcha';
-    const BACKEND_CONFIGURATION = '/backend';
+    const CONFIG_MODULE_PATH     = 'googlerecaptcha';
+    const BACKEND_CONFIGURATION  = '/backend';
     const FRONTEND_CONFIGURATION = '/frontend';
 
     /**
-     * @var CurlFactory
-     */
-    protected $_curlFactory;
-
-    /**
-     * @var \Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms
+     * @var DefaultFormsPaths
      */
     protected $_formPaths;
 
+    /**
+     * Data constructor.
+     * @param Context $context
+     * @param ObjectManagerInterface $objectManager
+     * @param StoreManagerInterface $storeManager
+     * @param CurlFactory $curlFactory
+     * @param DefaultFormsPaths $formPaths
+     */
     public function __construct(
         Context $context,
         ObjectManagerInterface $objectManager,
@@ -56,14 +59,10 @@ class Data extends CoreHelper
         DefaultFormsPaths $formPaths
     )
     {
-        parent::__construct($context, $objectManager, $storeManager);
-        $this->_curlFactory = $curlFactory;
-        $this->_formPaths   = $formPaths;
-    }
+        $this->_formPaths = $formPaths;
 
-    /**
-     * Backend
-     */
+        parent::__construct($context, $objectManager, $storeManager);
+    }
 
     /**
      * @param null $storeId
@@ -89,11 +88,7 @@ class Data extends CoreHelper
      */
     public function isCaptchaBackend($storeId = null)
     {
-        if (!$this->isEnabled()) {
-            return false;
-        }
-
-        return $this->getConfigBackend('enabled', $storeId);
+        return $this->isEnabled() && $this->getConfigBackend('enabled', $storeId);
     }
 
     /**
@@ -138,10 +133,6 @@ class Data extends CoreHelper
     }
 
     /**
-     * Frontend
-     */
-
-    /**
      * @param string $code
      * @param null $storeId
      * @return array|mixed
@@ -159,11 +150,7 @@ class Data extends CoreHelper
      */
     public function isCaptchaFrontend($storeId = null)
     {
-        if (!$this->isEnabled()) {
-            return false;
-        }
-
-        return $this->getConfigFrontend('enabled', $storeId);
+        return $this->isEnabled() && $this->getConfigFrontend('enabled', $storeId);
     }
 
     /**
@@ -229,6 +216,7 @@ class Data extends CoreHelper
         if (!$custom) {
             return $data;
         }
+
         return array_merge($data, $custom);
     }
 
@@ -244,10 +232,6 @@ class Data extends CoreHelper
     }
 
     /**
-     * General
-     */
-
-    /**
      * @param null $storeId
      * @return mixed
      */
@@ -257,8 +241,7 @@ class Data extends CoreHelper
     }
 
     /**
-     * get reCAPTCHA server response
-     *
+     * @param null $end
      * @param null $recaptcha
      * @return array
      */
@@ -274,11 +257,10 @@ class Data extends CoreHelper
         }
         try {
             $recaptchaClass = new \ReCaptcha\ReCaptcha($end ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
-            $resp           = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
+            $resp = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
             if ($resp) {
                 if ($resp->isSuccess()) {
                     $result['success'] = true;
-
                 } else {
                     $result['message'] = __('The request is invalid or malformed.');
                 }

@@ -15,18 +15,18 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_GoogleRecaptcha
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\GoogleRecaptcha\Observer\Adminhtml;
 
+use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
-use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\Plugin\AuthenticationException as PluginAuthenticationException;
 use Magento\Framework\Phrase;
+use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 
 /**
  * Class Login
@@ -54,7 +54,7 @@ class Login implements ObserverInterface
         JsonFactory $resultJsonFactory
     )
     {
-        $this->_helperData        = $helperData;
+        $this->_helperData = $helperData;
         $this->_resultJsonFactory = $resultJsonFactory;
     }
 
@@ -64,8 +64,7 @@ class Login implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if ($this->_helperData->isEnabled()
-            && $this->_helperData->isCaptchaBackend()
+        if ($this->_helperData->isCaptchaBackend()
             && in_array('backend_login', $this->_helperData->getFormsBackend())
         ) {
             $response = $this->_helperData->verifyResponse('backend');

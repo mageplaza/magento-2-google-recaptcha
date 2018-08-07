@@ -22,9 +22,10 @@
 namespace Mageplaza\GoogleRecaptcha\Model\System\Config\Source;
 
 use Magento\Framework\Option\ArrayInterface;
+
 /**
- * Class Forms
- * @package Mageplaza\GoogleRecaptcha\Model\Config\Source
+ * Class Size
+ * @package Mageplaza\GoogleRecaptcha\Model\System\Config\Source
  */
 class Size implements ArrayInterface
 {

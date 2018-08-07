@@ -41,7 +41,7 @@ define([
             var stop = 0;
             $(function () {
                 var ID = setInterval(function () {
-                    if (self.isLoadForm() && stop == 0) {
+                    if (self.isLoadForm() && stop === 0) {
                         stop++;
                         self.createCaptcha();
                     }
@@ -67,7 +67,7 @@ define([
                     /**
                      * Create Widget
                      */
-                    if (element.length > 0 && element.prop("tagName").toLowerCase() == 'form') {
+                    if (element.length > 0 && element.prop("tagName").toLowerCase() === 'form') {
                         //Multi ID
                         if (element.length > 1) {
                             element = element.first();
@@ -122,25 +122,6 @@ define([
 
                             return result;
                         });
-                        // element.on('submit', function (event) {
-                        //     event.preventDefault();
-                        //     var result = false;
-                        //     if (checkSubmitType == 1) {
-                        //         checkSubmitType = 0;
-                        //         result = true;
-                        //     } else {
-                        //         $.each(self.captchaForm, function (form, value) {
-                        //             if (element.find('#' + value).length > 0) {
-                        //                 grecaptcha.reset(form);
-                        //                 grecaptcha.execute(form);
-                        //                 resetForm = form;
-                        //                 return false;
-                        //             }
-                        //         });
-                        //     }
-                        //
-                        //     return result;
-                        // });
                     }
                 })
             };
@@ -156,7 +137,7 @@ define([
             var result = false;
             if (forms && forms.length > 0) {
                 forms.forEach(function (element) {
-                    if ($(element).length > 0 && $(element).prop("tagName").toLowerCase() == 'form') {
+                    if ($(element).length > 0 && $(element).prop("tagName").toLowerCase() === 'form') {
                         result = true;
                         return false;
                     }

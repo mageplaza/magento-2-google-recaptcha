@@ -18,18 +18,18 @@
  * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
-?>
-<?php if ($block->isCaptchaBackend() && $block->showInForm()) { ?>
+
+if ($block->isCaptchaBackend() && $block->showInForm()) : ?>
     <script type="text/javascript">
         require(['//www.google.com/recaptcha/api.js?hl=' + '<?=$block->getLanguageCode()?>']);
     </script>
     <div class="admin__field field-recaptcha">
-       <div class="admin__field-control">
-           <div class="g-recaptcha"
-                data-sitekey="<?= $block->getVisibleKey() ?>"
-                data-size="<?= $block->getSize() ?>"
-                data-theme="<?= $block->getTheme() ?>">
-           </div>
-       </div>
+        <div class="admin__field-control">
+            <div class="g-recaptcha"
+                 data-sitekey="<?= $block->getVisibleKey() ?>"
+                 data-size="<?= $block->getSize() ?>"
+                 data-theme="<?= $block->getTheme() ?>">
+            </div>
+        </div>
     </div>
-<?php } ?>
+<?php endif; ?>

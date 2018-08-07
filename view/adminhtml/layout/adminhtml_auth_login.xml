@@ -20,13 +20,11 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
  -->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="admin_recaptcha"/>
     <body>
         <referenceContainer name="form.additional.info">
-            <block class="Mageplaza\GoogleRecaptcha\Block\Adminhtml\Captcha"
-                   name="mageplaza_adminhtml_captcha_login" template="Mageplaza_GoogleRecaptcha::captcha.phtml"/>
+            <block class="Mageplaza\GoogleRecaptcha\Block\Adminhtml\Captcha" name="mageplaza_adminhtml_captcha_login" template="Mageplaza_GoogleRecaptcha::captcha.phtml"/>
         </referenceContainer>
     </body>
 </page>

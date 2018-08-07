@@ -15,24 +15,24 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_GoogleRecaptcha
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\GoogleRecaptcha\Observer\Adminhtml;
 
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\ActionFlag;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\App\ActionFlag;
 use Magento\Framework\UrlInterface;
+use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 
 /**
- * Class Login
+ * Class Forgot
  * @package Mageplaza\GoogleRecaptcha\Observer\Adminhtml
  */
 class Forgot implements ObserverInterface
@@ -87,38 +87,39 @@ class Forgot implements ObserverInterface
         UrlInterface $urlInterface
     )
     {
-        $this->_helperData        = $helperData;
-        $this->_request           = $httpRequest;
-        $this->_messageManager    = $messageManager;
+        $this->_helperData = $helperData;
+        $this->_request = $httpRequest;
+        $this->_messageManager = $messageManager;
         $this->_responseInterface = $responseInterface;
-        $this->_actionFlag        = $actionFlag;
-        $this->_urlInterface      = $urlInterface;
+        $this->_actionFlag = $actionFlag;
+        $this->_urlInterface = $urlInterface;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
-     * @return \Magento\Framework\Controller\Result\Redirect
+     * @param Observer $observer
      */
     public function execute(Observer $observer)
     {
-        if ($this->_helperData->isEnabled()
-            && $this->_helperData->isCaptchaBackend()
+        if ($this->_helperData->isCaptchaBackend()
             && in_array('backend_forgotpassword', $this->_helperData->getFormsBackend())
+            && $this->_request->getParam('g-recaptcha-response') !== null
         ) {
-            if ($this->_request->getParam('g-recaptcha-response') !== null) {
-                $controller = $this->_urlInterface->getCurrentUrl();
-                try {
-                    $response = $this->_helperData->verifyResponse('backend');
-                    if (isset($response['success']) && !$response['success']) {
-                        $this->redirectError($controller, $response['message']);
-                    }
-                } catch (\Exception $e) {
-                    $this->redirectError($controller, $e->getMessage());
+            $controller = $this->_urlInterface->getCurrentUrl();
+            try {
+                $response = $this->_helperData->verifyResponse('backend');
+                if (isset($response['success']) && !$response['success']) {
+                    $this->redirectError($controller, $response['message']);
                 }
+            } catch (\Exception $e) {
+                $this->redirectError($controller, $e->getMessage());
             }
         }
     }
 
+    /**
+     * @param $url
+     * @param $message
+     */
     public function redirectError($url, $message)
     {
         $this->_messageManager->addErrorMessage($message);

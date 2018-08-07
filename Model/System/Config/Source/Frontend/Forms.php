@@ -25,16 +25,16 @@ use Magento\Framework\Option\ArrayInterface;
 
 /**
  * Class Forms
- * @package Mageplaza\GoogleRecaptcha\Model\Config\Source
+ * @package Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend
  */
 class Forms implements ArrayInterface
 {
-    const TYPE_LOGIN = '#login-form.form.form-login';
-    const TYPE_CREATE = '#form-validate.form-create-account';
-    const TYPE_FORGOT = '#form-validate.form.password.forget';
-    const TYPE_CONTACT = '#contact-form';
+    const TYPE_LOGIN          = '#login-form.form.form-login';
+    const TYPE_CREATE         = '#form-validate.form-create-account';
+    const TYPE_FORGOT         = '#form-validate.form.password.forget';
+    const TYPE_CONTACT        = '#contact-form';
     const TYPE_CHANGEPASSWORD = '#form-validate.form.form-edit-account';
-    const TYPE_PRODUCTREVIEW = '#review-form';
+    const TYPE_PRODUCTREVIEW  = '#review-form';
 
     /**
      * @return array

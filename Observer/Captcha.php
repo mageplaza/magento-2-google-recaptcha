@@ -15,25 +15,25 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_GoogleRecaptcha
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\GoogleRecaptcha\Observer;
 
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
-use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
-use Magento\Framework\App\Request\Http;
-use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
-use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\Response\RedirectInterface;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Message\ManagerInterface;
+use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 
 /**
- * Class Login
- * @package Mageplaza\GoogleRecaptcha\Observer\Adminhtml
+ * Class Captcha
+ * @package Mageplaza\GoogleRecaptcha\Observer
  */
 class Captcha implements ObserverInterface
 {
@@ -41,6 +41,7 @@ class Captcha implements ObserverInterface
      * @var \Magento\Framework\App\ResponseInterface
      */
     protected $_responseInterface;
+
     /**
      * @var \Mageplaza\GoogleRecaptcha\Helper\Data
      */
@@ -84,21 +85,20 @@ class Captcha implements ObserverInterface
         RedirectInterface $redirect
     )
     {
-        $this->_helperData        = $helperData;
-        $this->_request           = $request;
-        $this->messageManager     = $messageManager;
-        $this->_actionFlag        = $actionFlag;
+        $this->_helperData = $helperData;
+        $this->_request = $request;
+        $this->messageManager = $messageManager;
+        $this->_actionFlag = $actionFlag;
         $this->_responseInterface = $responseInterface;
-        $this->redirect           = $redirect;
+        $this->redirect = $redirect;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
-     * @return \Magento\Framework\Controller\Result\Redirect
+     * @param Observer $observer
      */
     public function execute(Observer $observer)
     {
-        if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
+        if ($this->_helperData->isCaptchaFrontend()) {
             $checkResponse = true;
             foreach ($this->_helperData->getFormPostPaths() as $item) {
                 if ($item != "" && strpos($this->_request->getRequestUri(), $item) !== false) {
@@ -119,6 +119,9 @@ class Captcha implements ObserverInterface
         }
     }
 
+    /**
+     * @param $message
+     */
     public function redirectUrlError($message)
     {
         $this->messageManager->addErrorMessage($message);

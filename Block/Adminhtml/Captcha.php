@@ -15,30 +15,32 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_GoogleRecaptcha
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\GoogleRecaptcha\Block\Adminhtml;
 
+use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 use Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Forms as FormsAdmin;
 
 /**
- * Class Extensions
+ * Class Captcha
+ * @package Mageplaza\GoogleRecaptcha\Block\Adminhtml
  */
-class Captcha extends \Magento\Framework\View\Element\Template
+class Captcha extends Template
 {
     /**
-     * @var \Mageplaza\GoogleRecaptcha\Helper\Data
+     * @var HelperData
      */
     protected $_helperData;
 
     /**
      * Captcha constructor.
-     * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Mageplaza\GoogleRecaptcha\Helper\Data $helperData
+     * @param Context $context
+     * @param HelperData $helperData
      * @param array $data
      */
     public function __construct(
@@ -47,8 +49,9 @@ class Captcha extends \Magento\Framework\View\Element\Template
         array $data = []
     )
     {
-        parent::__construct($context, $data);
         $this->_helperData = $helperData;
+
+        parent::__construct($context, $data);
     }
 
     /**
@@ -94,9 +97,11 @@ class Captcha extends \Magento\Framework\View\Element\Template
                 if (in_array(FormsAdmin::TYPE_LOGIN, $form)) {
                     return true;
                 }
-            } elseif ($this->_request->getFullActionName() == 'adminhtml_auth_forgotpassword') {
-                if (in_array(FormsAdmin::TYPE_FORGOT, $form)) {
-                    return true;
+            } else {
+                if ($this->_request->getFullActionName() == 'adminhtml_auth_forgotpassword') {
+                    if (in_array(FormsAdmin::TYPE_FORGOT, $form)) {
+                        return true;
+                    }
                 }
             }
         }

@@ -29,7 +29,7 @@ use Magento\Framework\Option\ArrayInterface;
  */
 class Forms implements ArrayInterface
 {
-    const TYPE_LOGIN = 'backend_login';
+    const TYPE_LOGIN  = 'backend_login';
     const TYPE_FORGOT = 'backend_forgotpassword';
 
     /**

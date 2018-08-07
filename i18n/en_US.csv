@@ -1,0 +1,110 @@
+"The response parameter is missing.","The response parameter is missing."
+"The request is invalid or malformed.","The request is invalid or malformed."
+"Admin Login","Admin Login"
+"Admin Forgot Password","Admin Forgot Password"
+Login,Login
+"Create User","Create User"
+"Forgot Password","Forgot Password"
+"Contact Us","Contact Us"
+"Change Password","Change Password"
+"Product Review","Product Review"
+"-- Auto Detected --","-- Auto Detected --"
+Arabic,Arabic
+Afrikaans,Afrikaans
+Amharic,Amharic
+Armenian,Armenian
+Azerbaijani,Azerbaijani
+Basque,Basque
+Bengali,Bengali
+Bulgarian,Bulgarian
+Catalan,Catalan
+"Chinese (Hong Kong)","Chinese (Hong Kong)"
+"Chinese (Simplified)","Chinese (Simplified)"
+"Chinese (Traditional)","Chinese (Traditional)"
+Croatian,Croatian
+Czech,Czech
+Danish,Danish
+Dutch,Dutch
+"English (UK)","English (UK)"
+"English (US)","English (US)"
+Estonian,Estonian
+Filipino,Filipino
+Finnish,Finnish
+French,French
+"French (Canadian)","French (Canadian)"
+Galician,Galician
+Georgian,Georgian
+"German (Austria)","German (Austria)"
+"German (Switzerland)","German (Switzerland)"
+Greek,Greek
+Gujarati,Gujarati
+Hebrew,Hebrew
+Hindi,Hindi
+Hungarain,Hungarain
+Icelandic,Icelandic
+Indonesian,Indonesian
+Italian,Italian
+Japanese,Japanese
+Kannada,Kannada
+Korean,Korean
+Laothian,Laothian
+Latvian,Latvian
+Lithuanian,Lithuanian
+Malay,Malay
+Malayalam,Malayalam
+Marathi,Marathi
+Mongolian,Mongolian
+Norwegian,Norwegian
+Persian,Persian
+Polish,Polish
+Portuguese,Portuguese
+"Portuguese (Brazil)","Portuguese (Brazil)"
+"Portuguese (Portugal)","Portuguese (Portugal)"
+Romanian,Romanian
+Russian,Russian
+Serbian,Serbian
+Sinhalese,Sinhalese
+Slovak,Slovak
+Slovenian,Slovenian
+Spanish,Spanish
+"Spanish (Latin America)","Spanish (Latin America)"
+"Swahili	","Swahili	"
+Swedish,Swedish
+Tamil,Tamil
+Telugu,Telugu
+Thai,Thai
+Turkish,Turkish
+Ukrainian,Ukrainian
+Urdu,Urdu
+Vietnamese,Vietnamese
+Zulu,Zulu
+"Bottom Right","Bottom Right"
+"Bottom Left","Bottom Left"
+Inline,Inline
+Compact,Compact
+Normal,Normal
+Dark,Dark
+Light,Light
+message,message
+"Missing required parameters recaptcha!","Missing required parameters recaptcha!"
+"Missing Url in ""Form Post Paths"" configuration field!","Missing Url in ""Form Post Paths"" configuration field!"
+"Google Recaptcha","Google Recaptcha"
+General,General
+Enable,Enable
+Invisible,Invisible
+"Google API Key","Google API Key"
+"Create app <a href=""https://www.google.com/recaptcha/admin"" target=""_blank"">here</a>.","Create app <a href=""https://www.google.com/recaptcha/admin"" target=""_blank"">here</a>."
+"Google API Secret Key","Google API Secret Key"
+Visible,Visible
+"Language Code","Language Code"
+"Backend Configuration","Backend Configuration"
+Forms,Forms
+Size,Size
+Theme,Theme
+"Frontend Configuration","Frontend Configuration"
+"Badge Position","Badge Position"
+"Custom Form Position","Custom Form Position"
+"Form Post Paths","Form Post Paths"
+"For Example: newsletter/subscriber/new/  <br> Each Url Post must be separated by a new line","For Example: newsletter/subscriber/new/  <br> Each Url Post must be separated by a new line"
+"CSS Selectors","CSS Selectors"
+"For Example: #newsletter-validate-detail  <br> Each CSS Selector must be separated by a new line","For Example: #newsletter-validate-detail  <br> Each CSS Selector must be separated by a new line"
