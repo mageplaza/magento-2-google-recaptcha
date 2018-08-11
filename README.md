@@ -7,7 +7,7 @@
 * Works on any kinds of forms
 * Compatible with Mageplaza extensions
 
-![google recaptcha](https://i.imgur.com/PqzR5Ps.png)
+![google recaptcha](https://i.imgur.com/bmMVYO3.gif)
 
 ## 1. Documentation
 
