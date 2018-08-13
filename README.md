@@ -44,7 +44,7 @@ A: Yes, you can choose a language code to display reCAPTCHA on the backend.
 Run the following command in Magento 2 root folder:
 
 ```
-composer require mageplaza/module-better-popup
+composer require mageplaza/module-google-recaptcha
 php bin/magento setup:upgrade
 php bin/magento setup:static-content:deploy
 ```
