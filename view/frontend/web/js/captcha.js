@@ -48,7 +48,7 @@ define([
                         self.createCaptcha();
                     }
                     clearInterval(ID);
-                }, 2000);
+                }, 1000);
             });
         },
 
