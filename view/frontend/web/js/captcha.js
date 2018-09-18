@@ -32,21 +32,23 @@ define([
             forms: []
         },
         captchaForm: [],
+        activeForm: [],
+        stopSubmit: false,
         /**
          * This method constructs a new widget.
          * @private
          */
         _create: function () {
-            var self = this;
-            var stop = 0;
+            var self = this,
+                stop = 0;
             $(function () {
                 var ID = setInterval(function () {
-                    if (self.isLoadForm() && stop === 0) {
+                    if (stop == 0) {
                         stop++;
                         self.createCaptcha();
                     }
                     clearInterval(ID);
-                }, 1300);
+                }, 2000);
             });
         },
 
@@ -55,37 +57,47 @@ define([
          */
         createCaptcha: function () {
             var self = this,
-                number = 0,
                 widgetIDCaptcha,
-                checkSubmitType = 0,
+                sortEvent,
+                number = 0,
                 resetForm = 0;
-            window.recaptchaOnload = function () {
-                var forms = self.options.forms;
-                forms.forEach(function (value) {
-                    var element = $(value);
 
-                    /**
-                     * Create Widget
-                     */
-                    if (element.length > 0 && element.prop("tagName").toLowerCase() === 'form') {
+            window.recaptchaOnload = function () {
+                //get form active
+                var forms = self.options.forms,
+                    result = false;
+                if (forms && forms.length > 0) {
+                    forms.forEach(function (element) {
+                        if (element !='' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() == 'form') {
+                            self.activeForm.push(element);
+                            result = true;
+                        }
+                    });
+                }
+                if(result){
+                    forms = self.activeForm;
+                    forms.forEach(function (value) {
+                        var element = $(value);
                         //Multi ID
                         if (element.length > 1) {
-                            element = element.first();
+                            element = $(element).first();
                         }
-                        var buttonElement = element.find('button[type=submit]') ? element.find('button[type=submit]') : element.find('input[type=submit]');
+                        /**
+                         * Create Widget
+                         */
+                            //var buttonElement = element.find('button[type=submit]') ? element.find('button[type=submit]') : element.find('input[type=submit]');
                         var divCaptcha = $('<div class="g-recaptcha"></div>');
-                        divCaptcha.attr('id', element.attr('id') + '_recaptcha_' + number);
+                        divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
                         element.append(divCaptcha);
 
-                        var target = element.attr('id') + '_recaptcha_' + number,
+                        var target = 'mp' + '_recaptcha_' + number,
                             parameters = {
                                 'sitekey': self.options.invisibleKey,
                                 'size': 'invisible',
                                 'callback': function (token) {
                                     if (token) {
-                                        checkSubmitType = 1;
-                                        //element.submit();
-                                        buttonElement.click();
+                                        self.stopSubmit = token;
+                                        element.submit();
                                     } else {
                                         grecaptcha.reset(resetForm);
                                         resetForm = 0;
@@ -103,47 +115,27 @@ define([
                          * Check form submit
                          */
 
-                        buttonElement.click(function (event) {
-                            var result = false;
-                            if (checkSubmitType == 1) {
-                                checkSubmitType = 0;
-                                result = true;
-                            } else {
-                                event.preventDefault();
+                        element.submit(function (event) {
+                            if(!self.stopSubmit){
                                 $.each(self.captchaForm, function (form, value) {
                                     if (element.find('#' + value).length > 0) {
-                                        grecaptcha.reset(form);
+
                                         grecaptcha.execute(form);
                                         resetForm = form;
+                                        event.preventDefault(event);
+                                        event.stopImmediatePropagation();
+
                                         return false;
                                     }
                                 });
                             }
-
-                            return result;
                         });
-                    }
-                })
+                        sortEvent = $._data(element[0], 'events').submit;
+                        sortEvent.unshift(sortEvent.pop());
+                    })
+                }
             };
-            require(['mpGoogleReCaptcha']);
-        },
-
-        /**
-         * Is Load Library
-         * @returns {boolean}
-         */
-        isLoadForm: function () {
-            var forms = this.options.forms;
-            var result = false;
-            if (forms && forms.length > 0) {
-                forms.forEach(function (element) {
-                    if ($(element).length > 0 && $(element).prop("tagName").toLowerCase() === 'form') {
-                        result = true;
-                        return false;
-                    }
-                });
-            }
-            return result;
+            require(['//www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit']);
         }
     });
 

@@ -15,42 +15,39 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_GoogleRecaptcha
- * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
-
 namespace Mageplaza\GoogleRecaptcha\Helper;
 
 use Magento\Framework\App\Helper\Context;
-use Magento\Framework\HTTP\Adapter\CurlFactory;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Mageplaza\Core\Helper\AbstractData;
+use Mageplaza\Core\Helper\AbstractData as CoreHelper;
+use Magento\Framework\HTTP\Adapter\CurlFactory;
 use Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms as DefaultFormsPaths;
-
+use Magento\Checkout\Helper\Data as CheckoutData;
 /**
  * Class Data
+ *
  * @package Mageplaza\GoogleRecaptcha\Helper
  */
-class Data extends AbstractData
+class Data extends CoreHelper
 {
-    const CONFIG_MODULE_PATH     = 'googlerecaptcha';
-    const BACKEND_CONFIGURATION  = '/backend';
+    const CONFIG_MODULE_PATH = 'googlerecaptcha';
+    const BACKEND_CONFIGURATION = '/backend';
     const FRONTEND_CONFIGURATION = '/frontend';
 
     /**
-     * @var DefaultFormsPaths
+     * @var CurlFactory
+     */
+    protected $_curlFactory;
+
+    /**
+     * @var \Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms
      */
     protected $_formPaths;
 
-    /**
-     * Data constructor.
-     * @param Context $context
-     * @param ObjectManagerInterface $objectManager
-     * @param StoreManagerInterface $storeManager
-     * @param CurlFactory $curlFactory
-     * @param DefaultFormsPaths $formPaths
-     */
     public function __construct(
         Context $context,
         ObjectManagerInterface $objectManager,
@@ -59,10 +56,14 @@ class Data extends AbstractData
         DefaultFormsPaths $formPaths
     )
     {
-        $this->_formPaths = $formPaths;
-
         parent::__construct($context, $objectManager, $storeManager);
+        $this->_curlFactory = $curlFactory;
+        $this->_formPaths   = $formPaths;
     }
+
+    /**
+     * Backend
+     */
 
     /**
      * @param null $storeId
@@ -88,7 +89,11 @@ class Data extends AbstractData
      */
     public function isCaptchaBackend($storeId = null)
     {
-        return $this->isEnabled() && $this->getConfigBackend('enabled', $storeId);
+        if (!$this->isEnabled()) {
+            return false;
+        }
+
+        return $this->getConfigBackend('enabled', $storeId);
     }
 
     /**
@@ -133,6 +138,10 @@ class Data extends AbstractData
     }
 
     /**
+     * Frontend
+     */
+
+    /**
      * @param string $code
      * @param null $storeId
      * @return array|mixed
@@ -150,7 +159,11 @@ class Data extends AbstractData
      */
     public function isCaptchaFrontend($storeId = null)
     {
-        return $this->isEnabled() && $this->getConfigFrontend('enabled', $storeId);
+        if (!$this->isEnabled()) {
+            return false;
+        }
+
+        return $this->getConfigFrontend('enabled', $storeId);
     }
 
     /**
@@ -216,7 +229,6 @@ class Data extends AbstractData
         if (!$custom) {
             return $data;
         }
-
         return array_merge($data, $custom);
     }
 
@@ -231,6 +243,15 @@ class Data extends AbstractData
         return explode("\n", str_replace("\r", "", $data));
     }
 
+    public function allowGuestCheckout($storeId = null)
+    {
+        return $this->getConfigValue(CheckoutData::XML_PATH_GUEST_CHECKOUT, $storeId);
+    }
+
+    /**
+     * General
+     */
+
     /**
      * @param null $storeId
      * @return mixed
@@ -241,7 +262,8 @@ class Data extends AbstractData
     }
 
     /**
-     * @param null $end
+     * get reCAPTCHA server response
+     *
      * @param null $recaptcha
      * @return array
      */
@@ -257,10 +279,11 @@ class Data extends AbstractData
         }
         try {
             $recaptchaClass = new \ReCaptcha\ReCaptcha($end ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
-            $resp = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
+            $resp           = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
             if ($resp) {
                 if ($resp->isSuccess()) {
                     $result['success'] = true;
+
                 } else {
                     $result['message'] = __('The request is invalid or malformed.');
                 }
