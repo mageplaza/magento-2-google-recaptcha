@@ -59,6 +59,7 @@ define([
             var self = this,
                 widgetIDCaptcha,
                 sortEvent,
+                sortEventButton,
                 number = 0,
                 resetForm = 0;
 
@@ -68,13 +69,13 @@ define([
                     result = false;
                 if (forms && forms.length > 0) {
                     forms.forEach(function (element) {
-                        if (element !='' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() == 'form') {
+                        if (element != '' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() == 'form') {
                             self.activeForm.push(element);
                             result = true;
                         }
                     });
                 }
-                if(result){
+                if (result) {
                     forms = self.activeForm;
                     forms.forEach(function (value) {
                         var element = $(value);
@@ -85,7 +86,7 @@ define([
                         /**
                          * Create Widget
                          */
-                            //var buttonElement = element.find('button[type=submit]') ? element.find('button[type=submit]') : element.find('input[type=submit]');
+                        var buttonElement = element.find('button[type=button]') ? element.find('button[type=button]') : element.find('button[type=submit]');
                         var divCaptcha = $('<div class="g-recaptcha"></div>');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
                         element.append(divCaptcha);
@@ -97,7 +98,12 @@ define([
                                 'callback': function (token) {
                                     if (token) {
                                         self.stopSubmit = token;
-                                        element.submit();
+                                        if (value === '#social-form-login') {
+                                            buttonElement.trigger('click');
+                                        } else {
+                                            element.submit();
+                                        }
+
                                     } else {
                                         grecaptcha.reset(resetForm);
                                         resetForm = 0;
@@ -115,23 +121,47 @@ define([
                          * Check form submit
                          */
 
-                        element.submit(function (event) {
-                            if(!self.stopSubmit){
-                                $.each(self.captchaForm, function (form, value) {
-                                    if (element.find('#' + value).length > 0) {
+                        if (value === '#social-form-login') {
+                            buttonElement.on('click', function (event) {
+                                if (!self.stopSubmit) {
+                                    $.each(self.captchaForm, function (form, value) {
+                                        if (element.find('#' + value).length > 0) {
 
-                                        grecaptcha.execute(form);
-                                        resetForm = form;
-                                        event.preventDefault(event);
-                                        event.stopImmediatePropagation();
+                                            //grecaptcha.reset(form);
+                                            grecaptcha.execute(form);
+                                            resetForm = form;
+                                            event.preventDefault(event);
+                                            event.stopImmediatePropagation();
 
-                                        return false;
-                                    }
-                                });
-                            }
-                        });
-                        sortEvent = $._data(element[0], 'events').submit;
-                        sortEvent.unshift(sortEvent.pop());
+                                            return false;
+                                        }
+                                    });
+                                }
+                            });
+                            var tg = $._data(buttonElement[0], 'events').click[0];
+                            $._data(buttonElement[0], 'events').click[0] = $._data(buttonElement[0], 'events').click[1];
+                            $._data(buttonElement[0], 'events').click[1] = tg;
+                        } else {
+                            element.submit(function (event) {
+                                if (!self.stopSubmit) {
+                                    $.each(self.captchaForm, function (form, value) {
+                                        if (element.find('#' + value).length > 0) {
+
+                                            //grecaptcha.reset(form);
+                                            grecaptcha.execute(form);
+                                            resetForm = form;
+                                            event.preventDefault(event);
+                                            event.stopImmediatePropagation();
+
+                                            return false;
+                                        }
+                                    });
+                                }
+                            });
+                            sortEvent = $._data(element[0], 'events').submit;
+                            sortEvent.unshift(sortEvent.pop());
+                        }
+
                     })
                 }
             };

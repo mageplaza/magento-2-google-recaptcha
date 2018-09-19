@@ -121,7 +121,8 @@
                     </field>
                     <field id="css" translate="label comment" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>CSS Selectors</label>
-                        <comment><![CDATA[ For Example: #newsletter-validate-detail  <br> Each CSS Selector must be separated by a new line]]></comment>
+                        <comment><![CDATA[ For Example: #newsletter-validate-detail <br><br> Compatible with Mageplaza SocialLogin: <br>#social-form-login<br>
+#social-form-create <br><br> Each CSS Selector must be separated by a new line]]></comment>
                     </field>
                     <depends>
                         <field id="enabled">1</field>
