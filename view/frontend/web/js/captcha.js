@@ -127,7 +127,7 @@ define([
                                     $.each(self.captchaForm, function (form, value) {
                                         if (element.find('#' + value).length > 0) {
 
-                                            //grecaptcha.reset(form);
+                                            grecaptcha.reset(form);
                                             grecaptcha.execute(form);
                                             resetForm = form;
                                             event.preventDefault(event);
@@ -147,7 +147,7 @@ define([
                                     $.each(self.captchaForm, function (form, value) {
                                         if (element.find('#' + value).length > 0) {
 
-                                            //grecaptcha.reset(form);
+                                            grecaptcha.reset(form);
                                             grecaptcha.execute(form);
                                             resetForm = form;
                                             event.preventDefault(event);
