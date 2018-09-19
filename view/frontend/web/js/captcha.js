@@ -48,7 +48,7 @@ define([
                         self.createCaptcha();
                     }
                     clearInterval(ID);
-                }, 1000);
+                }, 1500);
             });
         },
 
@@ -59,7 +59,6 @@ define([
             var self = this,
                 widgetIDCaptcha,
                 sortEvent,
-                sortEventButton,
                 number = 0,
                 resetForm = 0;
 
@@ -86,7 +85,7 @@ define([
                         /**
                          * Create Widget
                          */
-                        var buttonElement = element.find('button[type=button]') ? element.find('button[type=button]') : element.find('button[type=submit]');
+                        var buttonElement = element.find('button[type=button]').length > 0 ? element.find('button[type=button]') : element.find('button[type=submit]');
                         var divCaptcha = $('<div class="g-recaptcha"></div>');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
                         element.append(divCaptcha);
@@ -121,7 +120,8 @@ define([
                          * Check form submit
                          */
 
-                        if (value === '#social-form-login') {
+                        if (value === '#social-form-login' || value === '#social-form-create' || value === '#social-form-password-forget')
+                        {
                             buttonElement.on('click', function (event) {
                                 if (!self.stopSubmit) {
                                     $.each(self.captchaForm, function (form, value) {

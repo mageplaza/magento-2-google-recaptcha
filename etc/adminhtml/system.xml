@@ -117,12 +117,16 @@
                     <label>Custom Form Position</label>
                     <field id="paths" translate="label comment" type="textarea" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Form Post Paths</label>
-                        <comment><![CDATA[ For Example: newsletter/subscriber/new/  <br> Each Url Post must be separated by a new line]]></comment>
+                        <comment><![CDATA[ For Example: newsletter/subscriber/new/  <br><br>Compatible with Mageplaza SocialLogin: <br>
+                        customer/ajax/login/<br>
+                        sociallogin/popup/create/<br>
+                        sociallogin/popup/forgot/<br>
+                        <br> Each Url Post must be separated by a new line]]></comment>
                     </field>
                     <field id="css" translate="label comment" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>CSS Selectors</label>
                         <comment><![CDATA[ For Example: #newsletter-validate-detail <br><br> Compatible with Mageplaza SocialLogin: <br>#social-form-login<br>
-#social-form-create <br><br> Each CSS Selector must be separated by a new line]]></comment>
+                        #social-form-create<br>#social-form-password-forget <br><br> Each CSS Selector must be separated by a new line]]></comment>
                     </field>
                     <depends>
                         <field id="enabled">1</field>

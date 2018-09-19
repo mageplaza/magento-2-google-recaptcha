@@ -239,8 +239,12 @@ class Data extends CoreHelper
     public function getCssSelectors($storeId = null)
     {
         $data = $this->getConfigFrontend('custom/css', $storeId);
+        $forms = explode("\n", str_replace("\r", "", $data));
+        foreach ($forms as $key => $value){
+            $forms[$key] = trim($value," ");
+        }
 
-        return explode("\n", str_replace("\r", "", $data));
+        return $forms;
     }
 
     public function allowGuestCheckout($storeId = null)

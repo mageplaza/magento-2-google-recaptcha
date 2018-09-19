@@ -111,14 +111,7 @@ class Captcha extends Template
             if (!$this->_helperData->allowGuestCheckout()) {
                 $this->_dataFormId[] = Forms::TYPE_FORMSEXTENDED[0];
             }
-            if ($this->_request->getFullActionName() === 'checkout_index_index') {
-                $this->_dataFormId[] = Forms::TYPE_FORMSEXTENDED[1];
-            }
-            if ($this->_request->getFullActionName() === 'onestepcheckout_index_index') {
-                $this->_dataFormId[] = Forms::TYPE_FORMSEXTENDED[2];
-            }
         }
-
         $data = array_merge($this->_helperData->getCssSelectors(), $this->_dataFormId);
 
         return json_encode($data);

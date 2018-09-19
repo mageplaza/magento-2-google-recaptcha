@@ -98,24 +98,25 @@ class Captcha implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-
-        //var_dump($this->_request->getRequestUri());die;
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
             $checkResponse = 1;
             foreach ($this->_helperData->getFormPostPaths() as $item) {
-                if ($item != "" && strpos($this->_request->getRequestUri(), $item) !== false) {
+                if ($item != "" && strpos($this->_request->getRequestUri(), trim($item," ")) !== false) {
                     $checkResponse = 0;
                     if ($this->_request->getParam('g-recaptcha-response') !== null) {
                         $response = $this->_helperData->verifyResponse();
                         if (isset($response['success']) && !$response['success']) {
+                            $this->socialLoginResponce($response['message']);
                             $this->redirectUrlError($response['message']);
                         }
                     } else {
+                        $this->socialLoginResponce(__('Missing required parameters recaptcha!'));
                         $this->redirectUrlError(__('Missing required parameters recaptcha!'));
                     }
                 }
             }
             if ($checkResponse == 1 && $this->_request->getParam('g-recaptcha-response') !== null) {
+                $this->socialLoginResponce(__('Missing Url in "Form Post Paths" configuration field!'));
                 $this->redirectUrlError(__('Missing Url in "Form Post Paths" configuration field!'));
             }
         }
@@ -127,16 +128,29 @@ class Captcha implements ObserverInterface
      */
     public function redirectUrlError($message)
     {
-        if (strpos($this->_request->getRequestUri(), 'customer/ajax/login') !== false) {
-            $response = [
-                'errors'  => true,
-                'message' => $message
-            ];
-
-            return $response;
-        }
         $this->messageManager->addErrorMessage($message);
         $this->_actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
         $this->_responseInterface->setRedirect($this->redirect->getRefererUrl());
+    }
+
+    /**
+     * @param $message
+     * @return array
+     */
+    public function socialLoginResponce($message){
+        if (strpos($this->_request->getRequestUri(), 'customer/ajax/login') !== false
+            || strpos($this->_request->getRequestUri(), 'sociallogin/popup/forgot') !== false
+        ) {
+            return [
+                'errors'  => true,
+                'message' => $message
+            ];
+        }
+        if(strpos($this->_request->getRequestUri(), 'sociallogin/popup/create') !== false){
+            return [
+                'success'  => false,
+                'message' => $message
+            ];
+        }
     }
 }
