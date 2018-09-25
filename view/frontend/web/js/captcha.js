@@ -97,7 +97,7 @@ define([
                                 'callback': function (token) {
                                     if (token) {
                                         self.stopSubmit = token;
-                                        if (value === '#social-form-login') {
+                                        if (value === '#social-form-login' || value === '#social-form-create' || value === '#social-form-password-forget') {
                                             buttonElement.trigger('click');
                                         } else {
                                             element.submit();
@@ -120,9 +120,11 @@ define([
                          * Check form submit
                          */
 
-                        if (value === '#social-form-login' || value === '#social-form-create' || value === '#social-form-password-forget')
-                        {
+                        if (value === '#social-form-login' || value === '#social-form-create' || value === '#social-form-password-forget') {
                             buttonElement.on('click', function (event) {
+                                if (!element.valid()) {
+                                    return;
+                                }
                                 if (!self.stopSubmit) {
                                     $.each(self.captchaForm, function (form, value) {
                                         if (element.find('#' + value).length > 0) {
@@ -138,9 +140,10 @@ define([
                                     });
                                 }
                             });
-                            var tg = $._data(buttonElement[0], 'events').click[0];
-                            $._data(buttonElement[0], 'events').click[0] = $._data(buttonElement[0], 'events').click[1];
-                            $._data(buttonElement[0], 'events').click[1] = tg;
+
+                            sortEvent = $._data(buttonElement[0], 'events').click;
+                            sortEvent.unshift(sortEvent.pop());
+
                         } else {
                             element.submit(function (event) {
                                 if (!self.stopSubmit) {
@@ -163,6 +166,10 @@ define([
                         }
 
                     })
+                    for (var i = 1; i < number; i++) {
+                        $('#mp_recaptcha_' + i + ' .grecaptcha-badge').removeAttr("style");
+                        $('#mp_recaptcha_' + i + ' .grecaptcha-badge').attr("style", $('#mp_recaptcha_0 .grecaptcha-badge').attr("style"));
+                    }
                 }
             };
             require(['//www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit']);
