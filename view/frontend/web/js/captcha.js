@@ -97,7 +97,10 @@ define([
                                 'callback': function (token) {
                                     if (token) {
                                         self.stopSubmit = token;
-                                        if (value === '#social-form-login' || value === '#social-form-create' || value === '#social-form-password-forget') {
+                                        if (value === '#social-form-login'
+                                            || value === '#social-form-create'
+                                            || value === '#social-form-password-forget'
+                                            || value === '.popup-authentication #login-form.form.form-login') {
                                             buttonElement.trigger('click');
                                         } else {
                                             element.submit();
@@ -120,11 +123,16 @@ define([
                          * Check form submit
                          */
 
-                        if (value === '#social-form-login' || value === '#social-form-create' || value === '#social-form-password-forget') {
+                        if (value === '#social-form-login'
+                            || value === '#social-form-create'
+                            || value === '#social-form-password-forget'
+                            || value === '.popup-authentication #login-form.form.form-login'
+                        ) {
                             buttonElement.on('click', function (event) {
-                                if (!element.valid()) {
+                                if (!(element.validation() && element.validation('isValid'))) {
                                     return;
                                 }
+
                                 if (!self.stopSubmit) {
                                     $.each(self.captchaForm, function (form, value) {
                                         if (element.find('#' + value).length > 0) {
