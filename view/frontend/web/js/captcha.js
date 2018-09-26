@@ -146,6 +146,9 @@ define([
 
                         } else {
                             element.submit(function (event) {
+                                if (!element.valid()) {
+                                    return;
+                                }
                                 if (!self.stopSubmit) {
                                     $.each(self.captchaForm, function (form, value) {
                                         if (element.find('#' + value).length > 0) {
