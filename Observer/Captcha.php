@@ -15,21 +15,21 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_GoogleRecaptcha
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
 namespace Mageplaza\GoogleRecaptcha\Observer;
 
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
-use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
-use Magento\Framework\App\Request\Http;
-use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
-use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\Response\RedirectInterface;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Message\ManagerInterface;
+use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 
 /**
  * Class Login
@@ -41,6 +41,7 @@ class Captcha implements ObserverInterface
      * @var \Magento\Framework\App\ResponseInterface
      */
     protected $_responseInterface;
+
     /**
      * @var \Mageplaza\GoogleRecaptcha\Helper\Data
      */
@@ -93,8 +94,7 @@ class Captcha implements ObserverInterface
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
-     * @return array
+     * @param Observer $observer
      */
     public function execute(Observer $observer)
     {
@@ -145,5 +145,4 @@ class Captcha implements ObserverInterface
         $this->_actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
         $this->_responseInterface->setRedirect($this->redirect->getRefererUrl());
     }
-
 }

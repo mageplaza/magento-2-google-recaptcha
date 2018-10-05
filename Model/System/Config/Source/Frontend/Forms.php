@@ -29,17 +29,18 @@ use Magento\Framework\Option\ArrayInterface;
  */
 class Forms implements ArrayInterface
 {
-    const TYPE_LOGIN = 'body.customer-account-login #login-form.form.form-login';
-    const TYPE_CREATE = 'body.customer-account-create #form-validate.form-create-account';
-    const TYPE_FORGOT = '#form-validate.form.password.forget';
-    const TYPE_CONTACT = '#contact-form';
+    const TYPE_LOGIN          = 'body.customer-account-login #login-form.form.form-login';
+    const TYPE_CREATE         = 'body.customer-account-create #form-validate.form-create-account';
+    const TYPE_FORGOT         = '#form-validate.form.password.forget';
+    const TYPE_CONTACT        = '#contact-form';
     const TYPE_CHANGEPASSWORD = '#form-validate.form.form-edit-account';
-    const TYPE_PRODUCTREVIEW = '#review-form';
-    const TYPE_FORMSEXTENDED = [
+    const TYPE_PRODUCTREVIEW  = '#review-form';
+    const TYPE_FORMSEXTENDED  = [
         '.popup-authentication #login-form.form.form-login',
         '.checkout-index-index form[data-role=login]',
         '.onestepcheckout-index-index .form.form-login'
     ];
+
     /**
      * @return array
      */

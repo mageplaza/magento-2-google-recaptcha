@@ -54,7 +54,7 @@ class Login implements ObserverInterface
         JsonFactory $resultJsonFactory
     )
     {
-        $this->_helperData = $helperData;
+        $this->_helperData        = $helperData;
         $this->_resultJsonFactory = $resultJsonFactory;
     }
 

@@ -15,27 +15,28 @@
  *
  * @category    Mageplaza
  * @package     Mageplaza_GoogleRecaptcha
- * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
+
 namespace Mageplaza\GoogleRecaptcha\Helper;
 
+use Magento\Checkout\Helper\Data as CheckoutData;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\HTTP\Adapter\CurlFactory;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Mageplaza\Core\Helper\AbstractData as CoreHelper;
-use Magento\Framework\HTTP\Adapter\CurlFactory;
 use Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms as DefaultFormsPaths;
-use Magento\Checkout\Helper\Data as CheckoutData;
+
 /**
  * Class Data
- *
  * @package Mageplaza\GoogleRecaptcha\Helper
  */
 class Data extends CoreHelper
 {
-    const CONFIG_MODULE_PATH = 'googlerecaptcha';
-    const BACKEND_CONFIGURATION = '/backend';
+    const CONFIG_MODULE_PATH     = 'googlerecaptcha';
+    const BACKEND_CONFIGURATION  = '/backend';
     const FRONTEND_CONFIGURATION = '/frontend';
 
     /**
@@ -48,6 +49,14 @@ class Data extends CoreHelper
      */
     protected $_formPaths;
 
+    /**
+     * Data constructor.
+     * @param Context $context
+     * @param ObjectManagerInterface $objectManager
+     * @param StoreManagerInterface $storeManager
+     * @param CurlFactory $curlFactory
+     * @param DefaultFormsPaths $formPaths
+     */
     public function __construct(
         Context $context,
         ObjectManagerInterface $objectManager,
@@ -229,6 +238,7 @@ class Data extends CoreHelper
         if (!$custom) {
             return $data;
         }
+
         return array_merge($data, $custom);
     }
 
@@ -238,10 +248,10 @@ class Data extends CoreHelper
      */
     public function getCssSelectors($storeId = null)
     {
-        $data = $this->getConfigFrontend('custom/css', $storeId);
+        $data  = $this->getConfigFrontend('custom/css', $storeId);
         $forms = explode("\n", str_replace("\r", "", $data));
-        foreach ($forms as $key => $value){
-            $forms[$key] = trim($value," ");
+        foreach ($forms as $key => $value) {
+            $forms[$key] = trim($value, " ");
         }
 
         return $forms;
@@ -251,10 +261,6 @@ class Data extends CoreHelper
     {
         return $this->getConfigValue(CheckoutData::XML_PATH_GUEST_CHECKOUT, $storeId);
     }
-
-    /**
-     * General
-     */
 
     /**
      * @param null $storeId
@@ -287,7 +293,6 @@ class Data extends CoreHelper
             if ($resp) {
                 if ($resp->isSuccess()) {
                     $result['success'] = true;
-
                 } else {
                     $result['message'] = __('The request is invalid or malformed.');
                 }

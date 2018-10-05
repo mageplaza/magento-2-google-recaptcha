@@ -87,12 +87,12 @@ class Forgot implements ObserverInterface
         UrlInterface $urlInterface
     )
     {
-        $this->_helperData = $helperData;
-        $this->_request = $httpRequest;
-        $this->_messageManager = $messageManager;
+        $this->_helperData        = $helperData;
+        $this->_request           = $httpRequest;
+        $this->_messageManager    = $messageManager;
         $this->_responseInterface = $responseInterface;
-        $this->_actionFlag = $actionFlag;
-        $this->_urlInterface = $urlInterface;
+        $this->_actionFlag        = $actionFlag;
+        $this->_urlInterface      = $urlInterface;
     }
 
     /**
