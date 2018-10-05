@@ -1,13 +1,13 @@
 # Magento 2 Google reCAPTCHA Free Extension
 
-**Google reCAPTCHA extension** for Magento 2 keeps abusive activities away. By creating a human-friendly shield, bots will be not allowed to access your admin panel and your store, while humans can pass through with ease.
+**Google reCAPTCHA** for Magento 2 keeps abusive activities away. By creating a human-friendly shield, bots will be not allowed to access your admin panel and your store, while humans can pass through with ease.
 
-* Add invisible CAPTCHA to all forms on the frontend
-* Add reCAPTCHA to the backend
+* Add **Invisible CAPTCHA** to all forms on the frontend
+* Add **Visible CAPTCHA** to the backend
 * Works on any kinds of forms
 * Compatible with Mageplaza extensions
 
-![google recaptcha](https://i.imgur.com/PqzR5Ps.png)
+![google recaptcha](https://i.imgur.com/bmMVYO3.gif)
 
 ## 1. Documentation
 
@@ -31,7 +31,7 @@ A: There are 6 forms which can be selected to display reCAPTCHA on frontend: Log
 
 A: reCAPTCHA v2 and invisible CAPTCHA are integrated in Magento 2 Google reCAPTCHA.
 
-**Q: Where in a form can I display reCAPTCHA?**\
+**Q: Where in a form can I display reCAPTCHA?**
 
 A: You can display reCAPTCHA on the Bottom left, Bottom right and Inline.
 
@@ -44,7 +44,7 @@ A: Yes, you can choose a language code to display reCAPTCHA on the backend.
 Run the following command in Magento 2 root folder:
 
 ```
-composer require mageplaza/module-better-popup
+composer require mageplaza/module-google-recaptcha
 php bin/magento setup:upgrade
 php bin/magento setup:static-content:deploy
 ```
@@ -68,6 +68,7 @@ There’s no limit to add reCAPTCHAs to any kinds of form on the frontend. Admin
 * Product review
 
 ### Backend CAPTCHAs
+
 Magento 2 Google reCAPTCHA also allows adding CAPTCHA to the backend in two forms:
 
 * Admin Login
