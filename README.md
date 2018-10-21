@@ -2,6 +2,10 @@
 
 **Google reCAPTCHA** for Magento 2 keeps abusive activities away. By creating a human-friendly shield, bots will be not allowed to access your admin panel and your store, while humans can pass through with ease.
 
+[![Latest Stable Version](https://poser.pugx.org/mageplaza/module-google-recaptcha/v/stable)](https://packagist.org/packages/mageplaza/module-google-recaptcha)
+[![Total Downloads](https://poser.pugx.org/mageplaza/module-google-recaptcha/downloads)](https://packagist.org/packages/mageplaza/module-google-recaptcha)
+
+
 * Add **Invisible CAPTCHA** to all forms on the frontend
 * Add **Visible CAPTCHA** to the backend
 * Works on any kinds of forms
