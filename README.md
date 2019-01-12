@@ -7,9 +7,9 @@
 
 
 * Add **Invisible CAPTCHA** to all forms on the frontend
-* Add **Visible CAPTCHA** to the backend
-* Works on any kinds of forms
-* Compatible with Mageplaza extensions
+* Add **Visible CAPTCHA** to **the backend** *(Featured)*
+* Works on **any kinds of forms** *(Featured)*
+* Compatible with [Mageplaza extensions](https://www.mageplaza.com/magento-2-extensions/)
 
 ![google recaptcha](https://i.imgur.com/bmMVYO3.gif)
 
