@@ -39,6 +39,7 @@ class Captcha extends Template
 
     /**
      * Captcha constructor.
+     *
      * @param Context $context
      * @param HelperData $helperData
      * @param array $data
@@ -47,8 +48,7 @@ class Captcha extends Template
         Context $context,
         HelperData $helperData,
         array $data = []
-    )
-    {
+    ) {
         $this->_helperData = $helperData;
 
         parent::__construct($context, $data);

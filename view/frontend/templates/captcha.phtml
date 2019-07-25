@@ -30,18 +30,13 @@ if ($block->isCaptchaFrontend()) : ?>
         {
             "*": {
                 "Mageplaza_GoogleRecaptcha/js/captcha": {
-                    "invisibleKey": "<?= /* @escapeNotVerified */
-        $block->getInvisibleKey() ?>",
-                    "language": "<?= /* @escapeNotVerified */
-        $block->getLanguageCode() ?>",
-                    "position": "<?= /* @escapeNotVerified */
-        $block->getPositionFrontend() ?>",
-                    "theme": "<?= /* @escapeNotVerified */
-        $block->getThemeFrontend() ?>",
-                    "forms": <?= $block->getForms() ?>
+                    "invisibleKey": "<?= /* @noEscape */ $block->getInvisibleKey() ?>",
+                    "language": "<?= /* @noEscape */ $block->getLanguageCode() ?>",
+                    "position": "<?= /* @noEscape */ $block->getPositionFrontend() ?>",
+                    "theme": "<?= /* @noEscape */ $block->getThemeFrontend() ?>",
+                    "forms": <?= /* @noEscape */ $block->getForms() ?>
                 }
             }
         }
-
     </script>
 <?php endif; ?>

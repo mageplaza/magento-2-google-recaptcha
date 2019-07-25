@@ -21,6 +21,7 @@
 
 namespace Mageplaza\GoogleRecaptcha\Helper;
 
+use Exception;
 use Magento\Checkout\Helper\Data as CheckoutData;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\HTTP\Adapter\CurlFactory;
@@ -28,6 +29,7 @@ use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Mageplaza\Core\Helper\AbstractData as CoreHelper;
 use Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms as DefaultFormsPaths;
+use ReCaptcha\ReCaptcha;
 
 /**
  * Class Data
@@ -45,12 +47,13 @@ class Data extends CoreHelper
     protected $_curlFactory;
 
     /**
-     * @var \Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms
+     * @var DefaultFormsPaths
      */
     protected $_formPaths;
 
     /**
      * Data constructor.
+     *
      * @param Context $context
      * @param ObjectManagerInterface $objectManager
      * @param StoreManagerInterface $storeManager
@@ -63,11 +66,11 @@ class Data extends CoreHelper
         StoreManagerInterface $storeManager,
         CurlFactory $curlFactory,
         DefaultFormsPaths $formPaths
-    )
-    {
-        parent::__construct($context, $objectManager, $storeManager);
+    ) {
         $this->_curlFactory = $curlFactory;
-        $this->_formPaths   = $formPaths;
+        $this->_formPaths = $formPaths;
+
+        parent::__construct($context, $objectManager, $storeManager);
     }
 
     /**
@@ -76,6 +79,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return mixed
      */
     public function getVisibleKey($storeId = null)
@@ -85,6 +89,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return mixed
      */
     public function getVisibleSecretKey($storeId = null)
@@ -94,6 +99,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return mixed
      */
     public function isCaptchaBackend($storeId = null)
@@ -107,6 +113,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return array
      */
     public function getFormsBackend($storeId = null)
@@ -118,6 +125,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return mixed
      */
     public function getSizeBackend($storeId = null)
@@ -127,6 +135,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return mixed
      */
     public function getThemeBackend($storeId = null)
@@ -137,6 +146,7 @@ class Data extends CoreHelper
     /**
      * @param string $code
      * @param null $storeId
+     *
      * @return mixed
      */
     public function getConfigBackend($code = '', $storeId = null)
@@ -153,6 +163,7 @@ class Data extends CoreHelper
     /**
      * @param string $code
      * @param null $storeId
+     *
      * @return array|mixed
      */
     public function getConfigFrontend($code = '', $storeId = null)
@@ -164,6 +175,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return array|mixed
      */
     public function isCaptchaFrontend($storeId = null)
@@ -177,6 +189,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return array|mixed
      */
     public function getPositionFrontend($storeId = null)
@@ -186,6 +199,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return array|mixed
      */
     public function getThemeFrontend($storeId = null)
@@ -195,6 +209,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return array
      */
     public function getFormsFrontend($storeId = null)
@@ -206,6 +221,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return mixed
      */
     public function getInvisibleKey($storeId = null)
@@ -215,6 +231,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return mixed
      */
     public function getInvisibleSecretKey($storeId = null)
@@ -224,6 +241,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return array|mixed
      */
     public function getFormPostPaths($storeId = null)
@@ -244,11 +262,12 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return array|mixed
      */
     public function getCssSelectors($storeId = null)
     {
-        $data  = $this->getConfigFrontend('custom/css', $storeId);
+        $data = $this->getConfigFrontend('custom/css', $storeId);
         $forms = explode("\n", str_replace("\r", "", $data));
         foreach ($forms as $key => $value) {
             $forms[$key] = trim($value, " ");
@@ -257,6 +276,11 @@ class Data extends CoreHelper
         return $forms;
     }
 
+    /**
+     * @param null $storeId
+     *
+     * @return array|mixed
+     */
     public function allowGuestCheckout($storeId = null)
     {
         return $this->getConfigValue(CheckoutData::XML_PATH_GUEST_CHECKOUT, $storeId);
@@ -264,6 +288,7 @@ class Data extends CoreHelper
 
     /**
      * @param null $storeId
+     *
      * @return mixed
      */
     public function getLanguageCode($storeId = null)
@@ -274,7 +299,9 @@ class Data extends CoreHelper
     /**
      * get reCAPTCHA server response
      *
+     * @param null $end
      * @param null $recaptcha
+     *
      * @return array
      */
     public function verifyResponse($end = null, $recaptcha = null)
@@ -288,18 +315,14 @@ class Data extends CoreHelper
             return $result;
         }
         try {
-            $recaptchaClass = new \ReCaptcha\ReCaptcha($end ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
-            $resp           = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
-            if ($resp) {
-                if ($resp->isSuccess()) {
-                    $result['success'] = true;
-                } else {
-                    $result['message'] = __('The request is invalid or malformed.');
-                }
+            $recaptchaClass = new ReCaptcha($end ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
+            $resp = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
+            if ($resp && $resp->isSuccess()) {
+                $result['success'] = true;
             } else {
                 $result['message'] = __('The request is invalid or malformed.');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $result['message'] = $e->getMessage();
         }
 

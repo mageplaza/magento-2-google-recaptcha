@@ -35,32 +35,33 @@ use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 class Login implements ObserverInterface
 {
     /**
-     * @type \Magento\Framework\Controller\Result\JsonFactory
+     * @type JsonFactory
      */
     protected $_resultJsonFactory;
 
     /**
-     * @var \Mageplaza\GoogleRecaptcha\Helper\Data
+     * @var HelperData
      */
     protected $_helperData;
 
     /**
      * Login constructor.
-     * @param \Mageplaza\GoogleRecaptcha\Helper\Data $helperData
-     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     *
+     * @param HelperData $helperData
+     * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
         HelperData $helperData,
         JsonFactory $resultJsonFactory
-    )
-    {
-        $this->_helperData        = $helperData;
+    ) {
+        $this->_helperData = $helperData;
         $this->_resultJsonFactory = $resultJsonFactory;
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
-     * @throws \Magento\Framework\Exception\Plugin\AuthenticationException
+     * @param Observer $observer
+     *
+     * @throws PluginAuthenticationException
      */
     public function execute(Observer $observer)
     {

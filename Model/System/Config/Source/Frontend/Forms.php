@@ -78,12 +78,12 @@ class Forms implements ArrayInterface
     public function defaultForms()
     {
         return [
-            self::TYPE_LOGIN          => "customer/account/loginPost/",
-            self::TYPE_CREATE         => "customer/account/createpost/",
-            self::TYPE_FORGOT         => "customer/account/forgotpasswordpost/",
-            self::TYPE_CONTACT        => "contact/index/post/",
-            self::TYPE_CHANGEPASSWORD => "customer/account/editPost/",
-            self::TYPE_PRODUCTREVIEW  => "review/product/post/"
+            self::TYPE_LOGIN          => 'customer/account/loginPost/',
+            self::TYPE_CREATE         => 'customer/account/createpost/',
+            self::TYPE_FORGOT         => 'customer/account/forgotpasswordpost/',
+            self::TYPE_CONTACT        => 'contact/index/post/',
+            self::TYPE_CHANGEPASSWORD => 'customer/account/editPost/',
+            self::TYPE_PRODUCTREVIEW  => 'review/product/post/'
         ];
     }
 }

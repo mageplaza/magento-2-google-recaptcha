@@ -38,17 +38,17 @@ use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 class Captcha implements ObserverInterface
 {
     /**
-     * @var \Magento\Framework\App\ResponseInterface
+     * @var ResponseInterface
      */
     protected $_responseInterface;
 
     /**
-     * @var \Mageplaza\GoogleRecaptcha\Helper\Data
+     * @var HelperData
      */
     protected $_helperData;
 
     /**
-     * @var \Magento\Framework\App\Request\Http
+     * @var Http
      */
     protected $_request;
 
@@ -58,23 +58,24 @@ class Captcha implements ObserverInterface
     private $_actionFlag;
 
     /**
-     * @var \Magento\Framework\Message\ManagerInterface
+     * @var ManagerInterface
      */
     protected $messageManager;
 
     /**
-     * @var \Magento\Framework\App\Response\RedirectInterface
+     * @var RedirectInterface
      */
     protected $redirect;
 
     /**
      * Captcha constructor.
-     * @param \Mageplaza\GoogleRecaptcha\Helper\Data $helperData
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
-     * @param \Magento\Framework\App\ActionFlag $actionFlag
-     * @param \Magento\Framework\App\ResponseInterface $responseInterface
-     * @param \Magento\Framework\App\Response\RedirectInterface $redirect
+     *
+     * @param HelperData $helperData
+     * @param Http $request
+     * @param ManagerInterface $messageManager
+     * @param ActionFlag $actionFlag
+     * @param ResponseInterface $responseInterface
+     * @param RedirectInterface $redirect
      */
     public function __construct(
         HelperData $helperData,
@@ -83,14 +84,13 @@ class Captcha implements ObserverInterface
         ActionFlag $actionFlag,
         ResponseInterface $responseInterface,
         RedirectInterface $redirect
-    )
-    {
-        $this->_helperData        = $helperData;
-        $this->_request           = $request;
-        $this->messageManager     = $messageManager;
-        $this->_actionFlag        = $actionFlag;
+    ) {
+        $this->_helperData = $helperData;
+        $this->_request = $request;
+        $this->messageManager = $messageManager;
+        $this->_actionFlag = $actionFlag;
         $this->_responseInterface = $responseInterface;
-        $this->redirect           = $redirect;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -102,7 +102,7 @@ class Captcha implements ObserverInterface
             $checkResponse = 1;
 
             foreach ($this->_helperData->getFormPostPaths() as $item) {
-                if ($item != "" && strpos($this->_request->getRequestUri(), trim($item, " ")) !== false) {
+                if ($item !== '' && strpos($this->_request->getRequestUri(), trim($item, ' ')) !== false) {
                     $checkResponse = 0;
                     if ($this->_request->getParam('g-recaptcha-response') !== null) {
                         $response = $this->_helperData->verifyResponse();
@@ -114,7 +114,7 @@ class Captcha implements ObserverInterface
                     }
                 }
             }
-            if ($checkResponse == 1 && $this->_request->getParam('g-recaptcha-response') !== null) {
+            if ($checkResponse === 1 && $this->_request->getParam('g-recaptcha-response') !== null) {
                 $this->redirectUrlError(__('Missing Url in "Form Post Paths" configuration field!'));
             }
         }
@@ -122,6 +122,7 @@ class Captcha implements ObserverInterface
 
     /**
      * @param $message
+     *
      * @return array
      */
     public function redirectUrlError($message)

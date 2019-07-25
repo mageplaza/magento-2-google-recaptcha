@@ -21,6 +21,7 @@
 
 namespace Mageplaza\GoogleRecaptcha\Observer\Adminhtml;
 
+use Exception;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\RequestInterface;
@@ -38,24 +39,24 @@ use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 class Forgot implements ObserverInterface
 {
     /**
-     * @var \Mageplaza\GoogleRecaptcha\Helper\Data
+     * @var HelperData
      */
     protected $_helperData;
 
     /**
      * Request object
      *
-     * @var \Magento\Framework\App\RequestInterface
+     * @var RequestInterface
      */
     protected $_request;
 
     /**
-     * @var \Magento\Framework\Message\ManagerInterface
+     * @var ManagerInterface
      */
     protected $_messageManager;
 
     /**
-     * @var \Magento\Framework\App\ResponseInterface
+     * @var ResponseInterface
      */
     protected $_responseInterface;
 
@@ -65,18 +66,19 @@ class Forgot implements ObserverInterface
     private $_actionFlag;
 
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     protected $_urlInterface;
 
     /**
      * Forgot constructor.
-     * @param \Mageplaza\GoogleRecaptcha\Helper\Data $helperData
-     * @param \Magento\Framework\App\RequestInterface $httpRequest
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
-     * @param \Magento\Framework\App\ResponseInterface $responseInterface
-     * @param \Magento\Framework\App\ActionFlag $actionFlag
-     * @param \Magento\Framework\UrlInterface $urlInterface
+     *
+     * @param HelperData $helperData
+     * @param RequestInterface $httpRequest
+     * @param ManagerInterface $messageManager
+     * @param ResponseInterface $responseInterface
+     * @param ActionFlag $actionFlag
+     * @param UrlInterface $urlInterface
      */
     public function __construct(
         HelperData $helperData,
@@ -85,14 +87,13 @@ class Forgot implements ObserverInterface
         ResponseInterface $responseInterface,
         ActionFlag $actionFlag,
         UrlInterface $urlInterface
-    )
-    {
-        $this->_helperData        = $helperData;
-        $this->_request           = $httpRequest;
-        $this->_messageManager    = $messageManager;
+    ) {
+        $this->_helperData = $helperData;
+        $this->_request = $httpRequest;
+        $this->_messageManager = $messageManager;
         $this->_responseInterface = $responseInterface;
-        $this->_actionFlag        = $actionFlag;
-        $this->_urlInterface      = $urlInterface;
+        $this->_actionFlag = $actionFlag;
+        $this->_urlInterface = $urlInterface;
     }
 
     /**
@@ -110,7 +111,7 @@ class Forgot implements ObserverInterface
                 if (isset($response['success']) && !$response['success']) {
                     $this->redirectError($controller, $response['message']);
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->redirectError($controller, $e->getMessage());
             }
         }
