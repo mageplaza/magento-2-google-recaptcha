@@ -105,6 +105,13 @@ Theme,Theme
 "Badge Position","Badge Position"
 "Custom Form Position","Custom Form Position"
 "Form Post Paths","Form Post Paths"
-"For Example: newsletter/subscriber/new/  <br> Each Url Post must be separated by a new line","For Example: newsletter/subscriber/new/  <br> Each Url Post must be separated by a new line"
+"For Example: newsletter/subscriber/new/  <br><br>Compatible with Mageplaza SocialLogin: <br>
+                        customer/ajax/login/<br>
+                        sociallogin/popup/create/<br>
+                        sociallogin/popup/forgot/<br>
+                        <br> Each Url Post must be separated by a new line","For Example: newsletter/subscriber/new/  <br><br>Compatible with Mageplaza SocialLogin: <br>
+                        customer/ajax/login/<br>
+                        sociallogin/popup/create/<br>
+                        sociallogin/popup/forgot/<br>
+                        <br> Each Url Post must be separated by a new line"
 "CSS Selectors","CSS Selectors"
-"For Example: #newsletter-validate-detail  <br> Each CSS Selector must be separated by a new line","For Example: #newsletter-validate-detail  <br> Each CSS Selector must be separated by a new line"
