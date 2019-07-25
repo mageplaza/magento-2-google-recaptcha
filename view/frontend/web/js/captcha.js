@@ -43,7 +43,7 @@ define([
                 stop = 0;
             $(function () {
                 var ID = setInterval(function () {
-                    if (stop == 0) {
+                    if (stop === 0) {
                         stop++;
                         self.createCaptcha();
                     }
@@ -68,7 +68,7 @@ define([
                     result = false;
                 if (forms && forms.length > 0) {
                     forms.forEach(function (element) {
-                        if (element != '' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() == 'form') {
+                        if (element !== '' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() == 'form') {
                             self.activeForm.push(element);
                             result = true;
                         }
@@ -122,7 +122,6 @@ define([
                         /**
                          * Check form submit
                          */
-
                         if (value === '#social-form-login'
                             || value === '#social-form-create'
                             || value === '#social-form-password-forget'
@@ -176,10 +175,11 @@ define([
                             sortEvent.unshift(sortEvent.pop());
                         }
 
-                    })
+                    });
                     for (var i = 1; i < number; i++) {
-                        $('#mp_recaptcha_' + i + ' .grecaptcha-badge').removeAttr("style");
-                        $('#mp_recaptcha_' + i + ' .grecaptcha-badge').attr("style", $('#mp_recaptcha_0 .grecaptcha-badge').attr("style"));
+                        var badge = $('#mp_recaptcha_' + i + ' .grecaptcha-badge');
+                        badge.removeAttr("style");
+                        badge.attr("style", $('#mp_recaptcha_0 .grecaptcha-badge').attr("style"));
                     }
                 }
             };

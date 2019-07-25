@@ -21,7 +21,7 @@
 
 if ($block->isCaptchaBackend() && $block->showInForm()) : ?>
     <script type="text/javascript">
-        require(['//www.google.com/recaptcha/api.js?hl=' + '<?=$block->getLanguageCode()?>']);
+        require(['//www.google.com/recaptcha/api.js?hl=' + '<?= $block->getLanguageCode()?>']);
     </script>
     <div class="admin__field field-recaptcha">
         <div class="admin__field-control">

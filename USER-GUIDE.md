@@ -5,7 +5,7 @@
 - Product page: https://www.mageplaza.com/magento-2-google-recaptcha/
 - FAQs: https://www.mageplaza.com/faqs/
 - Get Support: https://github.com/mageplaza/magento-2-google-recaptcha/issues
-- Changelog: https://www.mageplaza.com/changelog/m2-google-recaptcha.txt
+- Changelog: https://www.mageplaza.com/releases/google-recaptcha
 - License agreement: https://www.mageplaza.com/LICENSE.txt
 
 ## How to install
