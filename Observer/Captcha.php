@@ -84,7 +84,8 @@ class Captcha implements ObserverInterface
         ActionFlag $actionFlag,
         ResponseInterface $responseInterface,
         RedirectInterface $redirect
-    ) {
+    )
+    {
         $this->_helperData = $helperData;
         $this->_request = $request;
         $this->messageManager = $messageManager;
@@ -100,18 +101,22 @@ class Captcha implements ObserverInterface
     {
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
             $checkResponse = 1;
-
+            if ($this->_request->getFullActionName() === 'wishlist_index_add') {
+                return;
+            }
             foreach ($this->_helperData->getFormPostPaths() as $item) {
                 if ($item !== '' && strpos($this->_request->getRequestUri(), trim($item, ' ')) !== false) {
                     $checkResponse = 0;
                     if ($this->_request->getParam('g-recaptcha-response') !== null) {
-                        $response = $this->_helperData->verifyResponse();
+                        $type = $this->_helperData->getRecaptchaType();
+                        $response = $this->_helperData->verifyResponse($type);
                         if (isset($response['success']) && !$response['success']) {
                             $this->redirectUrlError($response['message']);
                         }
                     } else {
                         $this->redirectUrlError(__('Missing required parameters recaptcha!'));
                     }
+
                 }
             }
             if ($checkResponse === 1 && $this->_request->getParam('g-recaptcha-response') !== null) {
@@ -131,7 +136,7 @@ class Captcha implements ObserverInterface
             || strpos($this->_request->getRequestUri(), 'sociallogin/popup/forgot') !== false
         ) {
             return [
-                'errors'  => true,
+                'errors' => true,
                 'message' => $message
             ];
         }

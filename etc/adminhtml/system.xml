@@ -92,6 +92,13 @@
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="type" translate="label comment" sortOrder="3" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Recaptcha type</label>
+                    <source_model>Mageplaza\GoogleRecaptcha\Model\System\Config\Source\RecaptchaType</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
                 <field id="position" translate="label comment" sortOrder="4" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Badge Position</label>
                     <source_model>Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Position</source_model>

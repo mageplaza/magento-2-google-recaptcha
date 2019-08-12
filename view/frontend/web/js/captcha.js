@@ -25,11 +25,12 @@ define([
 
     $.widget('mageplaza.captcha', {
         options: {
-            invisibleKey: "",
+            key: "",
             language: "en",
             position: "inline",
             theme: "light",
-            forms: []
+            forms: [],
+            type: ""
         },
         captchaForm: [],
         activeForm: [],
@@ -87,22 +88,30 @@ define([
                          */
                         var buttonElement = element.find('button[type=button]').length > 0 ? element.find('button[type=button]') : element.find('button[type=submit]');
                         var divCaptcha = $('<div class="g-recaptcha"></div>');
+                        var divAction = $('.actions-toolbar');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
-                        element.append(divCaptcha);
-
+                        if (element.attr('id') === 'mpageverify-form') {
+                            element.prepend(divCaptcha);
+                        } else if (self.options.type === 'visible') {
+                            divAction.before(divCaptcha);
+                        } else {
+                            element.append(divCaptcha);
+                        }
                         var target = 'mp' + '_recaptcha_' + number,
                             parameters = {
-                                'sitekey': self.options.invisibleKey,
-                                'size': 'invisible',
+                                'sitekey': self.options.key,
+                                'size': self.options.type,
                                 'callback': function (token) {
                                     if (token) {
                                         self.stopSubmit = token;
                                         if (value === '#social-form-login'
                                             || value === '#social-form-create'
                                             || value === '#social-form-password-forget'
-                                            || value === '.popup-authentication #login-form.form.form-login') {
+                                            || value === '.popup-authentication #login-form.form.form-login'
+                                            || (value === '#review-form' && self.options.type === 'invisible')
+                                        ) {
                                             buttonElement.trigger('click');
-                                        } else {
+                                        } else if (self.options.type !== 'visible') {
                                             element.submit();
                                         }
 
@@ -126,6 +135,7 @@ define([
                             || value === '#social-form-create'
                             || value === '#social-form-password-forget'
                             || value === '.popup-authentication #login-form.form.form-login'
+                            || (value === '#review-form' && self.options.type === 'invisible')
                         ) {
                             buttonElement.on('click', function (event) {
                                 if (!(element.validation() && element.validation('isValid'))) {
@@ -153,9 +163,12 @@ define([
 
                         } else {
                             element.submit(function (event) {
-                                if (!element.valid()) {
-                                    return;
+                                if (element.attr('id') !== 'mpageverify-form') {
+                                    if (!element.valid()) {
+                                        return;
+                                    }
                                 }
+
                                 if (!self.stopSubmit) {
                                     $.each(self.captchaForm, function (form, value) {
                                         if (element.find('#' + value).length > 0) {

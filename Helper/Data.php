@@ -169,7 +169,6 @@ class Data extends CoreHelper
     public function getConfigFrontend($code = '', $storeId = null)
     {
         $code = ($code !== '') ? '/' . $code : '';
-
         return $this->getConfigValue(static::CONFIG_MODULE_PATH . static::FRONTEND_CONFIGURATION . $code, $storeId);
     }
 
@@ -215,7 +214,6 @@ class Data extends CoreHelper
     public function getFormsFrontend($storeId = null)
     {
         $data = $this->getConfigFrontend('forms', $storeId);
-
         return explode(',', $data);
     }
 
@@ -315,7 +313,7 @@ class Data extends CoreHelper
             return $result;
         }
         try {
-            $recaptchaClass = new ReCaptcha($end ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
+            $recaptchaClass = new ReCaptcha($end === 'visible' ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
             $resp = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
             if ($resp && $resp->isSuccess()) {
                 $result['success'] = true;
@@ -325,7 +323,14 @@ class Data extends CoreHelper
         } catch (Exception $e) {
             $result['message'] = $e->getMessage();
         }
-
         return $result;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getRecaptchaType($storeId = null)
+    {
+        return $this->getConfigFrontend('type', $storeId);
     }
 }

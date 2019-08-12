@@ -68,7 +68,7 @@ class Login implements ObserverInterface
         if ($this->_helperData->isCaptchaBackend()
             && in_array('backend_login', $this->_helperData->getFormsBackend())
         ) {
-            $response = $this->_helperData->verifyResponse('backend');
+            $response = $this->_helperData->verifyResponse('visible');
             if (isset($response['success']) && !$response['success']) {
                 throw new PluginAuthenticationException(
                     new Phrase($response['message'])

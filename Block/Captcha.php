@@ -51,7 +51,8 @@ class Captcha extends Template
         'customer_account_forgotpassword',
         'contact_index_index',
         'catalog_product_view',
-        'customer_account_edit'
+        'customer_account_edit',
+        'cms_index_index'
     ];
 
     /**
@@ -65,7 +66,8 @@ class Captcha extends Template
         Context $context,
         HelperData $helperData,
         array $data = []
-    ) {
+    )
+    {
         $this->_helperData = $helperData;
 
         parent::__construct($context, $data);
@@ -99,6 +101,9 @@ class Captcha extends Template
                     break;
                 case Forms::TYPE_CHANGEPASSWORD:
                     $actionName = $this->actionName[5];
+                    break;
+                case Forms::TYPE_AGEVERIFICATION:
+                    $actionName = $this->actionName[6];
                     break;
                 default:
                     $actionName = '';
@@ -136,6 +141,14 @@ class Captcha extends Template
     }
 
     /**
+     * @return mixed
+     */
+    public function getVisibleKey()
+    {
+        return $this->_helperData->getVisibleKey();
+    }
+
+    /**
      * @return array|mixed
      */
     public function getPositionFrontend()
@@ -165,5 +178,22 @@ class Captcha extends Template
     public function getThemeFrontend()
     {
         return $this->_helperData->getThemeFrontend();
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getRecaptchaType()
+    {
+        return $this->_helperData->getRecaptchaType();
+    }
+
+    /**
+     * @param $moduleName
+     * @return bool
+     */
+    public function checkModuleEnable($moduleName)
+    {
+        return $this->_helperData->checkModuleEnable($moduleName);
     }
 }

@@ -20,7 +20,17 @@
  */
 
 if ($block->isCaptchaFrontend()) : ?>
+    <?php
+        $key = $block->getInvisibleKey();
+        if ($block->getRecaptchaType() === 'visible') {
+            $key = $block->getVisibleKey();
+        }
+    ?>
+
     <style type="text/css">
+        #mpageverify-form .g-recaptcha{
+            margin-left: 30%;
+        }
         .g-recaptcha {
             margin-top: 15px;
             margin-bottom: 15px;
@@ -30,11 +40,12 @@ if ($block->isCaptchaFrontend()) : ?>
         {
             "*": {
                 "Mageplaza_GoogleRecaptcha/js/captcha": {
-                    "invisibleKey": "<?= /* @noEscape */ $block->getInvisibleKey() ?>",
+                    "key": "<?= /* @noEscape */ $key ?>",
                     "language": "<?= /* @noEscape */ $block->getLanguageCode() ?>",
                     "position": "<?= /* @noEscape */ $block->getPositionFrontend() ?>",
                     "theme": "<?= /* @noEscape */ $block->getThemeFrontend() ?>",
-                    "forms": <?= /* @noEscape */ $block->getForms() ?>
+                    "forms": <?= /* @noEscape */ $block->getForms() ?>,
+                    "type": "<?= /* @noEscape */ $block->getRecaptchaType() ?>"
                 }
             }
         }
