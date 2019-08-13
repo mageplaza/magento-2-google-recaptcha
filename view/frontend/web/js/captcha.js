@@ -69,7 +69,7 @@ define([
                     result = false;
                 if (forms && forms.length > 0) {
                     forms.forEach(function (element) {
-                        if (element !== '' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() == 'form') {
+                        if (element !== '' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() === 'form') {
                             self.activeForm.push(element);
                             result = true;
                         }
@@ -90,13 +90,17 @@ define([
                         var divCaptcha = $('<div class="g-recaptcha"></div>');
                         var divAction = $('.actions-toolbar');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
-                        if (element.attr('id') === 'mpageverify-form') {
-                            element.prepend(divCaptcha);
-                        } else if (self.options.type === 'visible') {
-                            divAction.before(divCaptcha);
+
+                        if (self.options.type === 'visible'){
+                            if (element.attr('id') === 'mpageverify-form') {
+                                element.find('.mpageverify-verify-action').before(divCaptcha);
+                            } else {
+                                element.find(divAction).before(divCaptcha);
+                            }
                         } else {
                             element.append(divCaptcha);
                         }
+
                         var target = 'mp' + '_recaptcha_' + number,
                             parameters = {
                                 'sitekey': self.options.key,

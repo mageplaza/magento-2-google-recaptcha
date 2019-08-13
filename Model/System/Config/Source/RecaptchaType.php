@@ -35,8 +35,8 @@ class RecaptchaType implements ArrayInterface
     public function toOptionArray()
     {
         $recaptchaTypeOptionArray = [
-            ['label' => __('Invisible'), 'value' => 'invisible'],
-            ['label' => __('Visible'), 'value' => 'visible']
+            ['label' => __('Visible'), 'value' => 'visible'],
+            ['label' => __('Invisible'), 'value' => 'invisible']
         ];
 
         return $recaptchaTypeOptionArray;
