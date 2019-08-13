@@ -37,8 +37,8 @@ use ReCaptcha\ReCaptcha;
  */
 class Data extends CoreHelper
 {
-    const CONFIG_MODULE_PATH     = 'googlerecaptcha';
-    const BACKEND_CONFIGURATION  = '/backend';
+    const CONFIG_MODULE_PATH = 'googlerecaptcha';
+    const BACKEND_CONFIGURATION = '/backend';
     const FRONTEND_CONFIGURATION = '/frontend';
 
     /**
@@ -66,7 +66,8 @@ class Data extends CoreHelper
         StoreManagerInterface $storeManager,
         CurlFactory $curlFactory,
         DefaultFormsPaths $formPaths
-    ) {
+    )
+    {
         $this->_curlFactory = $curlFactory;
         $this->_formPaths = $formPaths;
 
@@ -332,5 +333,14 @@ class Data extends CoreHelper
     public function getRecaptchaType($storeId = null)
     {
         return $this->getConfigFrontend('type', $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     * @return array|mixed
+     */
+    public function isAgeVerificationEnabled($storeId = null)
+    {
+        return $this->getConfigValue('mpageverify/general/enabled', $storeId);
     }
 }

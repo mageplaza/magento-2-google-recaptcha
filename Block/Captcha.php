@@ -51,8 +51,7 @@ class Captcha extends Template
         'customer_account_forgotpassword',
         'contact_index_index',
         'catalog_product_view',
-        'customer_account_edit',
-        'cms_index_index'
+        'customer_account_edit'
     ];
 
     /**
@@ -102,9 +101,6 @@ class Captcha extends Template
                 case Forms::TYPE_CHANGEPASSWORD:
                     $actionName = $this->actionName[5];
                     break;
-                case Forms::TYPE_AGEVERIFICATION:
-                    $actionName = $this->actionName[6];
-                    break;
                 default:
                     $actionName = '';
             }
@@ -116,6 +112,11 @@ class Captcha extends Template
                 $this->_dataFormId[] = Forms::TYPE_FORMSEXTENDED[0];
             }
         }
+
+        if ($this->isAgeVerificationEnabled()) {
+            $this->_dataFormId[] = Forms::TYPE_AGEVERIFICATION;
+        }
+
         $data = array_merge($this->_helperData->getCssSelectors(), $this->_dataFormId);
 
         return json_encode($data);
@@ -189,11 +190,11 @@ class Captcha extends Template
     }
 
     /**
-     * @param $moduleName
-     * @return bool
+     * @param null $storeId
+     * @return array|mixed
      */
-    public function checkModuleEnable($moduleName)
+    public function isAgeVerificationEnabled($storeId = null)
     {
-        return $this->_helperData->checkModuleEnable($moduleName);
+        return $this->_helperData->isAgeVerificationEnabled($storeId);
     }
 }
