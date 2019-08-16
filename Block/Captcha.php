@@ -21,6 +21,7 @@
 
 namespace Mageplaza\GoogleRecaptcha\Block;
 
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
@@ -59,7 +60,6 @@ class Captcha extends Template
 
     /**
      * Captcha constructor.
-     *
      * @param Context $context
      * @param HelperData $helperData
      * @param array $data
@@ -198,10 +198,11 @@ class Captcha extends Template
 
     /**
      * @return array|mixed
+     * @throws NoSuchEntityException
      */
     public function getRecaptchaType()
     {
-        return $this->_helperData->getRecaptchaType();
+        return $this->_helperData->getRecaptchaType($this->getStoreId());
     }
 
     /**
@@ -211,5 +212,14 @@ class Captcha extends Template
     public function isAgeVerificationEnabled($storeId = null)
     {
         return $this->_helperData->isAgeVerificationEnabled($storeId);
+    }
+
+    /**
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getStoreId()
+    {
+        return $this->_storeManager->getStore()->getId();
     }
 }
