@@ -51,7 +51,10 @@ class Captcha extends Template
         'customer_account_forgotpassword',
         'contact_index_index',
         'catalog_product_view',
-        'customer_account_edit'
+        'customer_account_edit',
+        'multishipping_checkout_login',
+        'multishipping_checkout_register',
+        'checkout_index_index'
     ];
 
     /**
@@ -117,6 +120,18 @@ class Captcha extends Template
             $this->_dataFormId[] = Forms::TYPE_AGEVERIFICATION;
         }
 
+        $actionName = $this->_request->getFullActionName();
+
+        if ($actionName === $this->actionName[6]) {
+            $this->_dataFormId[] = '.form.form-login';
+        }
+        if ($actionName === $this->actionName[7]) {
+            $this->_dataFormId[] = '#form-validate.form-create-account';
+        }
+        if ($actionName === $this->actionName[8]) {
+            $this->_dataFormId[] = Forms::TYPE_FORMSEXTENDED[1];
+
+        }
         $data = array_merge($this->_helperData->getCssSelectors(), $this->_dataFormId);
 
         return json_encode($data);
