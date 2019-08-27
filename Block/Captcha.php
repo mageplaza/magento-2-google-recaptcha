@@ -60,6 +60,7 @@ class Captcha extends Template
 
     /**
      * Captcha constructor.
+     *
      * @param Context $context
      * @param HelperData $helperData
      * @param array $data
@@ -68,8 +69,7 @@ class Captcha extends Template
         Context $context,
         HelperData $helperData,
         array $data = []
-    )
-    {
+    ) {
         $this->_helperData = $helperData;
 
         parent::__construct($context, $data);
@@ -80,14 +80,14 @@ class Captcha extends Template
      */
     public function getForms()
     {
-        $useLogin = false;
+        $useLogin          = false;
         $this->_dataFormId = $this->_helperData->getFormsFrontend();
 
         foreach ($this->_dataFormId as $item => $value) {
             switch ($value) {
                 case Forms::TYPE_LOGIN:
                     $actionName = $this->actionName[0];
-                    $useLogin = true;
+                    $useLogin   = true;
                     break;
                 case Forms::TYPE_CREATE:
                     $actionName = $this->actionName[1];
@@ -207,6 +207,7 @@ class Captcha extends Template
 
     /**
      * @param null $storeId
+     *
      * @return array|mixed
      */
     public function isAgeVerificationEnabled($storeId = null)
@@ -221,5 +222,13 @@ class Captcha extends Template
     public function getStoreId()
     {
         return $this->_storeManager->getStore()->getId();
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getSize()
+    {
+        return $this->_helperData->getSizeFrontend();
     }
 }

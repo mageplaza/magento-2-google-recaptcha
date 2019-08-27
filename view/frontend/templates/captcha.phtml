@@ -28,12 +28,18 @@ if ($block->isCaptchaFrontend()) : ?>
     ?>
 
     <style type="text/css">
-        .checkout-index-index form[data-role=login] .g-recaptcha .grecaptcha-badge{
+        .onestepcheckout-index-index .form-login .g-recaptcha .grecaptcha-badge {
             position: unset !important;
         }
-        #mpageverify-form .g-recaptcha{
+
+        .checkout-index-index form[data-role=login] .g-recaptcha .grecaptcha-badge {
+            position: unset !important;
+        }
+
+        #mpageverify-form .g-recaptcha {
             margin-left: 30%;
         }
+
         .g-recaptcha {
             margin-top: 15px;
             margin-bottom: 15px;
@@ -48,7 +54,8 @@ if ($block->isCaptchaFrontend()) : ?>
                     "position": "<?= /* @noEscape */ $block->getPositionFrontend() ?>",
                     "theme": "<?= /* @noEscape */ $block->getThemeFrontend() ?>",
                     "forms": <?= /* @noEscape */ $block->getForms() ?>,
-                    "type": "<?= /* @noEscape */ $block->getRecaptchaType() ?>"
+                    "type": "<?= /* @noEscape */ $block->getRecaptchaType() ?>",
+                    "size": "<?= /* @noEscape */ $block->getSize() ?>"
                 }
             }
         }

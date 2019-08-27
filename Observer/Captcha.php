@@ -99,10 +99,6 @@ class Captcha implements ObserverInterface
     public function execute(Observer $observer)
     {
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
-            $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/test.log');
-            $logger = new \Zend\Log\Logger();
-            $logger->addWriter($writer);
-            $logger->info($this->_request->getFullActionName());
             $checkResponse = 1;
             if ($this->_request->getFullActionName() === 'wishlist_index_add') {
                 return;
