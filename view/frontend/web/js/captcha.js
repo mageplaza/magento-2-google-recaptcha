@@ -81,7 +81,11 @@ define([
                         var element = $(value);
                         //Multi ID
                         if (element.length > 1) {
-                            element = $(element).last();
+                            if (value === '.onestepcheckout-index-index .block-content .form.form-login') {
+                                element = $(element).last();
+                            } else {
+                                element = $(element).first();
+                            }
                         }
                         /**
                          * Create Widget
@@ -100,8 +104,6 @@ define([
                         } else {
                             element.append(divCaptcha);
                         }
-
-                        console.log(value);
 
                         var target     = 'mp' + '_recaptcha_' + number,
                             parameters = {
