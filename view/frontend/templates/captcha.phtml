@@ -21,23 +21,28 @@
 
 if ($block->isCaptchaFrontend()) : ?>
     <?php
-        $currentTheme = $block->getCurrentTheme();
-        $key          = $block->getInvisibleKey();
-        if ($block->getRecaptchaType() === 'visible') {
+        $currentTheme  = $block->getCurrentTheme();
+        $key           = $block->getInvisibleKey();
+        $recaptchaType = $block->getRecaptchaType();
+        if ($recaptchaType === 'visible') {
             $key = $block->getVisibleKey();
         }
     ?>
     <style type="text/css">
-        <?php if($currentTheme === 'Smartwave/porto' && $block->getRecaptchaType() === 'visible') : ?>
+        <?php if($currentTheme === 'Smartwave/porto' && $recaptchaType === 'visible') : ?>
             #form-validate.form-create-account .g-recaptcha div {
                 height: unset !important;
                 margin-left: 12px;
             }
-
+        <?php endif; ?>
+        <?php if($recaptchaType === 'invisible') : ?>
+            .form-customer-login .g-recaptcha {
+                padding-top: 15%;
+            }
         <?php endif; ?>
 
         .form-customer-login .g-recaptcha {
-            padding-top: 15%;
+            margin: 0px;
         }
 
         #social-form-create .g-recaptcha{
@@ -74,7 +79,7 @@ if ($block->isCaptchaFrontend()) : ?>
                     "position": "<?= /* @noEscape */ $block->getPositionFrontend() ?>",
                     "theme": "<?= /* @noEscape */ $block->getThemeFrontend() ?>",
                     "forms": <?= /* @noEscape */ $block->getForms() ?>,
-                    "type": "<?= /* @noEscape */ $block->getRecaptchaType() ?>",
+                    "type": "<?= /* @noEscape */ $recaptchaType ?>",
                     "size": "<?= /* @noEscape */ $block->getSize() ?>"
                 }
             }
