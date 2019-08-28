@@ -21,13 +21,33 @@
 
 if ($block->isCaptchaFrontend()) : ?>
     <?php
-        $key = $block->getInvisibleKey();
+        $currentTheme = $block->getCurrentTheme();
+        $key          = $block->getInvisibleKey();
         if ($block->getRecaptchaType() === 'visible') {
             $key = $block->getVisibleKey();
         }
     ?>
-
     <style type="text/css">
+        <?php if($currentTheme === 'Smartwave/porto' && $block->getRecaptchaType() === 'visible') : ?>
+            #form-validate.form-create-account .g-recaptcha div {
+                height: unset !important;
+                margin-left: 12px;
+            }
+
+        <?php endif; ?>
+
+        .form-customer-login .g-recaptcha {
+            padding-top: 15%;
+        }
+
+        #social-form-create .g-recaptcha{
+            padding-top: 5%;
+        }
+
+        #social-form-password-forget .g-recaptcha{
+            padding-top: 5%;
+        }
+
         .onestepcheckout-index-index .form-login .g-recaptcha .grecaptcha-badge {
             position: unset !important;
         }

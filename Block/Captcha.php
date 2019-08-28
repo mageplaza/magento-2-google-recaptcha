@@ -22,6 +22,8 @@
 namespace Mageplaza\GoogleRecaptcha\Block;
 
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\View\Design\Theme\ThemeProviderInterface;
+use Magento\Framework\View\DesignInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
@@ -37,6 +39,8 @@ class Captcha extends Template
      * @var HelperData
      */
     protected $_helperData;
+
+    protected $_themeProvider;
 
     /**
      * @var
@@ -68,9 +72,11 @@ class Captcha extends Template
     public function __construct(
         Context $context,
         HelperData $helperData,
+        ThemeProviderInterface $themeProvider,
         array $data = []
     ) {
-        $this->_helperData = $helperData;
+        $this->_helperData    = $helperData;
+        $this->_themeProvider = $themeProvider;
 
         parent::__construct($context, $data);
     }
@@ -230,5 +236,20 @@ class Captcha extends Template
     public function getSize()
     {
         return $this->_helperData->getSizeFrontend();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentTheme()
+    {
+        $themeId = $this->_helperData->getConfigValue(DesignInterface::XML_PATH_THEME_ID);
+
+        /**
+         * @var $theme \Magento\Framework\View\Design\ThemeInterface
+         */
+        $theme = $this->_themeProvider->getThemeById($themeId);
+
+        return $theme->getCode();
     }
 }
