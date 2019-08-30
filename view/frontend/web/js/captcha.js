@@ -25,11 +25,12 @@ define([
 
     $.widget('mageplaza.captcha', {
         options: {
-            invisibleKey: "",
+            key: "",
             language: "en",
             position: "inline",
             theme: "light",
-            forms: []
+            forms: [],
+            type: ""
         },
         captchaForm: [],
         activeForm: [],
@@ -56,19 +57,19 @@ define([
          * Init Create reCaptcha
          */
         createCaptcha: function () {
-            var self = this,
+            var self      = this,
                 widgetIDCaptcha,
                 sortEvent,
-                number = 0,
+                number    = 0,
                 resetForm = 0;
 
             window.recaptchaOnload = function () {
                 //get form active
-                var forms = self.options.forms,
+                var forms  = self.options.forms,
                     result = false;
                 if (forms && forms.length > 0) {
                     forms.forEach(function (element) {
-                        if (element !== '' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() == 'form') {
+                        if (element !== '' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() === 'form') {
                             self.activeForm.push(element);
                             result = true;
                         }
@@ -80,19 +81,33 @@ define([
                         var element = $(value);
                         //Multi ID
                         if (element.length > 1) {
-                            element = $(element).first();
+                            if (value === '.onestepcheckout-index-index .block-content .form.form-login') {
+                                element = $(element).last();
+                            } else {
+                                element = $(element).first();
+                            }
                         }
                         /**
                          * Create Widget
                          */
                         var buttonElement = element.find('button[type=button]').length > 0 ? element.find('button[type=button]') : element.find('button[type=submit]');
-                        var divCaptcha = $('<div class="g-recaptcha"></div>');
+                        var divCaptcha    = $('<div class="g-recaptcha"></div>');
+                        var divAction     = $('.actions-toolbar');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
-                        element.append(divCaptcha);
 
-                        var target = 'mp' + '_recaptcha_' + number,
+                        if (self.options.type === 'visible') {
+                            if (element.attr('id') === 'mpageverify-form') {
+                                element.find('.mpageverify-verify-action').before(divCaptcha);
+                            } else {
+                                element.find(divAction).before(divCaptcha);
+                            }
+                        } else {
+                            element.append(divCaptcha);
+                        }
+
+                        var target     = 'mp' + '_recaptcha_' + number,
                             parameters = {
-                                'sitekey': self.options.invisibleKey,
+                                'sitekey': self.options.key,
                                 'size': 'invisible',
                                 'callback': function (token) {
                                     if (token) {
@@ -100,9 +115,12 @@ define([
                                         if (value === '#social-form-login'
                                             || value === '#social-form-create'
                                             || value === '#social-form-password-forget'
-                                            || value === '.popup-authentication #login-form.form.form-login') {
+                                            || value === '.popup-authentication #login-form.form.form-login'
+                                            || (value === '#review-form' && self.options.type === 'invisible')
+                                            || value === '.onestepcheckout-index-index .block-content .form.form-login'
+                                        ) {
                                             buttonElement.trigger('click');
-                                        } else {
+                                        } else if (self.options.type !== 'visible') {
                                             element.submit();
                                         }
 
@@ -115,7 +133,11 @@ define([
                                 'badge': self.options.position,
                                 'hl': self.options.language
                             };
-                        widgetIDCaptcha = grecaptcha.render(target, parameters);
+
+                        if (self.options.type === 'visible') {
+                            parameters.size = self.options.size;
+                        }
+                        widgetIDCaptcha                   = grecaptcha.render(target, parameters);
                         self.captchaForm[widgetIDCaptcha] = target;
                         number++;
 
@@ -126,6 +148,8 @@ define([
                             || value === '#social-form-create'
                             || value === '#social-form-password-forget'
                             || value === '.popup-authentication #login-form.form.form-login'
+                            || (value === '#review-form' && self.options.type === 'invisible')
+                            || value === '.onestepcheckout-index-index .block-content .form.form-login'
                         ) {
                             buttonElement.on('click', function (event) {
                                 if (!(element.validation() && element.validation('isValid'))) {
@@ -153,9 +177,12 @@ define([
 
                         } else {
                             element.submit(function (event) {
-                                if (!element.valid()) {
-                                    return;
+                                if (element.attr('id') !== 'mpageverify-form') {
+                                    if (!element.valid()) {
+                                        return;
+                                    }
                                 }
+
                                 if (!self.stopSubmit) {
                                     $.each(self.captchaForm, function (form, value) {
                                         if (element.find('#' + value).length > 0) {
@@ -176,7 +203,7 @@ define([
                         }
 
                     });
-                    for (var i = 1; i < number; i++) {
+                    for (var i = 1; i < number; i++){
                         var badge = $('#mp_recaptcha_' + i + ' .grecaptcha-badge');
                         badge.removeAttr("style");
                         badge.attr("style", $('#mp_recaptcha_0 .grecaptcha-badge').attr("style"));

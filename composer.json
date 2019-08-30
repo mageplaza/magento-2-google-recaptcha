@@ -2,11 +2,11 @@
   "name": "mageplaza/module-google-recaptcha",
   "description": "Magento 2 Google Recaptcha Extension",
   "require": {
-    "mageplaza/module-core": "^1.4.4",
+    "mageplaza/module-core": "^1.4.5",
     "google/recaptcha": "^1.2"
   },
   "type": "magento2-module",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "license": "proprietary",
   "authors": [
     {

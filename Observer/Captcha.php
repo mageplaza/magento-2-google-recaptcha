@@ -100,12 +100,15 @@ class Captcha implements ObserverInterface
     {
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
             $checkResponse = 1;
-
+            if ($this->_request->getFullActionName() === 'wishlist_index_add') {
+                return;
+            }
             foreach ($this->_helperData->getFormPostPaths() as $item) {
                 if ($item !== '' && strpos($this->_request->getRequestUri(), trim($item, ' ')) !== false) {
                     $checkResponse = 0;
                     if ($this->_request->getParam('g-recaptcha-response') !== null) {
-                        $response = $this->_helperData->verifyResponse();
+                        $type = $this->_helperData->getRecaptchaType();
+                        $response = $this->_helperData->verifyResponse($type);
                         if (isset($response['success']) && !$response['success']) {
                             $this->redirectUrlError($response['message']);
                         }
@@ -142,6 +145,7 @@ class Captcha implements ObserverInterface
             ];
         }
 
+        $this->messageManager->getMessages(true);
         $this->messageManager->addErrorMessage($message);
         $this->_actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
         $this->_responseInterface->setRedirect($this->redirect->getRefererUrl());

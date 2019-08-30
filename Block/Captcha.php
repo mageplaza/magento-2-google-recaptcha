@@ -21,6 +21,10 @@
 
 namespace Mageplaza\GoogleRecaptcha\Block;
 
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\View\Design\Theme\ThemeProviderInterface;
+use Magento\Framework\View\Design\ThemeInterface;
+use Magento\Framework\View\DesignInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
@@ -38,6 +42,11 @@ class Captcha extends Template
     protected $_helperData;
 
     /**
+     * @var ThemeProviderInterface
+     */
+    protected $_themeProvider;
+
+    /**
      * @var
      */
     private $_dataFormId;
@@ -51,7 +60,10 @@ class Captcha extends Template
         'customer_account_forgotpassword',
         'contact_index_index',
         'catalog_product_view',
-        'customer_account_edit'
+        'customer_account_edit',
+        'multishipping_checkout_login',
+        'multishipping_checkout_register',
+        'checkout_index_index'
     ];
 
     /**
@@ -59,14 +71,17 @@ class Captcha extends Template
      *
      * @param Context $context
      * @param HelperData $helperData
+     * @param ThemeProviderInterface $themeProvider
      * @param array $data
      */
     public function __construct(
         Context $context,
         HelperData $helperData,
+        ThemeProviderInterface $themeProvider,
         array $data = []
     ) {
         $this->_helperData = $helperData;
+        $this->_themeProvider = $themeProvider;
 
         parent::__construct($context, $data);
     }
@@ -111,6 +126,22 @@ class Captcha extends Template
                 $this->_dataFormId[] = Forms::TYPE_FORMSEXTENDED[0];
             }
         }
+
+        if ($this->isAgeVerificationEnabled()) {
+            $this->_dataFormId[] = Forms::TYPE_AGEVERIFICATION;
+        }
+
+        $actionName = $this->_request->getFullActionName();
+
+        if ($actionName === $this->actionName[6]) {
+            $this->_dataFormId[] = '.form.form-login';
+        }
+        if ($actionName === $this->actionName[7]) {
+            $this->_dataFormId[] = '#form-validate.form-create-account';
+        }
+        if ($actionName === $this->actionName[8]) {
+            $this->_dataFormId[] = Forms::TYPE_FORMSEXTENDED[1];
+        }
         $data = array_merge($this->_helperData->getCssSelectors(), $this->_dataFormId);
 
         return json_encode($data);
@@ -133,6 +164,14 @@ class Captcha extends Template
     public function getInvisibleKey()
     {
         return $this->_helperData->getInvisibleKey();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVisibleKey()
+    {
+        return $this->_helperData->getVisibleKey();
     }
 
     /**
@@ -165,5 +204,56 @@ class Captcha extends Template
     public function getThemeFrontend()
     {
         return $this->_helperData->getThemeFrontend();
+    }
+
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
+    public function getRecaptchaType()
+    {
+        return $this->_helperData->getRecaptchaType($this->getStoreId());
+    }
+
+    /**
+     * @param null $storeId
+     *
+     * @return array|mixed
+     */
+    public function isAgeVerificationEnabled($storeId = null)
+    {
+        return $this->_helperData->isAgeVerificationEnabled($storeId);
+    }
+
+    /**
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getStoreId()
+    {
+        return $this->_storeManager->getStore()->getId();
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getSize()
+    {
+        return $this->_helperData->getSizeFrontend();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentTheme()
+    {
+        $themeId = $this->_helperData->getConfigValue(DesignInterface::XML_PATH_THEME_ID);
+
+        /**
+         * @var $theme ThemeInterface
+         */
+        $theme = $this->_themeProvider->getThemeById($themeId);
+
+        return $theme->getCode();
     }
 }

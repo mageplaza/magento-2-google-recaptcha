@@ -252,7 +252,7 @@ class Data extends CoreHelper
                 $data[] = $value;
             }
         }
-        $custom = explode("\n", str_replace("\r", "", $this->getConfigFrontend('custom/paths', $storeId)));
+        $custom = explode("\n", str_replace("\r", '', $this->getConfigFrontend('custom/paths', $storeId)));
         if (!$custom) {
             return $data;
         }
@@ -268,9 +268,9 @@ class Data extends CoreHelper
     public function getCssSelectors($storeId = null)
     {
         $data = $this->getConfigFrontend('custom/css', $storeId);
-        $forms = explode("\n", str_replace("\r", "", $data));
+        $forms = explode("\n", str_replace("\r", '', $data));
         foreach ($forms as $key => $value) {
-            $forms[$key] = trim($value, " ");
+            $forms[$key] = trim($value, ' ');
         }
 
         return $forms;
@@ -306,8 +306,6 @@ class Data extends CoreHelper
      */
     public function verifyResponse($end = null, $recaptcha = null)
     {
-        $result = ['success' => false];
-
         $recaptcha = $recaptcha ?: $this->_request->getParam('g-recaptcha-response');
         if (!$recaptcha) {
             $result['message'] = __('The response parameter is missing.');
@@ -315,7 +313,7 @@ class Data extends CoreHelper
             return $result;
         }
         try {
-            $recaptchaClass = new ReCaptcha($end ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
+            $recaptchaClass = new ReCaptcha($end === 'visible' ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
             $resp = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
             if ($resp && $resp->isSuccess()) {
                 $result['success'] = true;
@@ -327,5 +325,35 @@ class Data extends CoreHelper
         }
 
         return $result;
+    }
+
+    /**
+     * @param null $storeId
+     *
+     * @return array|mixed
+     */
+    public function getRecaptchaType($storeId = null)
+    {
+        return $this->getConfigFrontend('type', $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     *
+     * @return array|mixed
+     */
+    public function isAgeVerificationEnabled($storeId = null)
+    {
+        return $this->getConfigValue('mpageverify/general/enabled', $storeId);
+    }
+
+    /**
+     * @param $storeId
+     *
+     * @return array|mixed
+     */
+    public function getSizeFrontend($storeId = null)
+    {
+        return $this->getConfigFrontend('size', $storeId);
     }
 }

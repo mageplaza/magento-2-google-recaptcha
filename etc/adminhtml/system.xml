@@ -92,14 +92,30 @@
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="position" translate="label comment" sortOrder="4" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Badge Position</label>
-                    <source_model>Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Position</source_model>
+                <field id="type" translate="label comment" sortOrder="3" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Recaptcha Type</label>
+                    <source_model>Mageplaza\GoogleRecaptcha\Model\System\Config\Source\RecaptchaType</source_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="theme" translate="label comment" sortOrder="5" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="position" translate="label comment" sortOrder="5" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Badge Position</label>
+                    <source_model>Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Position</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                        <field id="type">invisible</field>
+                    </depends>
+                </field>
+                <field id="size" translate="label comment" sortOrder="4" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Size</label>
+                    <source_model>Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Size</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                        <field id="type">visible</field>
+                    </depends>
+                </field>
+                <field id="theme" translate="label comment" sortOrder="6" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Theme</label>
                     <source_model>Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Theme</source_model>
                     <depends>
@@ -113,7 +129,7 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <group id="custom" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                <group id="custom" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Custom Form Position</label>
                     <field id="paths" translate="label comment" type="textarea" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Form Post Paths</label>
@@ -126,7 +142,7 @@
                     <field id="css" translate="label" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>CSS Selectors</label>
                         <comment><![CDATA[ For Example: #newsletter-validate-detail <br><br> Compatible with Mageplaza SocialLogin: <br>#social-form-login<br>
-                        #social-form-create<br>#social-form-password-forget <br><br> Each CSS Selector must be separated by a new line]]></comment>
+                        #social-form-create<br>#social-form-password-forget <br><br> Compatible with Mageplaza OSC: <br>.onestepcheckout-index-index .block-content .form.form-login<br><br> Each CSS Selector must be separated by a new line]]></comment>
                     </field>
                     <depends>
                         <field id="enabled">1</field>

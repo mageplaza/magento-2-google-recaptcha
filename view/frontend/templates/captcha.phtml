@@ -20,7 +20,51 @@
  */
 
 if ($block->isCaptchaFrontend()) : ?>
+    <?php
+        $currentTheme  = $block->getCurrentTheme();
+        $key           = $block->getInvisibleKey();
+        $recaptchaType = $block->getRecaptchaType();
+    if ($recaptchaType === 'visible') {
+        $key = $block->getVisibleKey();
+    }
+    ?>
     <style type="text/css">
+        <?php if ($currentTheme === 'Smartwave/porto' && $recaptchaType === 'visible') : ?>
+            #form-validate.form-create-account .g-recaptcha div {
+                height: unset !important;
+                margin-left: 12px;
+            }
+        <?php endif; ?>
+        <?php if ($recaptchaType === 'invisible') : ?>
+            .form-customer-login .g-recaptcha {
+                padding-top: 15%;
+            }
+        <?php endif; ?>
+
+        .form-customer-login .g-recaptcha {
+            margin: 0px;
+        }
+
+        #social-form-create .g-recaptcha{
+            padding-top: 5%;
+        }
+
+        #social-form-password-forget .g-recaptcha{
+            padding-top: 5%;
+        }
+
+        .onestepcheckout-index-index .form-login .g-recaptcha .grecaptcha-badge {
+            position: unset !important;
+        }
+
+        .checkout-index-index form[data-role=login] .g-recaptcha .grecaptcha-badge {
+            position: unset !important;
+        }
+
+        #mpageverify-form .g-recaptcha {
+            margin-left: 30%;
+        }
+
         .g-recaptcha {
             margin-top: 15px;
             margin-bottom: 15px;
@@ -30,11 +74,13 @@ if ($block->isCaptchaFrontend()) : ?>
         {
             "*": {
                 "Mageplaza_GoogleRecaptcha/js/captcha": {
-                    "invisibleKey": "<?= /* @noEscape */ $block->getInvisibleKey() ?>",
+                    "key": "<?= /* @noEscape */ $key ?>",
                     "language": "<?= /* @noEscape */ $block->getLanguageCode() ?>",
                     "position": "<?= /* @noEscape */ $block->getPositionFrontend() ?>",
                     "theme": "<?= /* @noEscape */ $block->getThemeFrontend() ?>",
-                    "forms": <?= /* @noEscape */ $block->getForms() ?>
+                    "forms": <?= /* @noEscape */ $block->getForms() ?>,
+                    "type": "<?= /* @noEscape */ $recaptchaType ?>",
+                    "size": "<?= /* @noEscape */ $block->getSize() ?>"
                 }
             }
         }
