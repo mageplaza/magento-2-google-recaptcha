@@ -21,9 +21,8 @@
 
 namespace Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend;
 
-use Magento\Framework\Option\ArrayInterface;
-use Symfony\Component\Console\Helper\Helper;
 use Magento\Framework\Module\Manager;
+use Magento\Framework\Option\ArrayInterface;
 
 /**
  * Class Forms
@@ -51,11 +50,10 @@ class Forms implements ArrayInterface
 
     /**
      * Forms constructor.
+     *
      * @param Manager $moduleManager
      */
-    public function __construct(
-        Manager $moduleManager
-    )
+    public function __construct(Manager $moduleManager)
     {
         $this->_moduleManager = $moduleManager;
     }
@@ -81,7 +79,7 @@ class Forms implements ArrayInterface
      */
     public function getOptionHash()
     {
-        $labels =[
+        $labels = [
             self::TYPE_LOGIN          => __('Login'),
             self::TYPE_CREATE         => __('Create User'),
             self::TYPE_FORGOT         => __('Forgot Password'),
@@ -89,9 +87,10 @@ class Forms implements ArrayInterface
             self::TYPE_CHANGEPASSWORD => __('Change Password'),
             self::TYPE_PRODUCTREVIEW  => __('Product Review')
         ];
-        if ($this->checkModuleEnable('Mageplaza_AgeVerification')){
-            $labels = array_merge($labels, [self::TYPE_AGEVERIFICATION=>__('Age Verification')]);
+        if ($this->checkModuleEnable('Mageplaza_AgeVerification')) {
+            $labels = array_merge($labels, [self::TYPE_AGEVERIFICATION => __('Age Verification')]);
         }
+
         return $labels;
     }
 
@@ -108,17 +107,20 @@ class Forms implements ArrayInterface
             self::TYPE_CHANGEPASSWORD => 'customer/account/editPost/',
             self::TYPE_PRODUCTREVIEW  => 'review/product/post/'
         ];
-        if ($this->checkModuleEnable('Mageplaza_AgeVerification')){
-            $forms = array_merge($forms, [self::TYPE_AGEVERIFICATION=>'']);
+        if ($this->checkModuleEnable('Mageplaza_AgeVerification')) {
+            $forms = array_merge($forms, [self::TYPE_AGEVERIFICATION => '']);
         }
+
         return $forms;
     }
 
     /**
      * @param $moduleName
+     *
      * @return bool
      */
-    public function checkModuleEnable($moduleName){
+    public function checkModuleEnable($moduleName)
+    {
         return $this->_moduleManager->isEnabled($moduleName);
     }
 }

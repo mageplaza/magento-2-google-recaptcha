@@ -68,7 +68,7 @@ class Data extends CoreHelper
         DefaultFormsPaths $formPaths
     ) {
         $this->_curlFactory = $curlFactory;
-        $this->_formPaths   = $formPaths;
+        $this->_formPaths = $formPaths;
 
         parent::__construct($context, $objectManager, $storeManager);
     }
@@ -252,7 +252,7 @@ class Data extends CoreHelper
                 $data[] = $value;
             }
         }
-        $custom = explode("\n", str_replace("\r", "", $this->getConfigFrontend('custom/paths', $storeId)));
+        $custom = explode("\n", str_replace("\r", '', $this->getConfigFrontend('custom/paths', $storeId)));
         if (!$custom) {
             return $data;
         }
@@ -267,10 +267,10 @@ class Data extends CoreHelper
      */
     public function getCssSelectors($storeId = null)
     {
-        $data  = $this->getConfigFrontend('custom/css', $storeId);
-        $forms = explode("\n", str_replace("\r", "", $data));
+        $data = $this->getConfigFrontend('custom/css', $storeId);
+        $forms = explode("\n", str_replace("\r", '', $data));
         foreach ($forms as $key => $value) {
-            $forms[$key] = trim($value, " ");
+            $forms[$key] = trim($value, ' ');
         }
 
         return $forms;
@@ -314,7 +314,7 @@ class Data extends CoreHelper
         }
         try {
             $recaptchaClass = new ReCaptcha($end === 'visible' ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
-            $resp           = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
+            $resp = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
             if ($resp && $resp->isSuccess()) {
                 $result['success'] = true;
             } else {
@@ -328,6 +328,8 @@ class Data extends CoreHelper
     }
 
     /**
+     * @param null $storeId
+     *
      * @return array|mixed
      */
     public function getRecaptchaType($storeId = null)

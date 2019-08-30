@@ -23,6 +23,7 @@ namespace Mageplaza\GoogleRecaptcha\Block;
 
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Design\Theme\ThemeProviderInterface;
+use Magento\Framework\View\Design\ThemeInterface;
 use Magento\Framework\View\DesignInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
@@ -40,6 +41,9 @@ class Captcha extends Template
      */
     protected $_helperData;
 
+    /**
+     * @var ThemeProviderInterface
+     */
     protected $_themeProvider;
 
     /**
@@ -67,6 +71,7 @@ class Captcha extends Template
      *
      * @param Context $context
      * @param HelperData $helperData
+     * @param ThemeProviderInterface $themeProvider
      * @param array $data
      */
     public function __construct(
@@ -75,7 +80,7 @@ class Captcha extends Template
         ThemeProviderInterface $themeProvider,
         array $data = []
     ) {
-        $this->_helperData    = $helperData;
+        $this->_helperData = $helperData;
         $this->_themeProvider = $themeProvider;
 
         parent::__construct($context, $data);
@@ -86,14 +91,14 @@ class Captcha extends Template
      */
     public function getForms()
     {
-        $useLogin          = false;
+        $useLogin = false;
         $this->_dataFormId = $this->_helperData->getFormsFrontend();
 
         foreach ($this->_dataFormId as $item => $value) {
             switch ($value) {
                 case Forms::TYPE_LOGIN:
                     $actionName = $this->actionName[0];
-                    $useLogin   = true;
+                    $useLogin = true;
                     break;
                 case Forms::TYPE_CREATE:
                     $actionName = $this->actionName[1];
@@ -136,7 +141,6 @@ class Captcha extends Template
         }
         if ($actionName === $this->actionName[8]) {
             $this->_dataFormId[] = Forms::TYPE_FORMSEXTENDED[1];
-
         }
         $data = array_merge($this->_helperData->getCssSelectors(), $this->_dataFormId);
 
@@ -246,7 +250,7 @@ class Captcha extends Template
         $themeId = $this->_helperData->getConfigValue(DesignInterface::XML_PATH_THEME_ID);
 
         /**
-         * @var $theme \Magento\Framework\View\Design\ThemeInterface
+         * @var $theme ThemeInterface
          */
         $theme = $this->_themeProvider->getThemeById($themeId);
 

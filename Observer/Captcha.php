@@ -85,12 +85,12 @@ class Captcha implements ObserverInterface
         ResponseInterface $responseInterface,
         RedirectInterface $redirect
     ) {
-        $this->_helperData        = $helperData;
-        $this->_request           = $request;
-        $this->messageManager     = $messageManager;
-        $this->_actionFlag        = $actionFlag;
+        $this->_helperData = $helperData;
+        $this->_request = $request;
+        $this->messageManager = $messageManager;
+        $this->_actionFlag = $actionFlag;
         $this->_responseInterface = $responseInterface;
-        $this->redirect           = $redirect;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -107,7 +107,7 @@ class Captcha implements ObserverInterface
                 if ($item !== '' && strpos($this->_request->getRequestUri(), trim($item, ' ')) !== false) {
                     $checkResponse = 0;
                     if ($this->_request->getParam('g-recaptcha-response') !== null) {
-                        $type     = $this->_helperData->getRecaptchaType();
+                        $type = $this->_helperData->getRecaptchaType();
                         $response = $this->_helperData->verifyResponse($type);
                         if (isset($response['success']) && !$response['success']) {
                             $this->redirectUrlError($response['message']);
@@ -115,7 +115,6 @@ class Captcha implements ObserverInterface
                     } else {
                         $this->redirectUrlError(__('Missing required parameters recaptcha!'));
                     }
-
                 }
             }
             if ($checkResponse === 1 && $this->_request->getParam('g-recaptcha-response') !== null) {
