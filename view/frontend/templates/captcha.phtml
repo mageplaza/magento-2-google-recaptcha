@@ -24,18 +24,18 @@ if ($block->isCaptchaFrontend()) : ?>
         $currentTheme  = $block->getCurrentTheme();
         $key           = $block->getInvisibleKey();
         $recaptchaType = $block->getRecaptchaType();
-        if ($recaptchaType === 'visible') {
-            $key = $block->getVisibleKey();
-        }
+    if ($recaptchaType === 'visible') {
+        $key = $block->getVisibleKey();
+    }
     ?>
     <style type="text/css">
-        <?php if($currentTheme === 'Smartwave/porto' && $recaptchaType === 'visible') : ?>
+        <?php if ($currentTheme === 'Smartwave/porto' && $recaptchaType === 'visible') : ?>
             #form-validate.form-create-account .g-recaptcha div {
                 height: unset !important;
                 margin-left: 12px;
             }
         <?php endif; ?>
-        <?php if($recaptchaType === 'invisible') : ?>
+        <?php if ($recaptchaType === 'invisible') : ?>
             .form-customer-login .g-recaptcha {
                 padding-top: 15%;
             }

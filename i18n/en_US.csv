@@ -8,6 +8,7 @@ Login,Login
 "Contact Us","Contact Us"
 "Change Password","Change Password"
 "Product Review","Product Review"
+"Age Verification","Age Verification"
 "-- Auto Detected --","-- Auto Detected --"
 Arabic,Arabic
 Afrikaans,Afrikaans
@@ -81,6 +82,8 @@ Zulu,Zulu
 "Bottom Right","Bottom Right"
 "Bottom Left","Bottom Left"
 Inline,Inline
+Visible,Visible
+Invisible,Invisible
 Compact,Compact
 Normal,Normal
 Dark,Dark
@@ -91,17 +94,16 @@ message,message
 "Google Recaptcha","Google Recaptcha"
 General,General
 Enable,Enable
-Invisible,Invisible
 "Google API Key","Google API Key"
 "Create app <a href=""https://www.google.com/recaptcha/admin"" target=""_blank"">here</a>.","Create app <a href=""https://www.google.com/recaptcha/admin"" target=""_blank"">here</a>."
 "Google API Secret Key","Google API Secret Key"
-Visible,Visible
 "Language Code","Language Code"
 "Backend Configuration","Backend Configuration"
 Forms,Forms
 Size,Size
 Theme,Theme
 "Frontend Configuration","Frontend Configuration"
+"Recaptcha Type","Recaptcha Type"
 "Badge Position","Badge Position"
 "Custom Form Position","Custom Form Position"
 "Form Post Paths","Form Post Paths"
