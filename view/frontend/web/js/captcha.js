@@ -57,15 +57,15 @@ define([
          * Init Create reCaptcha
          */
         createCaptcha: function () {
-            var self      = this,
+            var self = this,
                 widgetIDCaptcha,
                 sortEvent,
-                number    = 0,
+                number = 0,
                 resetForm = 0;
 
             window.recaptchaOnload = function () {
                 //get form active
-                var forms  = self.options.forms,
+                var forms = self.options.forms,
                     result = false;
                 if (forms && forms.length > 0) {
                     forms.forEach(function (element) {
@@ -91,8 +91,8 @@ define([
                          * Create Widget
                          */
                         var buttonElement = element.find('button[type=button]').length > 0 ? element.find('button[type=button]') : element.find('button[type=submit]');
-                        var divCaptcha    = $('<div class="g-recaptcha"></div>');
-                        var divAction     = $('.actions-toolbar');
+                        var divCaptcha = $('<div class="g-recaptcha"></div>');
+                        var divAction = $('.actions-toolbar');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
 
                         if (self.options.type === 'visible') {
@@ -105,7 +105,7 @@ define([
                             element.append(divCaptcha);
                         }
 
-                        var target     = 'mp' + '_recaptcha_' + number,
+                        var target = 'mp' + '_recaptcha_' + number,
                             parameters = {
                                 'sitekey': self.options.key,
                                 'size': 'invisible',
@@ -137,73 +137,75 @@ define([
                         if (self.options.type === 'visible') {
                             parameters.size = self.options.size;
                         }
-                        widgetIDCaptcha                   = grecaptcha.render(target, parameters);
+                        widgetIDCaptcha = grecaptcha.render(target, parameters);
                         self.captchaForm[widgetIDCaptcha] = target;
                         number++;
 
                         /**
                          * Check form submit
                          */
-                        if (value === '#social-form-login'
-                            || value === '#social-form-create'
-                            || value === '#social-form-password-forget'
-                            || value === '.popup-authentication #login-form.form.form-login'
-                            || (value === '#review-form' && self.options.type === 'invisible')
-                            || value === '.onestepcheckout-index-index .block-content .form.form-login'
-                        ) {
-                            buttonElement.on('click', function (event) {
-                                if (!(element.validation() && element.validation('isValid'))) {
-                                    return;
-                                }
-
-                                if (!self.stopSubmit) {
-                                    $.each(self.captchaForm, function (form, value) {
-                                        if (element.find('#' + value).length > 0) {
-
-                                            grecaptcha.reset(form);
-                                            grecaptcha.execute(form);
-                                            resetForm = form;
-                                            event.preventDefault(event);
-                                            event.stopImmediatePropagation();
-
-                                            return false;
-                                        }
-                                    });
-                                }
-                            });
-
-                            sortEvent = $._data(buttonElement[0], 'events').click;
-                            sortEvent.unshift(sortEvent.pop());
-
-                        } else {
-                            element.submit(function (event) {
-                                if (element.attr('id') !== 'mpageverify-form') {
-                                    if (!element.valid()) {
+                        if (self.options.type !== 'visible') {
+                            if (value === '#social-form-login'
+                                || value === '#social-form-create'
+                                || value === '#social-form-password-forget'
+                                || value === '.popup-authentication #login-form.form.form-login'
+                                || (value === '#review-form' && self.options.type === 'invisible')
+                                || value === '.onestepcheckout-index-index .block-content .form.form-login'
+                            ) {
+                                buttonElement.on('click', function (event) {
+                                    if (!(element.validation() && element.validation('isValid'))) {
                                         return;
                                     }
-                                }
 
-                                if (!self.stopSubmit) {
-                                    $.each(self.captchaForm, function (form, value) {
-                                        if (element.find('#' + value).length > 0) {
+                                    if (!self.stopSubmit) {
+                                        $.each(self.captchaForm, function (form, value) {
+                                            if (element.find('#' + value).length > 0) {
 
-                                            grecaptcha.reset(form);
-                                            grecaptcha.execute(form);
-                                            resetForm = form;
-                                            event.preventDefault(event);
-                                            event.stopImmediatePropagation();
+                                                grecaptcha.reset(form);
+                                                grecaptcha.execute(form);
+                                                resetForm = form;
+                                                event.preventDefault(event);
+                                                event.stopImmediatePropagation();
 
-                                            return false;
+                                                return false;
+                                            }
+                                        });
+                                    }
+                                });
+
+                                sortEvent = $._data(buttonElement[0], 'events').click;
+                                sortEvent.unshift(sortEvent.pop());
+
+                            } else {
+                                element.submit(function (event) {
+                                    if (element.attr('id') !== 'mpageverify-form') {
+                                        if (!element.valid()) {
+                                            return;
                                         }
-                                    });
-                                }
-                            });
-                            sortEvent = $._data(element[0], 'events').submit;
-                            sortEvent.unshift(sortEvent.pop());
+                                    }
+
+                                    if (!self.stopSubmit) {
+                                        $.each(self.captchaForm, function (form, value) {
+                                            if (element.find('#' + value).length > 0) {
+
+                                                grecaptcha.reset(form);
+                                                grecaptcha.execute(form);
+                                                resetForm = form;
+                                                event.preventDefault(event);
+                                                event.stopImmediatePropagation();
+
+                                                return false;
+                                            }
+                                        });
+                                    }
+                                });
+                                sortEvent = $._data(element[0], 'events').submit;
+                                sortEvent.unshift(sortEvent.pop());
+                            }
                         }
 
                     });
-                    for (var i = 1; i < number; i++){
+                    for (var i = 1; i < number; i++) {
                         var badge = $('#mp_recaptcha_' + i + ' .grecaptcha-badge');
                         badge.removeAttr("style");
                         badge.attr("style", $('#mp_recaptcha_0 .grecaptcha-badge').attr("style"));
