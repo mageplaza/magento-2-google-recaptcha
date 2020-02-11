@@ -35,6 +35,7 @@ define([
         captchaForm: [],
         activeForm: [],
         stopSubmit: false,
+
         /**
          * This method constructs a new widget.
          * @private
@@ -42,6 +43,7 @@ define([
         _create: function () {
             var self = this,
                 stop = 0;
+
             $(function () {
                 var ID = setInterval(function () {
                     if (stop === 0) {
@@ -57,28 +59,32 @@ define([
          * Init Create reCaptcha
          */
         createCaptcha: function () {
-            var self = this,
+            var self      = this,
                 widgetIDCaptcha,
                 sortEvent,
-                number = 0,
+                number    = 0,
                 resetForm = 0;
 
             window.recaptchaOnload = function () {
                 //get form active
-                var forms = self.options.forms,
+                var forms  = self.options.forms,
                     result = false;
+
                 if (forms && forms.length > 0) {
                     forms.forEach(function (element) {
                         if (element === '.onestepcheckout-index-index .block-content .form.form-login') {
                             var checkOSC = setInterval(function () {
-                                if ($(element).length == 2) {
+                                if ($(element).length === 2) {
                                     $(element).last().attr('id', 'Osccaptcha');
                                     result = true;
                                     self.processOscCaptcha(result, '#Osccaptcha');
                                     clearInterval(checkOSC);
                                 }
                             }, 100);
-                        } else if (element !== '' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() === 'form') {
+
+                        } else if (element !== ''
+                            && $(element).length > 0
+                            && $(element).prop("tagName").toLowerCase() === 'form') {
                             self.activeForm.push(element);
                             result = true;
                         }
@@ -88,18 +94,21 @@ define([
                     forms = self.activeForm;
                     forms.forEach(function (value) {
                         var element = $(value);
+
                         //Multi ID
                         if (element.length > 1) {
                             element = $(element).first();
                         }
+
                         /**
                          * Create Widget
                          */
                         var buttonElement = element.find('button[type=button]').length > 0 ? element.find('button[type=button]') : element.find('button[type=submit]');
-                        var divCaptcha = $('<div class="g-recaptcha"></div>');
-                        var divAction = $('.actions-toolbar');
-                        var divError = $('<div class="g-recaptcha-error"></div>');
-                        var checkBox = $('<input type="checkbox" style="visibility: hidden" data-validate="{required:true}" class="mage-error">');
+                        var divCaptcha    = $('<div class="g-recaptcha"></div>');
+                        var divAction     = $('.actions-toolbar');
+                        var divError      = $('<div class="g-recaptcha-error"></div>');
+                        var checkBox      = $('<input type="checkbox" style="visibility: hidden" data-validate="{required:true}" class="mage-error">');
+
                         divError.text('You need select captcha').attr('style', 'display:none;color:red');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
                         checkBox.attr('name', 'mp' + '_recaptcha_' + number);
@@ -116,18 +125,19 @@ define([
                             element.append(divCaptcha);
                         }
 
-
-                        var target = 'mp' + '_recaptcha_' + number,
+                        var target     = 'mp' + '_recaptcha_' + number,
                             parameters = {
                                 'sitekey': self.options.key,
                                 'size': 'invisible',
                                 'callback': function (token) {
                                     if (token) {
-                                        if (self.options.type == 'visible') {
+                                        if (self.options.type === 'visible') {
                                             var name = element.find('.g-recaptcha').attr('id');
+
                                             $("input[name='" + name + "']").prop('checked', true);
                                         } else {
                                             self.stopSubmit = token;
+
                                             if (value === '#social-form-login'
                                                 || value === '#social-form-create'
                                                 || value === '#social-form-password-forget'
@@ -145,8 +155,9 @@ define([
                                     }
                                 },
                                 'expired-callback': function () {
-                                    if (self.options.type == 'visible') {
+                                    if (self.options.type === 'visible') {
                                         var name = element.find('.g-recaptcha').attr('id');
+
                                         $("input[name='" + name + "']").prop('checked', false);
                                     }
                                 },
@@ -158,7 +169,7 @@ define([
                         if (self.options.type === 'visible') {
                             parameters.size = self.options.size;
                         }
-                        widgetIDCaptcha = grecaptcha.render(target, parameters);
+                        widgetIDCaptcha                   = grecaptcha.render(target, parameters);
                         self.captchaForm[widgetIDCaptcha] = target;
                         number++;
 
@@ -227,10 +238,10 @@ define([
                                 || value === '.popup-authentication #login-form.form.form-login'
                             ) {
                                 buttonElement.on('click', function (event) {
-                                    var name = element.find('.g-recaptcha').attr('id');
+                                    var name  = element.find('.g-recaptcha').attr('id');
                                     var check = $("input[name='" + name + "']").prop('checked');
 
-                                    if (!(element.validation() && element.validation('isValid')) && check == false) {
+                                    if (!(element.validation() && element.validation('isValid')) && check === false) {
                                         $.each(self.captchaForm, function (form, value) {
                                             if (element.find('#' + value).length > 0) {
                                                 self.showMessage(divError, 5000);
@@ -243,10 +254,10 @@ define([
                                 });
                             } else {
                                 element.submit(function (event) {
-                                    var name = element.find('.g-recaptcha').attr('id');
+                                    var name  = element.find('.g-recaptcha').attr('id');
                                     var check = $("input[name='" + name + "']").prop('checked');
 
-                                    if (check == false) {
+                                    if (check === false) {
                                         $.each(self.captchaForm, function (form, value) {
                                             if (element.find('#' + value).length > 0) {
                                                 self.showMessage(divError, 5000);
@@ -261,8 +272,9 @@ define([
                         }
                     });
 
-                    for (var i = 1; i < number; i++) {
+                    for (var i = 1; i < number; i++){
                         var badge = $('#mp_recaptcha_' + i + ' .grecaptcha-badge');
+
                         badge.removeAttr("style");
                         badge.attr("style", $('#mp_recaptcha_0 .grecaptcha-badge').attr("style"));
                     }
@@ -273,11 +285,9 @@ define([
 
         /**
          * compatible with form OSC
-         * @param result
-         * @param value
          */
         processOscCaptcha: function (result, value) {
-            var self = this,
+            var self      = this,
                 widgetIDCaptcha,
                 sortEvent,
                 resetForm = 0;
@@ -289,10 +299,10 @@ define([
                  * Create Widget
                  */
                 var buttonElement = element.find('button[type=button]').length > 0 ? element.find('button[type=button]') : element.find('button[type=submit]');
-                var divCaptcha = $('<div class="g-recaptcha"></div>');
-                var divAction = $('.actions-toolbar');
-                var divError = $('<div class="g-recaptcha-error"></div>');
-                var checkBox = $('<input type="checkbox" style="visibility: hidden" data-validate="{required:true}" class="mage-error">');
+                var divCaptcha    = $('<div class="g-recaptcha"></div>');
+                var divAction     = $('.actions-toolbar');
+                var divError      = $('<div class="g-recaptcha-error"></div>');
+                var checkBox      = $('<input type="checkbox" style="visibility: hidden" data-validate="{required:true}" class="mage-error">');
                 divError.text('You need select captcha').attr('style', 'display:none;color:red');
                 divCaptcha.attr('id', 'mp' + '_recaptcha_' + 'osc');
                 checkBox.attr('name', 'mp' + '_recaptcha_' + 'osc');
@@ -305,13 +315,13 @@ define([
                     element.append(divCaptcha);
                 }
 
-                var target = 'mp' + '_recaptcha_' + 'osc',
+                var target     = 'mp' + '_recaptcha_' + 'osc',
                     parameters = {
                         'sitekey': self.options.key,
                         'size': 'invisible',
                         'callback': function (token) {
                             if (token) {
-                                if (self.options.type == 'visible') {
+                                if (self.options.type === 'visible') {
                                     var name = element.find('.g-recaptcha').attr('id');
                                     $("input[name='" + name + "']").prop('checked', true);
                                 } else {
@@ -323,7 +333,7 @@ define([
                             }
                         },
                         'expired-callback': function () {
-                            if (self.options.type == 'visible') {
+                            if (self.options.type === 'visible') {
                                 var name = element.find('.g-recaptcha').attr('id');
                                 $("input[name='" + name + "']").prop('checked', false);
                             }
@@ -336,7 +346,7 @@ define([
                 if (self.options.type === 'visible') {
                     parameters.size = self.options.size;
                 }
-                widgetIDCaptcha = grecaptcha.render(target, parameters);
+                widgetIDCaptcha                   = grecaptcha.render(target, parameters);
                 self.captchaForm[widgetIDCaptcha] = target;
 
 
@@ -366,10 +376,10 @@ define([
                     sortEvent.unshift(sortEvent.pop());
                 } else {
                     buttonElement.on('click', function (event) {
-                        var name = element.find('.g-recaptcha').attr('id');
+                        var name  = element.find('.g-recaptcha').attr('id');
                         var check = $("input[name='" + name + "']").prop('checked');
 
-                        if (!(element.validation() && element.validation('isValid')) && check == false) {
+                        if (!(element.validation() && element.validation('isValid')) && check === false) {
                             $.each(self.captchaForm, function (form, value) {
                                 if (element.find('#' + value).length > 0) {
                                     self.showMessage(divError, 5000);
@@ -383,22 +393,22 @@ define([
                 }
 
                 var badge = $('#mp_recaptcha_' + 'osc' + ' .grecaptcha-badge');
+
                 badge.removeAttr("style");
                 badge.attr("style", $('#mp_recaptcha_osc .grecaptcha-badge').attr("style"));
             }
         },
 
         /**
-         * @param el
-         * @param timedelay
+         * Show error message
          */
-        showMessage: function (el, timedelay) {
+        showMessage: function (el, timeDelay) {
             el.show();
-            if (timedelay <= 0) timedelay = 5000;
+            if (timeDelay <= 0) timeDelay = 5000;
             setTimeout(function () {
                 el.hide();
-            }, timedelay);
-        },
+            }, timeDelay);
+        }
     });
 
     return $.mageplaza.captcha;
