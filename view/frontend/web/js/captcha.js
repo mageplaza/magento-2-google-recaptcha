@@ -69,7 +69,16 @@ define([
                     result = false;
                 if (forms && forms.length > 0) {
                     forms.forEach(function (element) {
-                        if (element !== '' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() === 'form') {
+                        if (element === '.onestepcheckout-index-index .block-content .form.form-login') {
+                            var checkOSC = setInterval(function () {
+                                if ($(element).length == 2) {
+                                    $(element).last().attr('id', 'Osccaptcha');
+                                    result = true;
+                                    self.processOscCaptcha(result, '#Osccaptcha');
+                                    clearInterval(checkOSC);
+                                }
+                            }, 100);
+                        } else if (element !== '' && $(element).length > 0 && $(element).prop("tagName").toLowerCase() === 'form') {
                             self.activeForm.push(element);
                             result = true;
                         }
@@ -81,11 +90,7 @@ define([
                         var element = $(value);
                         //Multi ID
                         if (element.length > 1) {
-                            if (value === '.onestepcheckout-index-index .block-content .form.form-login') {
-                                element = $(element).last();
-                            } else {
-                                element = $(element).first();
-                            }
+                            element = $(element).first();
                         }
                         /**
                          * Create Widget
@@ -93,17 +98,24 @@ define([
                         var buttonElement = element.find('button[type=button]').length > 0 ? element.find('button[type=button]') : element.find('button[type=submit]');
                         var divCaptcha = $('<div class="g-recaptcha"></div>');
                         var divAction = $('.actions-toolbar');
+                        var divError = $('<div class="g-recaptcha-error"></div>');
+                        var checkBox = $('<input type="checkbox" style="visibility: hidden" data-validate="{required:true}" class="mage-error">');
+                        divError.text('You need select captcha').attr('style', 'display:none;color:red');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
+                        checkBox.attr('name', 'mp' + '_recaptcha_' + number);
+
 
                         if (self.options.type === 'visible') {
                             if (element.attr('id') === 'mpageverify-form') {
-                                element.find('.mpageverify-verify-action').before(divCaptcha);
+                                element.find('.mpageverify-verify-action').before(divCaptcha).before(divError);
                             } else {
-                                element.find(divAction).before(divCaptcha);
+                                element.find(divAction).first().before(divCaptcha).before(divError);
                             }
+                            element.find(divAction).first().before(checkBox);
                         } else {
                             element.append(divCaptcha);
                         }
+
 
                         var target = 'mp' + '_recaptcha_' + number,
                             parameters = {
@@ -111,22 +123,31 @@ define([
                                 'size': 'invisible',
                                 'callback': function (token) {
                                     if (token) {
-                                        self.stopSubmit = token;
-                                        if (value === '#social-form-login'
-                                            || value === '#social-form-create'
-                                            || value === '#social-form-password-forget'
-                                            || value === '.popup-authentication #login-form.form.form-login'
-                                            || (value === '#review-form' && self.options.type === 'invisible')
-                                            || value === '.onestepcheckout-index-index .block-content .form.form-login'
-                                        ) {
-                                            buttonElement.trigger('click');
-                                        } else if (self.options.type !== 'visible') {
-                                            element.submit();
+                                        if (self.options.type == 'visible') {
+                                            var name = element.find('.g-recaptcha').attr('id');
+                                            $("input[name='" + name + "']").prop('checked', true);
+                                        } else {
+                                            self.stopSubmit = token;
+                                            if (value === '#social-form-login'
+                                                || value === '#social-form-create'
+                                                || value === '#social-form-password-forget'
+                                                || value === '.popup-authentication #login-form.form.form-login'
+                                                || (value === '#review-form' && self.options.type === 'invisible')
+                                            ) {
+                                                buttonElement.trigger('click');
+                                            } else {
+                                                element.submit();
+                                            }
                                         }
-
                                     } else {
                                         grecaptcha.reset(resetForm);
                                         resetForm = 0;
+                                    }
+                                },
+                                'expired-callback': function () {
+                                    if (self.options.type == 'visible') {
+                                        var name = element.find('.g-recaptcha').attr('id');
+                                        $("input[name='" + name + "']").prop('checked', false);
                                     }
                                 },
                                 'theme': self.options.theme,
@@ -150,7 +171,6 @@ define([
                                 || value === '#social-form-password-forget'
                                 || value === '.popup-authentication #login-form.form.form-login'
                                 || (value === '#review-form' && self.options.type === 'invisible')
-                                || value === '.onestepcheckout-index-index .block-content .form.form-login'
                             ) {
                                 buttonElement.on('click', function (event) {
                                     if (!(element.validation() && element.validation('isValid'))) {
@@ -160,7 +180,6 @@ define([
                                     if (!self.stopSubmit) {
                                         $.each(self.captchaForm, function (form, value) {
                                             if (element.find('#' + value).length > 0) {
-
                                                 grecaptcha.reset(form);
                                                 grecaptcha.execute(form);
                                                 resetForm = form;
@@ -187,7 +206,6 @@ define([
                                     if (!self.stopSubmit) {
                                         $.each(self.captchaForm, function (form, value) {
                                             if (element.find('#' + value).length > 0) {
-
                                                 grecaptcha.reset(form);
                                                 grecaptcha.execute(form);
                                                 resetForm = form;
@@ -202,9 +220,47 @@ define([
                                 sortEvent = $._data(element[0], 'events').submit;
                                 sortEvent.unshift(sortEvent.pop());
                             }
-                        }
+                        } else {
+                            if (value === '#social-form-login'
+                                || value === '#social-form-create'
+                                || value === '#social-form-password-forget'
+                                || value === '.popup-authentication #login-form.form.form-login'
+                            ) {
+                                buttonElement.on('click', function (event) {
+                                    var name = element.find('.g-recaptcha').attr('id');
+                                    var check = $("input[name='" + name + "']").prop('checked');
 
+                                    if (!(element.validation() && element.validation('isValid')) && check == false) {
+                                        $.each(self.captchaForm, function (form, value) {
+                                            if (element.find('#' + value).length > 0) {
+                                                self.showMessage(divError, 5000);
+                                                grecaptcha.reset(form);
+                                                event.preventDefault(event);
+                                                event.stopImmediatePropagation();
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                element.submit(function (event) {
+                                    var name = element.find('.g-recaptcha').attr('id');
+                                    var check = $("input[name='" + name + "']").prop('checked');
+
+                                    if (check == false) {
+                                        $.each(self.captchaForm, function (form, value) {
+                                            if (element.find('#' + value).length > 0) {
+                                                self.showMessage(divError, 5000);
+                                                grecaptcha.reset(form);
+                                                event.preventDefault(event);
+                                                event.stopImmediatePropagation();
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
                     });
+
                     for (var i = 1; i < number; i++) {
                         var badge = $('#mp_recaptcha_' + i + ' .grecaptcha-badge');
                         badge.removeAttr("style");
@@ -213,7 +269,136 @@ define([
                 }
             };
             require(['//www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit']);
-        }
+        },
+
+        /**
+         * compatible with form OSC
+         * @param result
+         * @param value
+         */
+        processOscCaptcha: function (result, value) {
+            var self = this,
+                widgetIDCaptcha,
+                sortEvent,
+                resetForm = 0;
+
+            if (result) {
+                var element = $(value);
+
+                /**
+                 * Create Widget
+                 */
+                var buttonElement = element.find('button[type=button]').length > 0 ? element.find('button[type=button]') : element.find('button[type=submit]');
+                var divCaptcha = $('<div class="g-recaptcha"></div>');
+                var divAction = $('.actions-toolbar');
+                var divError = $('<div class="g-recaptcha-error"></div>');
+                var checkBox = $('<input type="checkbox" style="visibility: hidden" data-validate="{required:true}" class="mage-error">');
+                divError.text('You need select captcha').attr('style', 'display:none;color:red');
+                divCaptcha.attr('id', 'mp' + '_recaptcha_' + 'osc');
+                checkBox.attr('name', 'mp' + '_recaptcha_' + 'osc');
+
+
+                if (self.options.type === 'visible') {
+                    element.find(divAction).before(divCaptcha).before(divError);
+                    element.find(divAction).first().before(checkBox);
+                } else {
+                    element.append(divCaptcha);
+                }
+
+                var target = 'mp' + '_recaptcha_' + 'osc',
+                    parameters = {
+                        'sitekey': self.options.key,
+                        'size': 'invisible',
+                        'callback': function (token) {
+                            if (token) {
+                                if (self.options.type == 'visible') {
+                                    var name = element.find('.g-recaptcha').attr('id');
+                                    $("input[name='" + name + "']").prop('checked', true);
+                                } else {
+                                    self.stopSubmit = token;
+                                    buttonElement.trigger('click');
+                                }
+                            } else {
+                                grecaptcha.reset(resetForm);
+                            }
+                        },
+                        'expired-callback': function () {
+                            if (self.options.type == 'visible') {
+                                var name = element.find('.g-recaptcha').attr('id');
+                                $("input[name='" + name + "']").prop('checked', false);
+                            }
+                        },
+                        'theme': self.options.theme,
+                        'badge': self.options.position,
+                        'hl': self.options.language
+                    };
+
+                if (self.options.type === 'visible') {
+                    parameters.size = self.options.size;
+                }
+                widgetIDCaptcha = grecaptcha.render(target, parameters);
+                self.captchaForm[widgetIDCaptcha] = target;
+
+
+                /**
+                 * Check form submit
+                 */
+                if (self.options.type !== 'visible') {
+                    buttonElement.on('click', function (event) {
+                        if (!(element.validation() && element.validation('isValid'))) {
+                            return;
+                        }
+                        if (!self.stopSubmit) {
+                            $.each(self.captchaForm, function (form, value) {
+                                if (element.find('#' + value).length > 0) {
+                                    grecaptcha.reset(form);
+                                    grecaptcha.execute(form);
+                                    resetForm = form;
+                                    event.preventDefault(event);
+                                    event.stopImmediatePropagation();
+
+                                    return false;
+                                }
+                            });
+                        }
+                    });
+                    sortEvent = $._data(buttonElement[0], 'events').click;
+                    sortEvent.unshift(sortEvent.pop());
+                } else {
+                    buttonElement.on('click', function (event) {
+                        var name = element.find('.g-recaptcha').attr('id');
+                        var check = $("input[name='" + name + "']").prop('checked');
+
+                        if (!(element.validation() && element.validation('isValid')) && check == false) {
+                            $.each(self.captchaForm, function (form, value) {
+                                if (element.find('#' + value).length > 0) {
+                                    self.showMessage(divError, 5000);
+                                    grecaptcha.reset(form);
+                                    event.preventDefault(event);
+                                    event.stopImmediatePropagation();
+                                }
+                            });
+                        }
+                    });
+                }
+
+                var badge = $('#mp_recaptcha_' + 'osc' + ' .grecaptcha-badge');
+                badge.removeAttr("style");
+                badge.attr("style", $('#mp_recaptcha_osc .grecaptcha-badge').attr("style"));
+            }
+        },
+
+        /**
+         * @param el
+         * @param timedelay
+         */
+        showMessage: function (el, timedelay) {
+            el.show();
+            if (timedelay <= 0) timedelay = 5000;
+            setTimeout(function () {
+                el.hide();
+            }, timedelay);
+        },
     });
 
     return $.mageplaza.captcha;

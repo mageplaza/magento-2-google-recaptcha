@@ -108,7 +108,7 @@ class Forgot implements ObserverInterface
             $controller = $this->_urlInterface->getCurrentUrl();
             try {
                 $response = $this->_helperData->verifyResponse('visible');
-                if (isset($response['success']) && !$response['success']) {
+                if(!array_key_exists('success',$response)){
                     $this->redirectError($controller, $response['message']);
                 }
             } catch (Exception $e) {

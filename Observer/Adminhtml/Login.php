@@ -53,7 +53,8 @@ class Login implements ObserverInterface
     public function __construct(
         HelperData $helperData,
         JsonFactory $resultJsonFactory
-    ) {
+    )
+    {
         $this->_helperData = $helperData;
         $this->_resultJsonFactory = $resultJsonFactory;
     }
@@ -69,7 +70,7 @@ class Login implements ObserverInterface
             && in_array('backend_login', $this->_helperData->getFormsBackend())
         ) {
             $response = $this->_helperData->verifyResponse('visible');
-            if (isset($response['success']) && !$response['success']) {
+            if (!array_key_exists('success', $response)) {
                 throw new PluginAuthenticationException(
                     new Phrase($response['message'])
                 );
