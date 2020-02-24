@@ -21,7 +21,6 @@
 
 namespace Mageplaza\GoogleRecaptcha\Observer\Adminhtml;
 
-use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\Plugin\AuthenticationException as PluginAuthenticationException;
@@ -35,11 +34,6 @@ use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 class Login implements ObserverInterface
 {
     /**
-     * @type JsonFactory
-     */
-    protected $_resultJsonFactory;
-
-    /**
      * @var HelperData
      */
     protected $_helperData;
@@ -48,14 +42,11 @@ class Login implements ObserverInterface
      * Login constructor.
      *
      * @param HelperData $helperData
-     * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
-        HelperData $helperData,
-        JsonFactory $resultJsonFactory
+        HelperData $helperData
     ) {
         $this->_helperData = $helperData;
-        $this->_resultJsonFactory = $resultJsonFactory;
     }
 
     /**
@@ -66,10 +57,10 @@ class Login implements ObserverInterface
     public function execute(Observer $observer)
     {
         if ($this->_helperData->isCaptchaBackend()
-            && in_array('backend_login', $this->_helperData->getFormsBackend())
+            && in_array('backend_login', $this->_helperData->getFormsBackend(), true)
         ) {
             $response = $this->_helperData->verifyResponse('visible');
-            if (isset($response['success']) && !$response['success']) {
+            if (!array_key_exists('success', $response)) {
                 throw new PluginAuthenticationException(
                     new Phrase($response['message'])
                 );

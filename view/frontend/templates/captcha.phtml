@@ -37,9 +37,13 @@ if ($block->isCaptchaFrontend()) : ?>
         <?php endif; ?>
         <?php if ($recaptchaType === 'invisible') : ?>
             .form-customer-login .g-recaptcha {
-                padding-top: 15%;
+                padding-top: 20%;
             }
         <?php endif; ?>
+
+        .form.form-login .g-recaptcha .grecaptcha-badge{
+            position: unset !important;
+        }
 
         .form-customer-login .g-recaptcha {
             margin: 0px;

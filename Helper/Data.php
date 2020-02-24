@@ -68,7 +68,7 @@ class Data extends CoreHelper
         DefaultFormsPaths $formPaths
     ) {
         $this->_curlFactory = $curlFactory;
-        $this->_formPaths = $formPaths;
+        $this->_formPaths   = $formPaths;
 
         parent::__construct($context, $objectManager, $storeManager);
     }
@@ -267,7 +267,7 @@ class Data extends CoreHelper
      */
     public function getCssSelectors($storeId = null)
     {
-        $data = $this->getConfigFrontend('custom/css', $storeId);
+        $data  = $this->getConfigFrontend('custom/css', $storeId);
         $forms = explode("\n", str_replace("\r", '', $data));
         foreach ($forms as $key => $value) {
             $forms[$key] = trim($value, ' ');
@@ -314,7 +314,7 @@ class Data extends CoreHelper
         }
         try {
             $recaptchaClass = new ReCaptcha($end === 'visible' ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
-            $resp = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
+            $resp           = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
             if ($resp && $resp->isSuccess()) {
                 $result['success'] = true;
             } else {
