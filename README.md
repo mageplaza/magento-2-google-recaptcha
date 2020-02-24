@@ -1,11 +1,15 @@
 # Magento 2 Google reCAPTCHA Free Extension
 
-**Google reCAPTCHA** for Magento 2 keeps abusive activities away. By creating a human-friendly shield, bots will be not allowed to access your admin panel and your store, while humans can pass through with ease.
+**Magento 2 Google reCAPTCHA** keeps abusive activities away. By creating a human-friendly shield, bots will be not allowed to access your admin panel and your store, while humans can pass through with ease.
+
+[![Latest Stable Version](https://poser.pugx.org/mageplaza/module-google-recaptcha/v/stable)](https://packagist.org/packages/mageplaza/module-google-recaptcha)
+[![Total Downloads](https://poser.pugx.org/mageplaza/module-google-recaptcha/downloads)](https://packagist.org/packages/mageplaza/module-google-recaptcha)
+
 
 * Add **Invisible CAPTCHA** to all forms on the frontend
-* Add **Visible CAPTCHA** to the backend
-* Works on any kinds of forms
-* Compatible with Mageplaza extensions
+* Add **Visible CAPTCHA** to **the backend** *(Featured)*
+* Works on **any kinds of forms** *(Featured)*
+* Compatible with [Mageplaza extensions](https://www.mageplaza.com/magento-2-extensions/)
 
 ![google recaptcha](https://i.imgur.com/bmMVYO3.gif)
 
@@ -39,7 +43,7 @@ A: You can display reCAPTCHA on the Bottom left, Bottom right and Inline.
 
 A: Yes, you can choose a language code to display reCAPTCHA on the backend.
 
-## 3. How to install Google reCAPTCHA extension for Magento 2
+## 3. How to install Magento 2 Google reCAPTCHA extension
 
 Run the following command in Magento 2 root folder:
 
@@ -48,15 +52,15 @@ composer require mageplaza/module-google-recaptcha
 php bin/magento setup:upgrade
 php bin/magento setup:static-content:deploy
 ```
-## 4. Highlight features
+## 4. Google reCAPTCHA highlight features
 
-### Invisible CAPTCHA
+### Invisible reCAPTCHA
 
-Google reCAPTCHA extension by Mageplaza integrates invisible CAPTCHA which allows humans to pass through the protection with ease, yet it stops bots from abusive activities.
+**Mageplaza Google reCAPTCHA extension** integrates **invisible reCAPTCHA** which allows humans to pass through the protection with ease, yet it stops bots from abusive activities.
 
 There is no CAPTCHA box within the form’s area, invisible CAPTCHA appears on the right/left bottom of the page which ensures not to distract the user. Invisible CAPTCHA will only popped up if any abusive activities from bots are found, and let humans go through without any interruption.
 
-### Add CAPTCHAs to any forms
+### Add Google reCAPTCHAs to any forms
 
 There’s no limit to add reCAPTCHAs to any kinds of form on the frontend. Admins can either select available forms or insert URL paths/CSS selectors to display reCAPTCHAs to anywhere they want. There are 6 forms which are available to select with ease:
 
@@ -67,9 +71,9 @@ There’s no limit to add reCAPTCHAs to any kinds of form on the frontend. Admin
 * Change password
 * Product review
 
-### Backend CAPTCHAs
+### Backend reCAPTCHAs
 
-Magento 2 Google reCAPTCHA also allows adding CAPTCHA to the backend in two forms:
+**Magento 2 Google reCAPTCHA** also allows **adding CAPTCHA to the backend** in two forms:
 
 * Admin Login
 * Admin Forgot Password
@@ -78,20 +82,20 @@ Magento 2 Google reCAPTCHA also allows adding CAPTCHA to the backend in two form
 
 ## 5. More features
 
-### Customize Captcha forms
+### Customize reCaptcha forms
 
-Set no limit to which forms to display Google reCAPTCHA by inserting URL post paths and CSS selectors.
+Set no limit to which forms to display **Google reCAPTCHA** by inserting URL post paths and CSS selectors.
 
 ### Compatibility
-Google reCaptcha for Magento 2 is highly compatible with Mageplaza extensions: Blog, Security, Social Login, Gift Card, One Step Checkout.
+**Google reCaptcha for Magento 2** is highly compatible with other extensions: Mageplaza Blog, Mageplaza Security, Mageplaza Social Login, Mageplaza Gift Card, Mageplaza One Step Checkout.
 
 ### Badge positions
-Google reCAPTCHAs can be displayed right in the form or on the bottom left or on the bottom right of the page
+**Google reCAPTCHAs** can be displayed right in the form or on the bottom left or on the bottom right of the page
 
 ### Multi-language CAPTCHAs
 Add a language code to change the language of reCAPTCHAs.
 
-## 6. Full feature list
+## 6. Full Magento 2 Google ReCaptcha feature list
 
 ### For admins
 * Turn on/off module
@@ -112,7 +116,7 @@ Add a language code to change the language of reCAPTCHAs.
 
 ## 7. How to configure Google Recaptcha extension
 
-![configuration](https://i.imgur.com/XhPOWBt.png)
+![How to configure Google Recaptcha extension](https://i.imgur.com/XhPOWBt.png)
 
 ### Configuration
 
@@ -150,7 +154,7 @@ Add a language code to change the language of reCAPTCHAs.
 
 * **Size**: Select how to display Google reCAPTCHA
 
-![size](https://i.imgur.com/fnSovK5.png)
+![How to configure Magento 2 Google Recaptcha](https://i.imgur.com/fnSovK5.png)
 
    * Size = Compact: When Compact is selected, Google reCAPTCHA is displayed as below
 
@@ -242,17 +246,43 @@ Or, use this command below to disable the configuration:
 
 `php bin/magento mageplaza:core:disable Mageplaza_Recaptcha`
 
-#### How Google reCAPTCHA is displayed on the frontend
+#### How Google reCAPTCHA is displayed on the Magento 2 frontend
 
 ![the display on the frontend](https://i.imgur.com/rMoqd2v.png)
 
 ![display on frontend 1](https://i.imgur.com/9i3SkDQ.png)
 
-#### How Google reCAPTCHA is displayed in the backend
+#### How Google reCAPTCHA is displayed in the Magento 2 backend
 
 ![the display in the backend](https://i.imgur.com/91H3ERd.png)
 
 
+**People also search:**
+- mageplaza google recaptcha
+- magento 2 recaptcha
+- google recaptcha magento 2
+- magento 2 invisible recaptcha
+- google captcha magento 2
+- magento 2 recaptcha extension
+- recaptcha magento 2
+- magento 2 google captcha
+- magento 2 captcha extension free
+- google invisible recaptcha magento 2
+- invisible recaptcha magento 2
+- magento 2 recaptcha v3
+- magento 2 google invisible recaptcha
+- recaptcha v3 magento 2
+
+
+**Other free extension on Github**
+- [Magento 2 SEO](https://github.com/mageplaza/magento-2-seo)
+- [Magento 2 Google Maps](https://github.com/mageplaza/magento-2-google-maps)
+- [Magento 2 Blog](https://github.com/mageplaza/magento-2-blog)
+- [Magento 2.x GDPR compliance](https://github.com/mageplaza/magento-2-gdpr)
+- [Magento 2 social login](https://github.com/mageplaza/magento-2-social-login)
+- [Magento 2 Same Order Number](https://github.com/mageplaza/magento-2-same-order-number)
+- [Magento 2 Layered Navigation](https://github.com/mageplaza/magento-2-ajax-layered-navigation)
+- [Magento 2 security](https://github.com/mageplaza/magento-2-security)
 
 
 
