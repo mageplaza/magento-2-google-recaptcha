@@ -24,12 +24,12 @@
     <default>
         <googlerecaptcha>
             <backend>
-                <forms>backend_login</forms>
+                <enabled>0</enabled>
                 <size>normal</size>
                 <theme>light</theme>
             </backend>
             <frontend>
-                <enable>0</enable>
+                <enabled>0</enabled>
                 <type>invisible</type>
                 <forms>body.customer-account-create #form-validate.form-create-account</forms>
                 <position>bottomleft</position>
