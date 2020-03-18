@@ -28,6 +28,10 @@ use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 use Magento\Framework\App\Config\Storage\WriterInterface as ConfigWriter;
 use Magento\Framework\App\ScopeInterface as ScopeConfigInterface;
 
+/**
+ * Class Enable
+ * @package Mageplaza\GoogleRecaptcha\Console\Adminhtml\Command
+ */
 class Enable extends Command
 {
     /**
@@ -38,10 +42,11 @@ class Enable extends Command
     /**
      * @var HelperData
      */
-    protected $_configWriter ;
+    protected $_configWriter;
 
     /**
      * Enable constructor.
+     *
      * @param HelperData $helperData
      * @param ConfigWriter $configWriter
      * @param null $name
@@ -51,7 +56,7 @@ class Enable extends Command
         ConfigWriter $configWriter,
         $name = null
     ) {
-        $this->helperData = $helperData;
+        $this->helperData    = $helperData;
         $this->_configWriter = $configWriter;
 
         parent::__construct($name);
@@ -63,7 +68,7 @@ class Enable extends Command
     protected function configure()
     {
         $this->setName('mpgooglerecaptcha:backend:enable')
-            ->setDescription('Enable backend captcha');
+            ->setDescription(__('Enable backend captcha'));
 
         parent::configure();
     }
@@ -71,20 +76,21 @@ class Enable extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     *
      * @return mixed
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!$this->helperData->isEnabled()) {
-            $output->writeln('Module is not enabled for your website.');
-        }
-        else if ($this->helperData->isCaptchaBackend()) {
-            $output->writeln('The captcha is enabled for your admin website.');
-        }
-        else {
-            $path = 'googlerecaptcha/backend/enabled';
-            $this->_configWriter->save($path, '1', $scope = ScopeConfigInterface::SCOPE_DEFAULT, $scopeId = 0);
-            $output->writeln('The captcha backend has been successfully enabled. Please run the flush cache command again');
+            $output->writeln(__('Module is not enabled for your website.'));
+        } else {
+            if ($this->helperData->isCaptchaBackend()) {
+                $output->writeln(__('The captcha is enabled for your admin website.'));
+            } else {
+                $path = 'googlerecaptcha/backend/enabled';
+                $this->_configWriter->save($path, '1', $scope = ScopeConfigInterface::SCOPE_DEFAULT, $scopeId = 0);
+                $output->writeln(__('The captcha backend has been successfully enabled. Please run the flush cache command again'));
+            }
         }
     }
 }
