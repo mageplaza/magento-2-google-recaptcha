@@ -62,7 +62,7 @@ class Disable extends Command
      */
     protected function configure()
     {
-        $this->setName('mpgooglerecaptcha:backend_login:disable')
+        $this->setName('mpgooglerecaptcha:backend:disable')
             ->setDescription('Disable backend captcha');
 
         parent::configure();

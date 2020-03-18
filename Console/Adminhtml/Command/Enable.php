@@ -62,7 +62,7 @@ class Enable extends Command
      */
     protected function configure()
     {
-        $this->setName('mpgooglerecaptcha:backend_login:enable')
+        $this->setName('mpgooglerecaptcha:backend:enable')
             ->setDescription('Enable backend captcha');
 
         parent::configure();
