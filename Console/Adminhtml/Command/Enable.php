@@ -89,5 +89,4 @@ class Enable extends Command
             $output->writeln(__('The captcha backend has been successfully enabled. Please run the flush cache command again'));
         }
     }
-
 }
