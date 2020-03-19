@@ -25,12 +25,6 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="mpgooglerecaptcha_enable" xsi:type="object">Mageplaza\GoogleRecaptcha\Console\Adminhtml\Command\Enable</item>
-            </argument>
-        </arguments>
-    </type>
-    <type name="Magento\Framework\Console\CommandList">
-        <arguments>
-            <argument name="commands" xsi:type="array">
                 <item name="mpgooglerecaptcha_disable" xsi:type="object">Mageplaza\GoogleRecaptcha\Console\Adminhtml\Command\Disable</item>
             </argument>
         </arguments>

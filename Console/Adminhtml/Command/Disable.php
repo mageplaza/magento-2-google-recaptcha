@@ -26,7 +26,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 use Magento\Framework\App\Config\Storage\WriterInterface as ConfigWriter;
-use Magento\Framework\App\ScopeInterface as ScopeConfigInterface;
 
 /**
  * Class Disable
@@ -55,8 +54,9 @@ class Disable extends Command
         HelperData $helperData,
         ConfigWriter $configWriter,
         $name = null
-    ) {
-        $this->helperData    = $helperData;
+    )
+    {
+        $this->helperData = $helperData;
         $this->_configWriter = $configWriter;
 
         parent::__construct($name);
@@ -81,16 +81,12 @@ class Disable extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!$this->helperData->isEnabled()) {
-            $output->writeln(__('Module is not enabled for your website.'));
+        if (!$this->helperData->isCaptchaBackend()) {
+            $output->writeln(__('The captcha is disable for your admin website.'));
         } else {
-            if (!$this->helperData->isCaptchaBackend()) {
-                $output->writeln(__('The captcha is disable for your admin website.'));
-            } else {
-                $path = 'googlerecaptcha/backend/enabled';
-                $this->_configWriter->save($path, '0', $scope = ScopeConfigInterface::SCOPE_DEFAULT, $scopeId = 0);
-                $output->writeln(__('The captcha backend has been successfully disabled. Please run the flush cache command again'));
-            }
+            $path = 'googlerecaptcha/backend/enabled';
+            $this->_configWriter->save($path, '0');
+            $output->writeln(__('The captcha backend has been successfully disabled. Please run the flush cache command again'));
         }
     }
 }
