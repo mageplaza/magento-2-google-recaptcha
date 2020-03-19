@@ -54,9 +54,8 @@ class Enable extends Command
         HelperData $helperData,
         ConfigWriter $configWriter,
         $name = null
-    )
-    {
-        $this->helperData = $helperData;
+    ) {
+        $this->helperData    = $helperData;
         $this->_configWriter = $configWriter;
 
         parent::__construct($name);
@@ -68,7 +67,7 @@ class Enable extends Command
     protected function configure()
     {
         $this->setName('mpgooglerecaptcha:backend:enable')
-            ->setDescription(__('Enable backend captcha'));
+             ->setDescription(__('Enable backend captcha'));
 
         parent::configure();
     }
@@ -76,8 +75,7 @@ class Enable extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     *
-     * @return mixed
+     * @return int|void|null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
