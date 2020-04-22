@@ -30,6 +30,8 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
+use Magento\Framework\App\RequestInterface;
+
 
 /**
  * Class Login
@@ -68,6 +70,11 @@ class Captcha implements ObserverInterface
     protected $redirect;
 
     /**
+     * @var RequestInterface
+     */
+    protected $requestInterface;
+
+    /**
      * Captcha constructor.
      *
      * @param HelperData $helperData
@@ -76,6 +83,7 @@ class Captcha implements ObserverInterface
      * @param ActionFlag $actionFlag
      * @param ResponseInterface $responseInterface
      * @param RedirectInterface $redirect
+     * @param RequestInterface $requestInterface
      */
     public function __construct(
         HelperData $helperData,
@@ -83,14 +91,16 @@ class Captcha implements ObserverInterface
         ManagerInterface $messageManager,
         ActionFlag $actionFlag,
         ResponseInterface $responseInterface,
-        RedirectInterface $redirect
+        RedirectInterface $redirect,
+        RequestInterface $requestInterface
     ) {
-        $this->_helperData        = $helperData;
-        $this->_request           = $request;
-        $this->messageManager     = $messageManager;
-        $this->_actionFlag        = $actionFlag;
+        $this->_helperData = $helperData;
+        $this->_request = $request;
+        $this->messageManager = $messageManager;
+        $this->_actionFlag = $actionFlag;
         $this->_responseInterface = $responseInterface;
-        $this->redirect           = $redirect;
+        $this->redirect = $redirect;
+        $this->requestInterface = $requestInterface;
     }
 
     /**
@@ -100,14 +110,26 @@ class Captcha implements ObserverInterface
     {
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
             $checkResponse = 1;
+            $captcha = false;
             if ($this->_request->getFullActionName() === 'wishlist_index_add') {
                 return;
             }
             foreach ($this->_helperData->getFormPostPaths() as $item) {
                 if ($item !== '' && strpos($this->_request->getRequestUri(), trim($item, ' ')) !== false) {
                     $checkResponse = 0;
-                    if ($this->_request->getParam('g-recaptcha-response') !== null) {
-                        $type     = $this->_helperData->getRecaptchaType();
+                    $captcha = $this->_request->getParam('g-recaptcha-response');
+                    // case ajax login
+                    if ($captcha == null && $this->_request->isAjax() && $item === 'customer/ajax/login') {
+                        $formData = $this->_helperData->jsonDecode($this->requestInterface->getContent());
+                        if(array_key_exists('g-recaptcha-response',$formData) ==false){
+                            return $this->redirectUrlError(__('Missing required parameters recaptcha!'));
+                        }
+                        else {
+                            $captcha = $formData['g-recaptcha-response'];
+                        }
+                    }
+                    if ($captcha !== null) {
+                        $type = $this->_helperData->getRecaptchaType();
                         $response = $this->_helperData->verifyResponse($type);
                         if (isset($response['success']) && !$response['success']) {
                             $this->redirectUrlError($response['message']);
@@ -117,14 +139,15 @@ class Captcha implements ObserverInterface
                     }
                 }
             }
-            if ($checkResponse === 1 && $this->_request->getParam('g-recaptcha-response') !== null) {
+
+            if ($checkResponse === 1 && ($this->_request->getParam('g-recaptcha-response') !== null || $captcha != false)) {
                 $this->redirectUrlError(__('Missing Url in "Form Post Paths" configuration field!'));
             }
         }
     }
 
     /**
-     * @param string $message
+     * @param $message
      *
      * @return array
      */
@@ -148,7 +171,6 @@ class Captcha implements ObserverInterface
         $this->messageManager->getMessages(true);
         $this->messageManager->addErrorMessage($message);
         $this->_actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
-
-        return $this->_responseInterface->setRedirect($this->redirect->getRefererUrl());
+        $this->_responseInterface->setRedirect($this->redirect->getRefererUrl());
     }
 }
