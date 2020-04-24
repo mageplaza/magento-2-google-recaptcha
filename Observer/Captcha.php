@@ -32,7 +32,6 @@ use Magento\Framework\Message\ManagerInterface;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 use Magento\Framework\App\RequestInterface;
 
-
 /**
  * Class Login
  * @package Mageplaza\GoogleRecaptcha\Observer\Adminhtml
@@ -94,42 +93,43 @@ class Captcha implements ObserverInterface
         RedirectInterface $redirect,
         RequestInterface $requestInterface
     ) {
-        $this->_helperData = $helperData;
-        $this->_request = $request;
-        $this->messageManager = $messageManager;
-        $this->_actionFlag = $actionFlag;
+        $this->_helperData        = $helperData;
+        $this->_request           = $request;
+        $this->messageManager     = $messageManager;
+        $this->_actionFlag        = $actionFlag;
         $this->_responseInterface = $responseInterface;
-        $this->redirect = $redirect;
-        $this->requestInterface = $requestInterface;
+        $this->redirect           = $redirect;
+        $this->requestInterface   = $requestInterface;
     }
 
     /**
      * @param Observer $observer
+     *
+     * @return array|void
      */
     public function execute(Observer $observer)
     {
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
             $checkResponse = 1;
-            $captcha = false;
+            $captcha       = false;
             if ($this->_request->getFullActionName() === 'wishlist_index_add') {
                 return;
             }
             foreach ($this->_helperData->getFormPostPaths() as $item) {
                 if ($item !== '' && strpos($this->_request->getRequestUri(), trim($item, ' ')) !== false) {
                     $checkResponse = 0;
-                    $captcha = $this->_request->getParam('g-recaptcha-response');
+                    $captcha       = $this->_request->getParam('g-recaptcha-response');
                     // case ajax login
-                    if ($captcha == null && $this->_request->isAjax() && $item === 'customer/ajax/login') {
-                        $formData = $this->_helperData->jsonDecode($this->requestInterface->getContent());
-                        if(array_key_exists('g-recaptcha-response',$formData) ==false){
-                            return $this->redirectUrlError(__('Missing required parameters recaptcha!'));
-                        }
-                        else {
+                    if ($item === 'customer/ajax/login' && $captcha === null && $this->_request->isAjax()) {
+                        $formData = HelperData::jsonDecode($this->requestInterface->getContent());
+                        if (array_key_exists('g-recaptcha-response', $formData)) {
                             $captcha = $formData['g-recaptcha-response'];
+                        } else {
+                            return $this->redirectUrlError(__('Missing required parameters recaptcha!'));
                         }
                     }
                     if ($captcha !== null) {
-                        $type = $this->_helperData->getRecaptchaType();
+                        $type     = $this->_helperData->getRecaptchaType();
                         $response = $this->_helperData->verifyResponse($type);
                         if (isset($response['success']) && !$response['success']) {
                             $this->redirectUrlError($response['message']);
@@ -140,14 +140,15 @@ class Captcha implements ObserverInterface
                 }
             }
 
-            if ($checkResponse === 1 && ($this->_request->getParam('g-recaptcha-response') !== null || $captcha != false)) {
+            if ($checkResponse === 1 &&
+                ($this->_request->getParam('g-recaptcha-response') !== null || $captcha !== false)) {
                 $this->redirectUrlError(__('Missing Url in "Form Post Paths" configuration field!'));
             }
         }
     }
 
     /**
-     * @param $message
+     * @param string $message
      *
      * @return array
      */
