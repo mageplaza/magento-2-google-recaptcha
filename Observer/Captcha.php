@@ -24,6 +24,7 @@ namespace Mageplaza\GoogleRecaptcha\Observer;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Request\Http;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Event\Observer;
@@ -68,6 +69,11 @@ class Captcha implements ObserverInterface
     protected $redirect;
 
     /**
+     * @var RequestInterface
+     */
+    protected $requestInterface;
+
+    /**
      * Captcha constructor.
      *
      * @param HelperData $helperData
@@ -76,6 +82,7 @@ class Captcha implements ObserverInterface
      * @param ActionFlag $actionFlag
      * @param ResponseInterface $responseInterface
      * @param RedirectInterface $redirect
+     * @param RequestInterface $requestInterface
      */
     public function __construct(
         HelperData $helperData,
@@ -83,7 +90,8 @@ class Captcha implements ObserverInterface
         ManagerInterface $messageManager,
         ActionFlag $actionFlag,
         ResponseInterface $responseInterface,
-        RedirectInterface $redirect
+        RedirectInterface $redirect,
+        RequestInterface $requestInterface
     ) {
         $this->_helperData        = $helperData;
         $this->_request           = $request;
@@ -91,22 +99,36 @@ class Captcha implements ObserverInterface
         $this->_actionFlag        = $actionFlag;
         $this->_responseInterface = $responseInterface;
         $this->redirect           = $redirect;
+        $this->requestInterface   = $requestInterface;
     }
 
     /**
      * @param Observer $observer
+     *
+     * @return array|void
      */
     public function execute(Observer $observer)
     {
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
             $checkResponse = 1;
+            $captcha       = false;
             if ($this->_request->getFullActionName() === 'wishlist_index_add') {
                 return;
             }
             foreach ($this->_helperData->getFormPostPaths() as $item) {
                 if ($item !== '' && strpos($this->_request->getRequestUri(), trim($item, ' ')) !== false) {
                     $checkResponse = 0;
-                    if ($this->_request->getParam('g-recaptcha-response') !== null) {
+                    $captcha       = $this->_request->getParam('g-recaptcha-response');
+                    // case ajax login
+                    if ($item === 'customer/ajax/login' && $captcha === null && $this->_request->isAjax()) {
+                        $formData = HelperData::jsonDecode($this->requestInterface->getContent());
+                        if (array_key_exists('g-recaptcha-response', $formData)) {
+                            $captcha = $formData['g-recaptcha-response'];
+                        } else {
+                            return $this->redirectUrlError(__('Missing required parameters recaptcha!'));
+                        }
+                    }
+                    if ($captcha !== null) {
                         $type     = $this->_helperData->getRecaptchaType();
                         $response = $this->_helperData->verifyResponse($type);
                         if (isset($response['success']) && !$response['success']) {
@@ -117,7 +139,9 @@ class Captcha implements ObserverInterface
                     }
                 }
             }
-            if ($checkResponse === 1 && $this->_request->getParam('g-recaptcha-response') !== null) {
+
+            if ($checkResponse === 1 &&
+                ($this->_request->getParam('g-recaptcha-response') !== null || $captcha !== false)) {
                 $this->redirectUrlError(__('Missing Url in "Form Post Paths" configuration field!'));
             }
         }
@@ -148,7 +172,6 @@ class Captcha implements ObserverInterface
         $this->messageManager->getMessages(true);
         $this->messageManager->addErrorMessage($message);
         $this->_actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
-
-        return $this->_responseInterface->setRedirect($this->redirect->getRefererUrl());
+        $this->_responseInterface->setRedirect($this->redirect->getRefererUrl());
     }
 }

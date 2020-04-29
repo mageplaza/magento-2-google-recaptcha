@@ -19,8 +19,9 @@
  */
 
 define([
-    'jquery'
-], function ($) {
+    'jquery',
+    'mage/translate'
+], function ($,$t) {
     'use strict';
 
     $.widget('mageplaza.captcha', {
@@ -109,7 +110,7 @@ define([
                         var divError      = $('<div class="g-recaptcha-error"></div>');
                         var checkBox      = $('<input type="checkbox" style="visibility: hidden" data-validate="{required:true}" class="mage-error">');
 
-                        divError.text('You need select captcha').attr('style', 'display:none;color:red');
+                        divError.text($t('You need select captcha')).attr('style', 'display:none;color:red');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
                         checkBox.attr('name', 'mp' + '_recaptcha_' + number);
 
@@ -208,12 +209,6 @@ define([
 
                             } else {
                                 element.submit(function (event) {
-                                    if (element.attr('id') !== 'mpageverify-form') {
-                                        if (!element.valid()) {
-                                            return;
-                                        }
-                                    }
-
                                     if (!self.stopSubmit) {
                                         $.each(self.captchaForm, function (form, value) {
                                             if (element.find('#' + value).length > 0) {
