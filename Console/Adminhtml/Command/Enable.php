@@ -21,11 +21,11 @@
 
 namespace Mageplaza\GoogleRecaptcha\Console\Adminhtml\Command;
 
+use Magento\Framework\App\Config\Storage\WriterInterface as ConfigWriter;
+use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
-use Magento\Framework\App\Config\Storage\WriterInterface as ConfigWriter;
 
 /**
  * Class Enable
@@ -67,7 +67,7 @@ class Enable extends Command
     protected function configure()
     {
         $this->setName('mpgooglerecaptcha:backend:enable')
-             ->setDescription(__('Enable backend captcha'));
+            ->setDescription(__('Enable backend captcha'));
 
         parent::configure();
     }
@@ -75,6 +75,7 @@ class Enable extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     *
      * @return int|void|null
      */
     protected function execute(InputInterface $input, OutputInterface $output)

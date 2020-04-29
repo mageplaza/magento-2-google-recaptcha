@@ -1,5 +1,4 @@
 "Disable backend captcha","Disable backend captcha"
-"Module is not enabled for your website.","Module is not enabled for your website."
 "The captcha is disable for your admin website.","The captcha is disable for your admin website."
 "The captcha backend has been successfully disabled. Please run the flush cache command again","The captcha backend has been successfully disabled. Please run the flush cache command again"
 "Enable backend captcha","Enable backend captcha"
@@ -98,6 +97,7 @@ Light,Light
 message,message
 "Missing required parameters recaptcha!","Missing required parameters recaptcha!"
 "Missing Url in ""Form Post Paths"" configuration field!","Missing Url in ""Form Post Paths"" configuration field!"
+"You need select captcha","You need select captcha"
 "Google Recaptcha","Google Recaptcha"
 General,General
 Enable,Enable

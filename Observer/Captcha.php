@@ -24,13 +24,13 @@ namespace Mageplaza\GoogleRecaptcha\Observer;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Request\Http;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Message\ManagerInterface;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
-use Magento\Framework\App\RequestInterface;
 
 /**
  * Class Login

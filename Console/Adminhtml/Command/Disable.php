@@ -21,11 +21,11 @@
 
 namespace Mageplaza\GoogleRecaptcha\Console\Adminhtml\Command;
 
+use Magento\Framework\App\Config\Storage\WriterInterface as ConfigWriter;
+use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
-use Magento\Framework\App\Config\Storage\WriterInterface as ConfigWriter;
 
 /**
  * Class Disable
@@ -67,7 +67,7 @@ class Disable extends Command
     protected function configure()
     {
         $this->setName('mpgooglerecaptcha:backend:disable')
-             ->setDescription(__('Disable backend captcha'));
+            ->setDescription(__('Disable backend captcha'));
 
         parent::configure();
     }
