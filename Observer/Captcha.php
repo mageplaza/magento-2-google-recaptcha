@@ -128,7 +128,7 @@ class Captcha implements ObserverInterface
                             return $this->redirectUrlError(__('Missing required parameters recaptcha!'));
                         }
                     }
-                    if ($captcha !== null) {
+                    if ($captcha !== '') {
                         $type     = $this->_helperData->getRecaptchaType();
                         $response = $this->_helperData->verifyResponse($type);
                         if (isset($response['success']) && !$response['success']) {
