@@ -306,8 +306,9 @@ class Data extends CoreHelper
      */
     public function verifyResponse($end = null, $recaptcha = null)
     {
+        $result['success'] = false;
         $recaptcha = $recaptcha ?: $this->_request->getParam('g-recaptcha-response');
-        if (!$recaptcha) {
+        if (empty($recaptcha)) {
             $result['message'] = __('The response parameter is missing.');
 
             return $result;
