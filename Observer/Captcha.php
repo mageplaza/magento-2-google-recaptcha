@@ -120,7 +120,7 @@ class Captcha implements ObserverInterface
                     $checkResponse = 0;
                     $captcha       = $this->_request->getParam('g-recaptcha-response');
                     // case ajax login
-                    if ($item === 'customer/ajax/login' && $captcha === null && $this->_request->isAjax()) {
+                    if ($item === 'customer/ajax/login' && !empty($captcha) && $this->_request->isAjax()) {
                         $formData = HelperData::jsonDecode($this->requestInterface->getContent());
                         if (array_key_exists('g-recaptcha-response', $formData)) {
                             $captcha = $formData['g-recaptcha-response'];
@@ -128,7 +128,7 @@ class Captcha implements ObserverInterface
                             return $this->redirectUrlError(__('Missing required parameters recaptcha!'));
                         }
                     }
-                    if ($captcha !== null) {
+                    if (!empty($captcha)) {
                         $type     = $this->_helperData->getRecaptchaType();
                         $response = $this->_helperData->verifyResponse($type);
                         if (isset($response['success']) && !$response['success']) {
@@ -140,8 +140,7 @@ class Captcha implements ObserverInterface
                 }
             }
 
-            if ($checkResponse === 1 &&
-                ($this->_request->getParam('g-recaptcha-response') !== null || $captcha !== false)) {
+            if ($checkResponse === 1 && $captcha !== false) {
                 $this->redirectUrlError(__('Missing Url in "Form Post Paths" configuration field!'));
             }
         }
