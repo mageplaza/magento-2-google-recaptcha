@@ -117,7 +117,7 @@ define([
 
                         if (self.options.type === 'visible') {
                             if (element.attr('id') === 'mpageverify-form') {
-                                element.find('.mpageverify-verify-action').before(divCaptcha).before(divError);
+                                element.find('.mpageverify-verify-action').before(divCaptcha).before(checkBox).before(divError);
                             } else {
                                 element.find(divAction).first().before(divCaptcha).before(divError);
                             }
