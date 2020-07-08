@@ -60,7 +60,7 @@ class Login implements ObserverInterface
             && in_array('backend_login', $this->_helperData->getFormsBackend(), true)
         ) {
             $response = $this->_helperData->verifyResponse('visible');
-            if (!array_key_exists('success', $response)) {
+            if (!array_key_exists('success', $response) || empty($response['success'])) {
                 throw new PluginAuthenticationException(
                     new Phrase($response['message'])
                 );
