@@ -108,7 +108,7 @@ define([
                         var divCaptcha    = $('<div class="g-recaptcha"></div>');
                         var divAction     = $('.actions-toolbar');
                         var divError      = $('<div class="g-recaptcha-error"></div>');
-                        var checkBox      = $('<input type="checkbox" style="visibility: hidden" data-validate="{required:true}" class="mage-error">');
+                        var checkBox      = $('<input type="checkbox" style="display: none" data-validate="{required:true}" class="mage-error">');
 
                         divError.text($t('You need select captcha')).attr('style', 'display:none;color:red');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
