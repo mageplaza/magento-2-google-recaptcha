@@ -112,7 +112,7 @@ class Captcha extends Template
                 case Forms::TYPE_PRODUCTREVIEW:
                     $actionName = $this->actionName[4];
                     break;
-                case Forms::TYPE_CHANGEPASSWORD:
+                case Forms::TYPE_EDITACCOUNT:
                     $actionName = $this->actionName[5];
                     break;
                 default:
