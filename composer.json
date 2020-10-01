@@ -6,7 +6,7 @@
     "google/recaptcha": "^1.2"
   },
   "type": "magento2-module",
-  "version": "1.2.2",
+  "version": "4.0.0",
   "license": "proprietary",
   "authors": [
     {

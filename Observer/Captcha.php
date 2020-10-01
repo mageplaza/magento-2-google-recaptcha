@@ -93,13 +93,13 @@ class Captcha implements ObserverInterface
         RedirectInterface $redirect,
         RequestInterface $requestInterface
     ) {
-        $this->_helperData        = $helperData;
-        $this->_request           = $request;
-        $this->messageManager     = $messageManager;
-        $this->_actionFlag        = $actionFlag;
+        $this->_helperData = $helperData;
+        $this->_request = $request;
+        $this->messageManager = $messageManager;
+        $this->_actionFlag = $actionFlag;
         $this->_responseInterface = $responseInterface;
-        $this->redirect           = $redirect;
-        $this->requestInterface   = $requestInterface;
+        $this->redirect = $redirect;
+        $this->requestInterface = $requestInterface;
     }
 
     /**
@@ -111,14 +111,14 @@ class Captcha implements ObserverInterface
     {
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
             $checkResponse = 1;
-            $captcha       = false;
+            $captcha = false;
             if ($this->_request->getFullActionName() === 'wishlist_index_add') {
                 return;
             }
             foreach ($this->_helperData->getFormPostPaths() as $item) {
                 if ($item !== '' && strpos($this->_request->getRequestUri(), trim($item, ' ')) !== false) {
                     $checkResponse = 0;
-                    $captcha       = $this->_request->getParam('g-recaptcha-response');
+                    $captcha = $this->_request->getParam('g-recaptcha-response');
                     // case ajax login
                     if ($item === 'customer/ajax/login' && !empty($captcha) && $this->_request->isAjax()) {
                         $formData = HelperData::jsonDecode($this->requestInterface->getContent());
@@ -129,7 +129,7 @@ class Captcha implements ObserverInterface
                         }
                     }
                     if (!empty($captcha)) {
-                        $type     = $this->_helperData->getRecaptchaType();
+                        $type = $this->_helperData->getRecaptchaType();
                         $response = $this->_helperData->verifyResponse($type);
                         if (isset($response['success']) && !$response['success']) {
                             $this->redirectUrlError($response['message']);
@@ -157,7 +157,7 @@ class Captcha implements ObserverInterface
             || strpos($this->_request->getRequestUri(), 'sociallogin/popup/forgot') !== false
         ) {
             return [
-                'errors'  => true,
+                'errors' => true,
                 'message' => $message
             ];
         }

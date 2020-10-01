@@ -55,7 +55,7 @@ class Enable extends Command
         ConfigWriter $configWriter,
         $name = null
     ) {
-        $this->helperData    = $helperData;
+        $this->helperData = $helperData;
         $this->_configWriter = $configWriter;
 
         parent::__construct($name);

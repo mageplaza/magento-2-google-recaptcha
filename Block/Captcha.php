@@ -80,7 +80,7 @@ class Captcha extends Template
         ThemeProviderInterface $themeProvider,
         array $data = []
     ) {
-        $this->_helperData    = $helperData;
+        $this->_helperData = $helperData;
         $this->_themeProvider = $themeProvider;
 
         parent::__construct($context, $data);
@@ -91,14 +91,14 @@ class Captcha extends Template
      */
     public function getForms()
     {
-        $useLogin          = false;
+        $useLogin = false;
         $this->_dataFormId = $this->_helperData->getFormsFrontend();
 
         foreach ($this->_dataFormId as $item => $value) {
             switch ($value) {
                 case Forms::TYPE_LOGIN:
                     $actionName = $this->actionName[0];
-                    $useLogin   = true;
+                    $useLogin = true;
                     break;
                 case Forms::TYPE_CREATE:
                     $actionName = $this->actionName[1];
@@ -112,7 +112,7 @@ class Captcha extends Template
                 case Forms::TYPE_PRODUCTREVIEW:
                     $actionName = $this->actionName[4];
                     break;
-                case Forms::TYPE_CHANGEPASSWORD:
+                case Forms::TYPE_EDITACCOUNT:
                     $actionName = $this->actionName[5];
                     break;
                 default:
