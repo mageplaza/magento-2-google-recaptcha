@@ -19,7 +19,7 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
-if ($block->isCaptchaBackend() && $block->showInForm()) : ?>
+if ($block->isCaptchaBackend() && $block->showInForm()): ?>
     <script type="text/javascript">
         require(['//www.google.com/recaptcha/api.js?hl=' + '<?= $block->getLanguageCode()?>']);
     </script>
