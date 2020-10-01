@@ -19,7 +19,7 @@
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 
-if ($block->isCaptchaFrontend()) : ?>
+if ($block->isCaptchaFrontend()): ?>
     <?php
         $currentTheme  = $block->getCurrentTheme();
         $key           = $block->getInvisibleKey();
@@ -29,13 +29,13 @@ if ($block->isCaptchaFrontend()) : ?>
     }
     ?>
     <style type="text/css">
-        <?php if ($currentTheme === 'Smartwave/porto' && $recaptchaType === 'visible') : ?>
+        <?php if ($currentTheme === 'Smartwave/porto' && $recaptchaType === 'visible'): ?>
             #form-validate.form-create-account .g-recaptcha div {
                 height: unset !important;
                 margin-left: 12px;
             }
         <?php endif; ?>
-        <?php if ($recaptchaType === 'invisible') : ?>
+        <?php if ($recaptchaType === 'invisible'): ?>
             .form-customer-login .g-recaptcha {
                 padding-top: 20%;
             }
