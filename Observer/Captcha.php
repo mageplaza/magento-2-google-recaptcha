@@ -109,6 +109,9 @@ class Captcha implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {    
+            return;    
+        }
         if ($this->_helperData->isEnabled() && $this->_helperData->isCaptchaFrontend()) {
             $checkResponse = 1;
             $captcha = false;
