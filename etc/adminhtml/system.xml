@@ -35,21 +35,21 @@
                 </field>
                 <group id="invisible" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Invisible</label>
-                    <field id="api_key" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="api_key" translate="label comment" type="obscure" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Google API Key</label>
                         <comment><![CDATA[Create app <a href="https://www.google.com/recaptcha/admin" target="_blank">here</a>.]]></comment>
                     </field>
-                    <field id="api_secret" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="api_secret" translate="label comment" type="obscure" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Google API Secret Key</label>
                     </field>
                 </group>
                 <group id="visible" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Visible</label>
-                    <field id="api_key" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="api_key" translate="label comment" type="obscure" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Google API Key</label>
                         <comment><![CDATA[Create app <a href="https://www.google.com/recaptcha/admin" target="_blank">here</a>.]]></comment>
                     </field>
-                    <field id="api_secret" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="api_secret" translate="label comment" type="obscure" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Google API Secret Key</label>
                     </field>
                 </group>
