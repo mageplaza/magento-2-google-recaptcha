@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_GoogleRecaptcha
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+-->
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="fue-source" type="host">*.googleapis.com</value>
+                <value id="google-source" type="host">*.google.com</value>
+                <value id="gstatic-source" type="host">*.gstatic.com</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="fue-style" type="host">*.googleapis.com</value>
+                <value id="google-style" type="host">*.google.com</value>
+                <value id="gstatic-style" type="host">*.gstatic.com</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="googleapis" type="host">https://fonts.gstatic.com</value>
+                <value id="googlesrc" type="host">https://www.google.com</value>
+                <value id="gstaticsrc" type="host">https://www.gstatic.com</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="fue-connect" type="host">http://dpm.demdex.net</value>
+                <value id="google-connect" type="host">https://www.google.com</value>
+                <value id="gstatic-connect" type="host">https://www.gstatic.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>
