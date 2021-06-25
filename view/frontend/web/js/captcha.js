@@ -88,6 +88,9 @@ define([
                             && $(element).prop("tagName").toLowerCase() === 'form') {
                             self.activeForm.push(element);
                             result = true;
+                        } else if (element === '.opc-wrapper.one-step-checkout-wrapper') {
+                            self.activeForm.push(element);
+                            result = true;
                         }
                     });
                 }
@@ -143,6 +146,7 @@ define([
                                                 || value === '#social-form-create'
                                                 || value === '#social-form-password-forget'
                                                 || value === '.popup-authentication #login-form.form.form-login'
+                                                || value === '.opc-wrapper.one-step-checkout-wrapper'
                                                 || (value === '#review-form' && self.options.type === 'invisible')
                                             ) {
                                                 buttonElement.trigger('click');
@@ -182,8 +186,26 @@ define([
                                 || value === '#social-form-create'
                                 || value === '#social-form-password-forget'
                                 || value === '.popup-authentication #login-form.form.form-login'
+                                || value === '.opc-wrapper.one-step-checkout-wrapper'
                                 || (value === '#review-form' && self.options.type === 'invisible')
                             ) {
+                                if (value === '.opc-wrapper.one-step-checkout-wrapper') {
+                                    $('button.checkout').on('click', function (event) {
+                                        if (!self.stopSubmit) {
+                                            $.each(self.captchaForm, function (form, value) {
+                                                if (element.find('#' + value).length > 0) {
+                                                    grecaptcha.reset(form);
+                                                    grecaptcha.execute(form);
+                                                    resetForm = form;
+                                                    event.preventDefault(event);
+                                                    event.stopImmediatePropagation();
+
+                                                    return false;
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
                                 buttonElement.on('click', function (event) {
                                     if (!(element.validation() && element.validation('isValid'))) {
                                         return;
