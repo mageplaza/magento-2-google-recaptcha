@@ -34,7 +34,7 @@ class Forms implements ArrayInterface
     const TYPE_CREATE          = 'body.customer-account-create #form-validate.form-create-account';
     const TYPE_FORGOT          = '#form-validate.form.password.forget';
     const TYPE_CONTACT         = '#contact-form';
-    const TYPE_CHANGEPASSWORD  = '#form-validate.form.form-edit-account';
+    const TYPE_EDITACCOUNT     = '#form-validate.form.form-edit-account';
     const TYPE_PRODUCTREVIEW   = '#review-form';
     const TYPE_AGEVERIFICATION = '#mpageverify-form';
     const TYPE_FORMSEXTENDED   = [
@@ -84,7 +84,7 @@ class Forms implements ArrayInterface
             self::TYPE_CREATE         => __('Create User'),
             self::TYPE_FORGOT         => __('Forgot Password'),
             self::TYPE_CONTACT        => __('Contact Us'),
-            self::TYPE_CHANGEPASSWORD => __('Change Password'),
+            self::TYPE_EDITACCOUNT    => __('Edit Account'),
             self::TYPE_PRODUCTREVIEW  => __('Product Review')
         ];
         if ($this->checkModuleEnable('Mageplaza_AgeVerification')) {
@@ -104,7 +104,7 @@ class Forms implements ArrayInterface
             self::TYPE_CREATE         => 'customer/account/createpost/',
             self::TYPE_FORGOT         => 'customer/account/forgotpasswordpost/',
             self::TYPE_CONTACT        => 'contact/index/post/',
-            self::TYPE_CHANGEPASSWORD => 'customer/account/editPost/',
+            self::TYPE_EDITACCOUNT    => 'customer/account/editPost/',
             self::TYPE_PRODUCTREVIEW  => 'review/product/post/'
         ];
         if ($this->checkModuleEnable('Mageplaza_AgeVerification')) {
