@@ -103,7 +103,8 @@ class Forgot implements ObserverInterface
     {
         if ($this->_helperData->isCaptchaBackend()
             && $this->_request->getParam('g-recaptcha-response') !== null
-            && in_array('backend_forgotpassword', $this->_helperData->getFormsBackend(), true)
+            && (in_array('backend_forgotpassword', $this->_helperData->getFormsBackend(), true))
+            && ($this->_helperData->getVisibleKey() !== null && $this->_helperData->getVisibleSecretKey() !== null)
         ) {
             $controller = $this->_urlInterface->getCurrentUrl();
             try {
