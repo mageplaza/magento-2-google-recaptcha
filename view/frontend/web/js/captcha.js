@@ -88,6 +88,9 @@ define([
                             && $(element).prop("tagName").toLowerCase() === 'form') {
                             self.activeForm.push(element);
                             result = true;
+                        } else if (element === '.opc-wrapper.one-step-checkout-wrapper') {
+                            self.activeForm.push(element);
+                            result = true;
                         }
                     });
                 }
@@ -108,7 +111,7 @@ define([
                         var divCaptcha    = $('<div class="g-recaptcha"></div>');
                         var divAction     = $('.actions-toolbar');
                         var divError      = $('<div class="g-recaptcha-error"></div>');
-                        var checkBox      = $('<input type="checkbox" style="visibility: hidden" data-validate="{required:true}" class="mage-error">');
+                        var checkBox      = $('<input type="checkbox" style="visibility: hidden" data-validate="{required:false}" class="mage-error">');
 
                         divError.text($t('You need select captcha')).attr('style', 'display:none;color:red');
                         divCaptcha.attr('id', 'mp' + '_recaptcha_' + number);
@@ -143,6 +146,7 @@ define([
                                                 || value === '#social-form-create'
                                                 || value === '#social-form-password-forget'
                                                 || value === '.popup-authentication #login-form.form.form-login'
+                                                || value === '.opc-wrapper.one-step-checkout-wrapper'
                                                 || (value === '#review-form' && self.options.type === 'invisible')
                                             ) {
                                                 buttonElement.trigger('click');
@@ -182,8 +186,26 @@ define([
                                 || value === '#social-form-create'
                                 || value === '#social-form-password-forget'
                                 || value === '.popup-authentication #login-form.form.form-login'
+                                || value === '.opc-wrapper.one-step-checkout-wrapper'
                                 || (value === '#review-form' && self.options.type === 'invisible')
                             ) {
+                                if (value === '.opc-wrapper.one-step-checkout-wrapper') {
+                                    $('button.checkout').on('click', function (event) {
+                                        if (!self.stopSubmit) {
+                                            $.each(self.captchaForm, function (form, value) {
+                                                if (element.find('#' + value).length > 0) {
+                                                    grecaptcha.reset(form);
+                                                    grecaptcha.execute(form);
+                                                    resetForm = form;
+                                                    event.preventDefault(event);
+                                                    event.stopImmediatePropagation();
+
+                                                    return false;
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
                                 buttonElement.on('click', function (event) {
                                     if (!(element.validation() && element.validation('isValid'))) {
                                         return;
@@ -256,6 +278,7 @@ define([
                                         $.each(self.captchaForm, function (form, value) {
                                             if (element.find('#' + value).length > 0) {
                                                 self.showMessage(divError, 5000);
+                                                buttonElement.attr('disabled', false);
                                                 grecaptcha.reset(form);
                                                 event.preventDefault(event);
                                                 event.stopImmediatePropagation();
