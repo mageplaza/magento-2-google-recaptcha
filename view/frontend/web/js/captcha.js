@@ -88,7 +88,7 @@ define([
                             && $(element).prop("tagName").toLowerCase() === 'form') {
                             self.activeForm.push(element);
                             result = true;
-                        } else if (element === '.opc-wrapper.one-step-checkout-wrapper') {
+                        } else if (element === '.opc-wrapper.one-step-checkout-wrapper' && $(element).length > 0) {
                             self.activeForm.push(element);
                             result = true;
                         }
