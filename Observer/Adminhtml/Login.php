@@ -57,7 +57,8 @@ class Login implements ObserverInterface
     public function execute(Observer $observer)
     {
         if ($this->_helperData->isCaptchaBackend()
-            && in_array('backend_login', $this->_helperData->getFormsBackend(), true)
+            && (in_array('backend_login', $this->_helperData->getFormsBackend(), true))
+            && ($this->_helperData->getVisibleKey() !== null && $this->_helperData->getVisibleSecretKey() !== null)
         ) {
             $response = $this->_helperData->verifyResponse('visible');
             if (!array_key_exists('success', $response) || empty($response['success'])) {

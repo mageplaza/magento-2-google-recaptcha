@@ -92,6 +92,7 @@ class Captcha extends Template
     public function getForms()
     {
         $useLogin          = false;
+        $ageVerification   = false;
         $this->_dataFormId = $this->_helperData->getFormsFrontend();
 
         foreach ($this->_dataFormId as $item => $value) {
@@ -112,10 +113,11 @@ class Captcha extends Template
                 case Forms::TYPE_PRODUCTREVIEW:
                     $actionName = $this->actionName[4];
                     break;
-                case Forms::TYPE_CHANGEPASSWORD:
+                case Forms::TYPE_EDITACCOUNT:
                     $actionName = $this->actionName[5];
                     break;
                 default:
+                    $ageVerification = true;
                     $actionName = '';
             }
             $this->unsetDataFromId($item, $actionName);
@@ -127,7 +129,7 @@ class Captcha extends Template
             }
         }
 
-        if ($this->isAgeVerificationEnabled()) {
+        if ($this->isAgeVerificationEnabled() && $ageVerification) {
             $this->_dataFormId[] = Forms::TYPE_AGEVERIFICATION;
         }
 
