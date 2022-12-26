@@ -261,7 +261,7 @@ class Data extends CoreHelper
                 $data[] = $value;
             }
         }
-        $custom = explode("\n", str_replace("\r", '', $this->getConfigFrontend('custom/paths', $storeId)));
+        $custom = explode("\n", str_replace("\r", '', $this->getConfigFrontend('custom/paths', $storeId)?:''));
         if (!$custom) {
             return $data;
         }
@@ -277,7 +277,7 @@ class Data extends CoreHelper
     public function getCssSelectors($storeId = null)
     {
         $data = $this->getConfigFrontend('custom/css', $storeId);
-        $forms = explode("\n", str_replace("\r", '', $data));
+        $forms = explode("\n", str_replace("\r", '', $data?:''));
         foreach ($forms as $key => $value) {
             $forms[$key] = trim($value, ' ');
         }
