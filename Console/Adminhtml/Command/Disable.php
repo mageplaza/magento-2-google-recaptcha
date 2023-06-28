@@ -76,7 +76,7 @@ class Disable extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return int|void|null
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -87,5 +87,7 @@ class Disable extends Command
             $this->_configWriter->save($path, '0');
             $output->writeln(__('The captcha backend has been successfully disabled. Please run the flush cache command again'));
         }
+
+        return 0;
     }
 }

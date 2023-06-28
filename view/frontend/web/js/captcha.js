@@ -271,14 +271,15 @@ define([
                                 });
                             } else {
                                 element.submit(function (event) {
-                                    var name  = element.find('.g-recaptcha').attr('id');
+                                    var name  = element.find('.g-recaptcha').attr('id'),
+                                        buttonSubmit = element.find('button.submit');
                                     var check = $("input[name='" + name + "']").prop('checked');
 
                                     if (check === false) {
                                         $.each(self.captchaForm, function (form, value) {
                                             if (element.find('#' + value).length > 0) {
                                                 self.showMessage(divError, 5000);
-                                                buttonElement.attr('disabled', false);
+                                                buttonSubmit.removeAttr('disabled');
                                                 grecaptcha.reset(form);
                                                 event.preventDefault(event);
                                                 event.stopImmediatePropagation();
