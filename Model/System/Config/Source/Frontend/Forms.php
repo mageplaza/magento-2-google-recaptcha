@@ -38,6 +38,7 @@ class Forms implements ArrayInterface
     const TYPE_PRODUCTREVIEW   = '#review-form';
     const TYPE_AGEVERIFICATION = '#mpageverify-form';
     const TYPE_SOCIAl          = ['#social-form-password-forget', '#social-form-login', '#social-form-create'];
+    const TYPE_SOCIAl_KEY      = 'type-social';
     const TYPE_FORMSEXTENDED   = [
         '.popup-authentication .form.form-login',
         '.checkout-index-index form[data-role=login]',
@@ -87,8 +88,11 @@ class Forms implements ArrayInterface
             self::TYPE_CONTACT       => __('Contact Us'),
             self::TYPE_EDITACCOUNT   => __('Edit Account'),
             self::TYPE_PRODUCTREVIEW => __('Product Review'),
-            self::TYPE_SOCIAl        => __('Social Login Popup'),
         ];
+        if ($this->_moduleManager->isEnabled('Mageplaza_SocialLogin')) {
+            $labels[self::TYPE_SOCIAl_KEY] = __('Social Login Popup');
+        }
+
         if ($this->checkModuleEnable('Mageplaza_AgeVerification')) {
             $labels = array_merge($labels, [self::TYPE_AGEVERIFICATION => __('Age Verification')]);
         }

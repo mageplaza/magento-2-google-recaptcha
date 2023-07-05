@@ -38,8 +38,8 @@ use ReCaptcha\ReCaptcha;
  */
 class Data extends CoreHelper
 {
-    const CONFIG_MODULE_PATH = 'googlerecaptcha';
-    const BACKEND_CONFIGURATION = '/backend';
+    const CONFIG_MODULE_PATH     = 'googlerecaptcha';
+    const BACKEND_CONFIGURATION  = '/backend';
     const FRONTEND_CONFIGURATION = '/frontend';
 
     /**
@@ -76,8 +76,8 @@ class Data extends CoreHelper
         EncryptorInterface $encryptor
     ) {
         $this->_curlFactory = $curlFactory;
-        $this->_formPaths = $formPaths;
-        $this->encryptor = $encryptor;
+        $this->_formPaths   = $formPaths;
+        $this->encryptor    = $encryptor;
 
         parent::__construct($context, $objectManager, $storeManager);
     }
@@ -261,7 +261,7 @@ class Data extends CoreHelper
                 $data[] = $value;
             }
         }
-        $custom = explode("\n", str_replace("\r", '', $this->getConfigFrontend('custom/paths', $storeId)?:''));
+        $custom = explode("\n", str_replace("\r", '', $this->getConfigFrontend('custom/paths', $storeId) ?: ''));
         if (!$custom) {
             return $data;
         }
@@ -276,8 +276,8 @@ class Data extends CoreHelper
      */
     public function getCssSelectors($storeId = null)
     {
-        $data = $this->getConfigFrontend('custom/css', $storeId);
-        $forms = explode("\n", str_replace("\r", '', $data?:''));
+        $data  = $this->getConfigFrontend('custom/css', $storeId);
+        $forms = explode("\n", str_replace("\r", '', $data ?: ''));
         foreach ($forms as $key => $value) {
             $forms[$key] = trim($value, ' ');
         }
@@ -316,7 +316,7 @@ class Data extends CoreHelper
     public function verifyResponse($end = null, $recaptcha = null)
     {
         $result['success'] = false;
-        $recaptcha = $recaptcha ?: $this->_request->getParam('g-recaptcha-response');
+        $recaptcha         = $recaptcha ?: $this->_request->getParam('g-recaptcha-response');
         if (empty($recaptcha)) {
             $result['message'] = __('The response parameter is missing.');
 
@@ -324,7 +324,7 @@ class Data extends CoreHelper
         }
         try {
             $recaptchaClass = new ReCaptcha($end === 'visible' ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
-            $resp = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
+            $resp           = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
             if ($resp && $resp->isSuccess()) {
                 $result['success'] = true;
             } else {
@@ -365,5 +365,13 @@ class Data extends CoreHelper
     public function getSizeFrontend($storeId = null)
     {
         return $this->getConfigFrontend('size', $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     */
+    public function isSocialLoginEnabled($storeId = null)
+    {
+        return $this->getConfigValue('sociallogin/general/enabled', $storeId);
     }
 }
