@@ -120,6 +120,7 @@ class Captcha extends Template
                     break;
                 case Forms::TYPE_SOCIAl_KEY:
                     $isHaveSocialForm = true;
+                    $actionName       = '';
                     break;
                 default:
                     $ageVerification = true;
