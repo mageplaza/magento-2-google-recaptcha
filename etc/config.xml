@@ -24,7 +24,7 @@
     <default>
         <googlerecaptcha>
             <module>
-                <user_guide>magento/module-google-recaptcha</user_guide>
+                <user_guide>magento/google-recaptcha</user_guide>
             </module>
             <backend>
                 <enabled>0</enabled>
