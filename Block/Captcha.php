@@ -92,41 +92,63 @@ class Captcha extends Template
      */
     public function getForms()
     {
-        $useLogin          = false;
-        $ageVerification   = false;
-        $isHaveSocialForm  = false;
+        $useLogin = false;
+        $ageVerification = false;
         $this->_dataFormId = $this->_helperData->getFormsFrontend();
 
-        foreach ($this->_dataFormId as $item => $value) {
-            switch ($value) {
-                case Forms::TYPE_LOGIN:
-                    $actionName = $this->actionName[0];
-                    $useLogin   = true;
-                    break;
-                case Forms::TYPE_CREATE:
-                    $actionName = $this->actionName[1];
-                    break;
-                case Forms::TYPE_FORGOT:
-                    $actionName = $this->actionName[2];
-                    break;
-                case Forms::TYPE_CONTACT:
-                    $actionName = $this->actionName[3];
-                    break;
-                case Forms::TYPE_PRODUCTREVIEW:
-                    $actionName = $this->actionName[4];
-                    break;
-                case Forms::TYPE_EDITACCOUNT:
-                    $actionName = $this->actionName[5];
-                    break;
-                case Forms::TYPE_SOCIAl_KEY:
-                    $isHaveSocialForm = true;
-                    $actionName       = '';
-                    break;
-                default:
-                    $ageVerification = true;
-                    $actionName      = '';
+        if ($this->_helperData->checkHyvaTheme()) {
+            foreach ($this->_dataFormId as $item) {
+                switch ($item) {
+                    case $this->actionName[0]:
+                        $this->_dataFormId[] = 'form#customer-login-form';
+                        break;
+                    case $this->actionName[1]:
+                        $this->_dataFormId[] = 'form#accountcreate';
+                        break;
+                    case $this->actionName[2]:
+                        $this->_dataFormId[] = 'form#user_forgotpassword';
+                        break;
+                    case $this->actionName[3]:
+                        $this->_dataFormId[] = 'form#contact';
+                        break;
+                    case $this->actionName[4]:
+                        $this->_dataFormId[] = 'form#review_form';
+                        break;
+                    case $this->actionName[5]:
+                        $this->_dataFormId[] = 'form#form-validate';
+                        break;
+                    default:
+                        break;
+                }
             }
-            $this->unsetDataFromId($item, $actionName);
+        } else {
+            foreach ($this->_dataFormId as $item => $value) {
+                switch ($value) {
+                    case Forms::TYPE_LOGIN:
+                        $actionName = $this->actionName[0];
+                        $useLogin = true;
+                        break;
+                    case Forms::TYPE_CREATE:
+                        $actionName = $this->actionName[1];
+                        break;
+                    case Forms::TYPE_FORGOT:
+                        $actionName = $this->actionName[2];
+                        break;
+                    case Forms::TYPE_CONTACT:
+                        $actionName = $this->actionName[3];
+                        break;
+                    case Forms::TYPE_PRODUCTREVIEW:
+                        $actionName = $this->actionName[4];
+                        break;
+                    case Forms::TYPE_EDITACCOUNT:
+                        $actionName = $this->actionName[5];
+                        break;
+                    default:
+                        $ageVerification = true;
+                        $actionName = '';
+                }
+                $this->unsetDataFromId($item, $actionName);
+            }
         }
 
         if ($useLogin) {
@@ -205,7 +227,8 @@ class Captcha extends Template
      */
     public function isCaptchaFrontend()
     {
-        return $this->_helperData->isCaptchaFrontend();
+        $storeId = $this->_storeManager->getStore()->getId();
+        return $this->_helperData->isCaptchaFrontend($storeId);
     }
 
     /**
