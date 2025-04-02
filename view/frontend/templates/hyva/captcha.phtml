@@ -241,13 +241,15 @@ if ($block->isCaptchaFrontend()): ?>
                                             var name = element.querySelector('.g-recaptcha').id;
                                             var check = document.querySelector("input[name='" + name + "']").checked;
 
-                                            if (!element.checkValidity() && !check) {
+                                            if (!check) {
                                                 Object.entries(self.captchaForm).forEach(([form, value]) => {
                                                     if (element.querySelector('#' + value)) {
-                                                        self.showMessage(divError, 5000);
+                                                        self.showMessage(divError, 7000);
                                                         grecaptcha.reset(form);
-                                                        event.preventDefault();
-                                                        event.stopImmediatePropagation();
+                                                        if (!element.checkValidity()) {
+                                                            event.preventDefault();
+                                                            event.stopImmediatePropagation();
+                                                        }
                                                     }
                                                 });
                                             }
