@@ -323,7 +323,10 @@ class Data extends CoreHelper
             return $result;
         }
         try {
-            $recaptchaClass = new ReCaptcha($end === 'visible' ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey());
+            $recaptchaClass = new ReCaptcha(
+                $end === 'visible' ? $this->getVisibleSecretKey() : $this->getInvisibleSecretKey(),
+                function_exists('curl_init') ? new \ReCaptcha\RequestMethod\CurlPost() : null
+            );
             $resp = $recaptchaClass->verify($recaptcha, $this->_request->getClientIp());
             if ($resp && $resp->isSuccess()) {
                 $result['success'] = true;
