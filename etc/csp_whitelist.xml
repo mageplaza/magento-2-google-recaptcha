@@ -51,5 +51,18 @@
                 <value id="gstatic-connect" type="host">https://www.gstatic.com</value>
             </values>
         </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="google_recaptcha" type="host">www.google.com</value>
+                <value id="google_recaptcha_apis" type="host">www.gstatic.com</value>
+                <value id="google_apis" type="host">apis.google.com</value>
+            </values>
+        </policy>
+        <policy id="frame-ancestors">
+            <values>
+                <value id="self" type="host">self</value>
+                <value id="google_recaptcha" type="host">www.google.com</value>
+            </values>
+        </policy>
     </policies>
 </csp_whitelist>

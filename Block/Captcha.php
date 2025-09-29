@@ -27,6 +27,7 @@ use Magento\Framework\View\Design\ThemeInterface;
 use Magento\Framework\View\DesignInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
+use Mageplaza\Core\Helper\AbstractData;
 use Mageplaza\GoogleRecaptcha\Helper\Data as HelperData;
 use Mageplaza\GoogleRecaptcha\Model\System\Config\Source\Frontend\Forms;
 
@@ -80,7 +81,7 @@ class Captcha extends Template
         ThemeProviderInterface $themeProvider,
         array $data = []
     ) {
-        $this->_helperData = $helperData;
+        $this->_helperData    = $helperData;
         $this->_themeProvider = $themeProvider;
 
         parent::__construct($context, $data);
@@ -171,9 +172,19 @@ class Captcha extends Template
         if ($actionName === $this->actionName[8]) {
             $this->_dataFormId[] = Forms::TYPE_FORMSEXTENDED[1];
         }
-        $data = array_merge($this->_helperData->getCssSelectors(), $this->_dataFormId);
+        $data = array_merge(
+            $this->_helperData->getCssSelectors(),
+            $this->_dataFormId
+        );
+        if ($this->_helperData->isModuleOutputEnabled('Mageplaza_SocialLogin')
+            && $isHaveSocialForm) {
+            $data = array_merge(
+                $data,
+                Forms::TYPE_SOCIAl
+            );
+        }
 
-        return json_encode($data);
+        return AbstractData::jsonEncode($data);
     }
 
     /**
