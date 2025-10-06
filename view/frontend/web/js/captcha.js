@@ -101,7 +101,7 @@ define([
 
                         //Multi ID
                         if (element.length > 1) {
-                            element = $(element).first();
+                            element = $(element).filter(':visible').first();
                         }
 
                         /**
