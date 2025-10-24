@@ -176,8 +176,7 @@ class Captcha extends Template
             $this->_helperData->getCssSelectors(),
             $this->_dataFormId
         );
-        if ($this->_helperData->isModuleOutputEnabled('Mageplaza_SocialLogin')
-            && $isHaveSocialForm) {
+        if ($this->_helperData->isModuleOutputEnabled('Mageplaza_SocialLogin')) {
             $data = array_merge(
                 $data,
                 Forms::TYPE_SOCIAl
