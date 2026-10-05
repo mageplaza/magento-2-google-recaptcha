@@ -78,7 +78,7 @@ class Enable extends Command
      *
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->helperData->isCaptchaBackend()) {
             $output->writeln(__('The captcha is enabled for your admin website.'));
